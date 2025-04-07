@@ -175,3 +175,105 @@ FOREIGN KEY (`ROLE_ID`) REFERENCES `role` (`ID`) ON DELETE CASCADE
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;sys_config
+
+-- Película 1: Interstellar
+INSERT INTO movie (
+    BUDGET,
+    HOMEPAGE,
+    ORIGINAL_LANGUAGE,
+    ORIGINAL_TITLE,
+    OVERVIEW,
+    POPULARITY,
+    RELEASE_DATE,
+    REVENUE,
+    RUNTIME,
+    STATUS,
+    TAGLINE,
+    TITLE,
+    VOTE_AVERAGE,
+    VOTE_COUNT
+)
+VALUES (
+           165000000.00,
+           'https://www.interstellarmovie.net/',
+           'en',
+           'Interstellar',
+           'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
+           92.45,
+           '2014-11-07',
+           701729206.00,
+           169,
+           'Released',
+           'Mankind was born on Earth. It was never meant to die here.',
+           'Interstellar',
+           8.6,
+           1750000
+       );
+
+-- Película 2: Parasite
+INSERT INTO movie (
+    BUDGET,
+    HOMEPAGE,
+    ORIGINAL_LANGUAGE,
+    ORIGINAL_TITLE,
+    OVERVIEW,
+    POPULARITY,
+    RELEASE_DATE,
+    REVENUE,
+    RUNTIME,
+    STATUS,
+    TAGLINE,
+    TITLE,
+    VOTE_AVERAGE,
+    VOTE_COUNT
+)
+VALUES (
+           11400000.00,
+           'https://www.parasite-movie.com/',
+           'ko',
+           'Gisaengchung',
+           'Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan.',
+           78.21,
+           '2019-05-30',
+           257591776.00,
+           132,
+           'Released',
+           'Act like you own the place.',
+           'Parasite',
+           8.5,
+           1050000
+       );
+
+-- Película 3: The Dark Knight
+INSERT INTO movie (
+    BUDGET,
+    HOMEPAGE,
+    ORIGINAL_LANGUAGE,
+    ORIGINAL_TITLE,
+    OVERVIEW,
+    POPULARITY,
+    RELEASE_DATE,
+    REVENUE,
+    RUNTIME,
+    STATUS,
+    TAGLINE,
+    TITLE,
+    VOTE_AVERAGE,
+    VOTE_COUNT
+)
+VALUES (
+           185000000.00,
+           'https://www.thedarkknightrises.com/',
+           'en',
+           'The Dark Knight',
+           'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
+           97.63,
+           '2008-07-18',
+           1004558444.00,
+           152,
+           'Released',
+           'Why So Serious?',
+           'The Dark Knight',
+           9.0,
+           2400000
+       );
