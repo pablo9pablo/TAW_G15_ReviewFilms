@@ -277,3 +277,129 @@ VALUES (
            9.0,
            2400000
        );
+
+-- Insertar Géneros
+INSERT INTO genre (NAME) VALUES ('Science Fiction');
+INSERT INTO genre (NAME) VALUES ('Drama');
+INSERT INTO genre (NAME) VALUES ('Action');
+INSERT INTO genre (NAME) VALUES ('Thriller');
+INSERT INTO genre (NAME) VALUES ('Crime');
+INSERT INTO genre (NAME) VALUES ('Comedy');
+
+-- Insertar Palabras Clave
+INSERT INTO keyword (NAME) VALUES ('Space');
+INSERT INTO keyword (NAME) VALUES ('Wormhole');
+INSERT INTO keyword (NAME) VALUES ('Survival');
+INSERT INTO keyword (NAME) VALUES ('Family');
+INSERT INTO keyword (NAME) VALUES ('Greed');
+INSERT INTO keyword (NAME) VALUES ('Class discrimination');
+INSERT INTO keyword (NAME) VALUES ('Batman');
+INSERT INTO keyword (NAME) VALUES ('Joker');
+
+-- Insertar Actores
+INSERT INTO actor (NAME, GENDER) VALUES ('Matthew McConaughey', 1);  -- Masculino
+INSERT INTO actor (NAME, GENDER) VALUES ('Anne Hathaway', 0);       -- Femenino
+INSERT INTO actor (NAME, GENDER) VALUES ('Christian Bale', 1);      -- Masculino
+INSERT INTO actor (NAME, GENDER) VALUES ('Tom Hardy', 1);           -- Masculino
+INSERT INTO actor (NAME, GENDER) VALUES ('Song Kang-ho', 1);        -- Masculino
+INSERT INTO actor (NAME, GENDER) VALUES ('Choi Woo-shik', 1);       -- Masculino
+INSERT INTO actor (NAME, GENDER) VALUES ('Bong Joon-ho', 1);        -- Masculino (Director/Actor)
+
+-- Insertar Productoras
+INSERT INTO production_company (NAME) VALUES ('Warner Bros.');
+INSERT INTO production_company (NAME) VALUES ('Syncopy');
+INSERT INTO production_company (NAME) VALUES ('CJ Entertainment');
+INSERT INTO production_company (NAME) VALUES ('Neon');
+
+-- Insertar Equipo de Producción
+INSERT INTO crew (NAME, GENDER) VALUES ('Christopher Nolan', 1);  -- Masculino (Director)
+INSERT INTO crew (NAME, GENDER) VALUES ('Jonathan Nolan', 1);     -- Masculino (Guionista)
+INSERT INTO crew (NAME, GENDER) VALUES ('Emma Thomas', 0);        -- Femenino (Productora)
+
+-- Insertar Usuarios
+INSERT INTO user (EMAIL, PASSWORD_HASH, NAME) VALUES ('user1@example.com', 'hashedpassword1', 'John Doe');
+INSERT INTO user (EMAIL, PASSWORD_HASH, NAME) VALUES ('user2@example.com', 'hashedpassword2', 'Jane Smith');
+INSERT INTO user (EMAIL, PASSWORD_HASH, NAME) VALUES ('user3@example.com', 'hashedpassword3', 'Alice Johnson');
+
+-- Insertar Roles
+INSERT INTO role (NAME) VALUES ('Admin');
+INSERT INTO role (NAME) VALUES ('User');
+INSERT INTO role (NAME) VALUES ('Reviewer');
+
+-- Insertar Reseñas
+INSERT INTO review (MOVIE_ID, USER_ID, DESCRIPTION, RATING, DATE)
+VALUES (1, 1, 'A mind-bending film that takes you on an emotional journey through space and time.', 10, '2025-04-07');
+INSERT INTO review (MOVIE_ID, USER_ID, DESCRIPTION, RATING, DATE)
+VALUES (2, 2, 'A powerful film that tackles social issues in a very impactful way.', 9, '2025-04-07');
+INSERT INTO review (MOVIE_ID, USER_ID, DESCRIPTION, RATING, DATE)
+VALUES (3, 3, 'An exceptional superhero film with great performances and a compelling story.', 9, '2025-04-07');
+
+-- Insertar Favoritos
+INSERT INTO favorites (MOVIE_ID, USER_ID) VALUES (1, 1);
+INSERT INTO favorites (MOVIE_ID, USER_ID) VALUES (2, 2);
+INSERT INTO favorites (MOVIE_ID, USER_ID) VALUES (3, 3);
+
+-- Insertar Relaciones Películas-Géneros
+-- Interstellar (ID 1) tiene géneros: Science Fiction
+INSERT INTO movie_genre (MOVIE_ID, GENRE_ID) VALUES (1, (SELECT ID FROM genre WHERE NAME = 'Science Fiction'));
+-- Parasite (ID 2) tiene géneros: Drama, Thriller
+INSERT INTO movie_genre (MOVIE_ID, GENRE_ID) VALUES (2, (SELECT ID FROM genre WHERE NAME = 'Drama'));
+INSERT INTO movie_genre (MOVIE_ID, GENRE_ID) VALUES (2, (SELECT ID FROM genre WHERE NAME = 'Thriller'));
+-- The Dark Knight (ID 3) tiene géneros: Action, Crime
+INSERT INTO movie_genre (MOVIE_ID, GENRE_ID) VALUES (3, (SELECT ID FROM genre WHERE NAME = 'Action'));
+INSERT INTO movie_genre (MOVIE_ID, GENRE_ID) VALUES (3, (SELECT ID FROM genre WHERE NAME = 'Crime'));
+
+-- Insertar Relaciones Películas-Palabras Clave
+-- Interstellar (ID 1) tiene palabras clave: Space, Wormhole, Survival
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (1, (SELECT ID FROM keyword WHERE NAME = 'Space'));
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (1, (SELECT ID FROM keyword WHERE NAME = 'Wormhole'));
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (1, (SELECT ID FROM keyword WHERE NAME = 'Survival'));
+-- Parasite (ID 2) tiene palabras clave: Family, Greed, Class discrimination
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (2, (SELECT ID FROM keyword WHERE NAME = 'Family'));
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (2, (SELECT ID FROM keyword WHERE NAME = 'Greed'));
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (2, (SELECT ID FROM keyword WHERE NAME = 'Class discrimination'));
+-- The Dark Knight (ID 3) tiene palabras clave: Joker, Batman
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (3, (SELECT ID FROM keyword WHERE NAME = 'Joker'));
+INSERT INTO movie_keyword (MOVIE_ID, KEYWORD_ID) VALUES (3, (SELECT ID FROM keyword WHERE NAME = 'Batman'));
+
+
+-- Insertar Relaciones Películas-Productoras
+-- Interstellar (ID 1) tiene productora: Syncopy
+INSERT INTO movie_production_company (MOVIE_ID, PRODUCTION_COMPANY_ID) VALUES (1, (SELECT ID FROM production_company WHERE NAME = 'Syncopy'));
+-- Parasite (ID 2) tiene productora: CJ Entertainment
+INSERT INTO movie_production_company (MOVIE_ID, PRODUCTION_COMPANY_ID) VALUES (2, (SELECT ID FROM production_company WHERE NAME = 'CJ Entertainment'));
+-- The Dark Knight (ID 3) tiene productora: Warner Bros.
+INSERT INTO movie_production_company (MOVIE_ID, PRODUCTION_COMPANY_ID) VALUES (3, (SELECT ID FROM production_company WHERE NAME = 'Warner Bros.'));
+
+-- Insertar Relaciones Usuarios-Favoritos sin duplicados
+-- Usuario 1 tiene favorito: Interstellar (ID 1)
+INSERT IGNORE INTO favorites (MOVIE_ID, USER_ID) VALUES (1, 1);
+-- Usuario 2 tiene favorito: Parasite (ID 2)
+INSERT IGNORE INTO favorites (MOVIE_ID, USER_ID) VALUES (2, 2);
+-- Usuario 3 tiene favorito: The Dark Knight (ID 3)
+INSERT IGNORE INTO favorites (MOVIE_ID, USER_ID) VALUES (3, 3);
+
+-- Insertar Relaciones Usuarios-Watchlist sin duplicados
+-- Usuario 1 tiene en su watchlist: Parasite (ID 2)
+INSERT IGNORE INTO watchlist (MOVIE_ID, USER_ID) VALUES (2, 1);
+-- Usuario 2 tiene en su watchlist: The Dark Knight (ID 3)
+INSERT IGNORE INTO watchlist (MOVIE_ID, USER_ID) VALUES (3, 2);
+-- Usuario 3 tiene en su watchlist: Interstellar (ID 1)
+INSERT IGNORE INTO watchlist (MOVIE_ID, USER_ID) VALUES (1, 3);
+
+-- Insertar Relaciones Usuarios-Vistas sin duplicados
+-- Usuario 1 ha visto: Interstellar (ID 1)
+INSERT IGNORE INTO seen (MOVIE_ID, USER_ID) VALUES (1, 1);
+-- Usuario 2 ha visto: Parasite (ID 2)
+INSERT IGNORE INTO seen (MOVIE_ID, USER_ID) VALUES (2, 2);
+-- Usuario 3 ha visto: The Dark Knight (ID 3)
+INSERT IGNORE INTO seen (MOVIE_ID, USER_ID) VALUES (3, 3);
+
+-- Insertar Relaciones Usuarios-Roles
+-- Usuario 1 tiene rol de 'Admin'
+INSERT INTO user_role (USER_ID, ROLE_ID) VALUES (1, (SELECT ID FROM role WHERE NAME = 'Admin'));
+-- Usuario 2 tiene rol de 'User'
+INSERT INTO user_role (USER_ID, ROLE_ID) VALUES (2, (SELECT ID FROM role WHERE NAME = 'User'));
+-- Usuario 3 tiene rol de 'Reviewer'
+INSERT INTO user_role (USER_ID, ROLE_ID) VALUES (3, (SELECT ID FROM role WHERE NAME = 'Reviewer'));
+
