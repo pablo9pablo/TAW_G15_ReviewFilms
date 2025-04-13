@@ -60,6 +60,9 @@ public class MovieEntity {
     @Column(name = "VOTE_COUNT")
     private Integer voteCount;
 
+    @Column(name = "IMAGE_URL")
+    private String imageUrl;
+
     @ManyToMany
     @JoinTable(name = "movie_genre",
             joinColumns = @JoinColumn(name = "MOVIE_ID"),
