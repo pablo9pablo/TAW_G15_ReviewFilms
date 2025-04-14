@@ -16,7 +16,7 @@
 
 <!-- Formulario sin CSRF (para pruebas) -->
 <form method="post" action="${pageContext.request.contextPath}/login">
-    <label>Usuario: <input type="text" name="username" required></label><br>
+    <label>Usuario: <input type="email" name="username" required></label><br>
     <label>Contraseña: <input type="password" name="password" required></label><br>
     <button type="submit">Entrar</button>
 </form>
