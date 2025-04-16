@@ -3,7 +3,7 @@
 
 <%
     MovieEntity movie = (MovieEntity) request.getAttribute("movie");
-    boolean isAdmin = true; // Actualízalo según sesión o rol
+    boolean isAdmin = false; // Actualízalo según sesión o rol
 %>
 
 <!DOCTYPE html>
