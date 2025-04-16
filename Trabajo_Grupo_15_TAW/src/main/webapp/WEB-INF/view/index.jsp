@@ -79,6 +79,110 @@
             user-select: none;
             padding: 10px;
         }
+        .search-form,
+        .filter-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+
+        .search-input-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 50%;
+        }
+
+        .search-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .search-field {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 35px;
+            font-size: 16px;
+            border-radius: 999px;
+            border: 2px solid #333;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #888;
+        }
+
+        .search-button {
+            background-color: #2c3e50;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 12px;
+            border: 2px solid #2c3e50;
+            cursor: pointer;
+            margin-left:25px;
+        }
+
+
+
+
+
+        .filters-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-label {
+            font-weight: bold;
+        }
+
+        .range-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .range-group input[type="range"] {
+            width: 160px;
+            cursor: pointer;
+        }
+
+        .filter-select {
+            padding: 6px 12px;
+            font-size: 14px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            background-color: white;
+            cursor: pointer;
+            box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+        }
+
+        .filter-button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 12px;
+            border: 2px solid #333;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+
     </style>
 </head>
 
@@ -89,6 +193,50 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
+
+    <form method="post" action="/buscar" class="search-form">
+        <!-- Barra de búsqueda -->
+        <div class="search-input-wrapper">
+            <div class="search-field">
+                <input type="text" id="searchInput" name="busqueda" class="search-input" value="${param.search}">
+                <span class="search-icon">🔍</span>
+            </div>
+            <!-- Botón de búsqueda -->
+            <input type="submit" class="search-button" value="Buscar"</input>
+        </div>
+    </form>
+
+    <form method="post" action="/editar" class="filter-form">
+        <!-- Filtros -->
+        <div class="filters-wrapper">
+            <span class="filter-label">Browse by:</span>
+
+            <!-- Filtro: Año -->
+            <div class="range-group">
+                <label for="yearRange">Year: <span id="yearValue">2025</span></label>
+                <input type="range" id="yearRange" name="year" min="1895" max="2025" value="${param.year != null ? param.year : 2025}">
+            </div>
+
+            <!-- Filtro: Rating -->
+            <div class="range-group">
+                <label for="ratingRange">Rating: <span id="ratingValue">10</span></label>
+                <input type="range" id="ratingRange" name="rating" min="0" max="10" value="${param.rating != null ? param.rating : 10}">
+            </div>
+
+            <!-- Filtro: Género -->
+            <select class="filter-select" name="genre">
+                <option value="">Genre</option>
+                <option value="acción" ${param.genre == 'acción' ? 'selected' : ''}>Acción</option>
+                <option value="comedia" ${param.genre == 'comedia' ? 'selected' : ''}>Comedia</option>
+                <option value="drama" ${param.genre == 'drama' ? 'selected' : ''}>Drama</option>
+                <option value="terror" ${param.genre == 'terror' ? 'selected' : ''}>Terror</option>
+            </select>
+
+            <input type="submit" class="filter-button" value="Filtrar"</input>
+        </div>
+    </form>
+
+
 
     <h1>Películas destacadas</h1>
 
