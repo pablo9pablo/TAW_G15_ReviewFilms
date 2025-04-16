@@ -11,6 +11,21 @@
             margin: 0;
             padding: 20px;
         }
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .carousel-container {
+            flex: 1;
+        }
+
 
         .carousel-container {
             display: flex;
@@ -19,6 +34,7 @@
             max-width: 100%;
             overflow: hidden;
             margin: 40px auto;
+            flex: 1;
         }
 
         .carousel {
@@ -71,30 +87,33 @@
 %>
 
 <body>
-<jsp:include page="cabecera.jsp"/>
+<div class="page-container">
+    <jsp:include page="cabecera.jsp"/>
 
-<h1>Películas destacadas</h1>
+    <h1>Películas destacadas</h1>
 
-<div class="carousel-container">
-    <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
+    <div class="carousel-container">
+        <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
 
-    <div class="carousel" id="carousel">
-        <%
-            for (MovieEntity movie : movieList) {
-        %>
-        <a href="/viewmovie?id=<%= movie.getId() %>" class="movie-card">
-            <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>">
-            <p><%= movie.getOriginalTitle() %></p>
-        </a>
+        <div class="carousel" id="carousel">
+            <%
+                for (MovieEntity movie : movieList) {
+            %>
+            <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>">
+                <p><%= movie.getOriginalTitle() %></p>
+            </a>
 
-        <%
-            }
-        %>
+            <%
+                }
+            %>
+        </div>
+
+        <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
     </div>
+    <jsp:include page="footer.jsp"/>
 
-    <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
 </div>
-
 <script>
     function scrollCarousel(direction) {
         const container = document.getElementById('carousel');
@@ -102,7 +121,6 @@
         container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
     }
 </script>
-<jsp:include page="footer.jsp"/>
 
 </body>
 </html>
