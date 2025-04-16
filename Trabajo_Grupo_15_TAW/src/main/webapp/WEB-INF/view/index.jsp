@@ -1,5 +1,6 @@
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.MovieEntity" %>
 <%@ page import="java.util.List" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.GenreEntity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -136,51 +137,50 @@
             margin-left:25px;
         }
 
-
-
-
-
         .filters-wrapper {
             display: flex;
-            align-items: center;
-            gap: 20px;
+            flex-direction: row;
+            gap: 30px;
+            align-items: flex-end;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
-        .filter-label {
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .filter-group input,
+        .filter-group select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 150px;
+            box-sizing: border-box;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
-        .range-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .range-group input[type="range"] {
-            width: 160px;
-            cursor: pointer;
-        }
-
-        .filter-select {
-            padding: 6px 12px;
-            font-size: 14px;
-            border: 2px solid #333;
-            border-radius: 12px;
-            background-color: white;
-            cursor: pointer;
-            box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
-        }
-
         .filter-button {
-            padding: 8px 16px;
-            font-size: 14px;
-            border-radius: 12px;
-            border: 2px solid #333;
-            background-color: #fff;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
             cursor: pointer;
+            height: fit-content;
+            font-weight: bold;
         }
+
+        .filter-button:hover {
+            background-color: #34495e;
+        }
+
+
 
 
     </style>
@@ -188,6 +188,8 @@
 
 <%
     List<MovieEntity> movieList = (List<MovieEntity>) request.getAttribute("movieList");
+    List<MovieEntity> movieListBusqueda=(List<MovieEntity>) request.getAttribute("movieListBusqueda");
+    List<GenreEntity> genreList = (List<GenreEntity>) request.getAttribute("genreList");
 %>
 
 <body>
@@ -198,7 +200,7 @@
         <!-- Barra de búsqueda -->
         <div class="search-input-wrapper">
             <div class="search-field">
-                <input type="text" id="searchInput" name="busqueda" class="search-input" value="${param.search}">
+                <input type="text" id="searchInput" name="busqueda" class="search-input">
                 <span class="search-icon">🔍</span>
             </div>
             <!-- Botón de búsqueda -->
@@ -206,36 +208,47 @@
         </div>
     </form>
 
-    <form method="post" action="/editar" class="filter-form">
-        <!-- Filtros -->
+    <form method="post" action="/filtrar" class="filter-form">
+
         <div class="filters-wrapper">
             <span class="filter-label">Browse by:</span>
 
-            <!-- Filtro: Año -->
             <div class="range-group">
-                <label for="yearRange">Year: <span id="yearValue">2025</span></label>
-                <input type="range" id="yearRange" name="year" min="1895" max="2025" value="${param.year != null ? param.year : 2025}">
+                <label for="yearInput">Year:</label>
+                <input type="number" id="yearInput" name="year" min="1895" max="2025" value="2025" class="year-input">
             </div>
 
-            <!-- Filtro: Rating -->
             <div class="range-group">
-                <label for="ratingRange">Rating: <span id="ratingValue">10</span></label>
-                <input type="range" id="ratingRange" name="rating" min="0" max="10" value="${param.rating != null ? param.rating : 10}">
+                <label for="ratingSelect">Rating:</label>
+                <select id="ratingSelect" name="rating" class="rating-select">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
             </div>
 
-            <!-- Filtro: Género -->
             <select class="filter-select" name="genre">
                 <option value="">Genre</option>
-                <option value="acción" ${param.genre == 'acción' ? 'selected' : ''}>Acción</option>
-                <option value="comedia" ${param.genre == 'comedia' ? 'selected' : ''}>Comedia</option>
-                <option value="drama" ${param.genre == 'drama' ? 'selected' : ''}>Drama</option>
-                <option value="terror" ${param.genre == 'terror' ? 'selected' : ''}>Terror</option>
+
+                <c:forEach var="genre" items="${genreList}">
+                    <option value="${genre.name}">${genre.name}</option>
+                </c:forEach>
+
+
             </select>
 
-            <input type="submit" class="filter-button" value="Filtrar"</input>
+
+            <input type="submit" class="filter-button" value="Filtrar">
         </div>
     </form>
-
 
 
     <h1>Películas destacadas</h1>
