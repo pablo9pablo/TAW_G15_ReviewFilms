@@ -23,11 +23,6 @@
         }
 
         .carousel-container {
-            flex: 1;
-        }
-
-
-        .carousel-container {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,11 +74,25 @@
             user-select: none;
             padding: 10px;
         }
+
+        .add-movie-btn {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <%
     List<MovieEntity> movieList = (List<MovieEntity>) request.getAttribute("movieList");
+    boolean esEditor = true;
 %>
 
 <body>
@@ -111,6 +120,15 @@
 
         <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
     </div>
+
+    <% if (esEditor) { %>
+    <div style="text-align: center;">
+        <form action="/addmovie" method="post" style="display: inline;">
+            <input type="submit" value="+ Añadir nueva película" class="add-movie-btn">
+        </form>
+    </div>
+    <% } %>
+
     <jsp:include page="footer.jsp"/>
 
 </div>
