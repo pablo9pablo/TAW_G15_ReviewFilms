@@ -27,7 +27,7 @@ public class RegisterController {
                              @RequestParam String password) {
         System.out.println("¡Se ejecutó AddUser con email: " + email + "!");
         userRegisterService.register(email, password);
-        return "redirect:/Register?success";
+        return "redirect:/";
 
 
     }

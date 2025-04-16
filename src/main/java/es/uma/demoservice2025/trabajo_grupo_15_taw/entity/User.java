@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user", schema = "tmdb4", uniqueConstraints = {
+@Table(name = "user", schema = "reviewfilms", uniqueConstraints = {
         @UniqueConstraint(name = "EMAIL", columnNames = {"email"})
 })
 public class User {

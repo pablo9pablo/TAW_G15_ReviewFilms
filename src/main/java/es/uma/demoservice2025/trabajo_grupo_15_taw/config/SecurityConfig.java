@@ -25,13 +25,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/login", "/Register","/AddUser","/signin", "/WEB-INF/views/**").permitAll()
+                        .requestMatchers("/login", "/Register","/AddUser","/signin", "/WEB-INF/view/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/signin")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/", true)
                 )
                 .csrf(AbstractHttpConfigurer::disable); // ⚠️ Solo para pruebas
 
