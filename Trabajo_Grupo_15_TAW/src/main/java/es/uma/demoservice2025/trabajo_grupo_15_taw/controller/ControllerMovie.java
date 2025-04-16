@@ -2,6 +2,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.MovieEntity;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ReviewEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ControllerMovie {
@@ -28,8 +30,13 @@ public class ControllerMovie {
     public String verPelicula(@RequestParam("id") Integer id,
                               Model model) {
         MovieEntity movie = movieRepository.findById(id).orElse(null);
-        model.addAttribute("movie", movie);
-        return "VerPelicula";
+
+        if (movie == null) {
+            return "redirect:/";
+        }else{
+            model.addAttribute("movie", movie);
+            return "VerPelicula";
+        }
     }
 
     //FUNCIONA, PERO NECESARIO COMPLETAR
