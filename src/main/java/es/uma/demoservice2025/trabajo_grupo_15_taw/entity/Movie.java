@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -59,4 +60,9 @@ public class Movie {
     @Column(name = "VOTE_COUNT")
     private Integer voteCount;
 
+    @Column(name = "IMAGE_URL", length = 500, nullable = true)
+    private String imageUrl;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews;
 }

@@ -1,0 +1,96 @@
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.movie-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    flex: 1;
+}
+
+.left-panel {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.right-panel{
+    flex: 1;
+}
+
+.movie-info, .reviews {
+    margin-top: 20px;
+}
+
+.rating-box {
+    background-color: darkgreen;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    float: right;
+}
+
+.tabs button {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    background-color: white;
+    cursor: pointer;
+}
+
+.review {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.review-score {
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    float: right;
+}
+
+.score-green {
+    background-color: #28a745;
+    color: white;
+}
+
+.score-yellow {
+    background-color: #ffc107;
+    color: black;
+}
+
+.score-red {
+    background-color: #ff0707;
+    color: white;
+}
+
+.actions a {
+    margin-right: 10px;
+}
+
+.star-rating {
+    display: inline-block;
+}
+
+.star {
+    font-size: 25px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star.hovered,
+.star.selected {
+    color: gold;
+}

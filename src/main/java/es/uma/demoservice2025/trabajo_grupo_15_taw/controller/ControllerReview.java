@@ -2,10 +2,10 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.ReviewRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UserRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.MovieEntity;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ReviewEntity;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.UserEntity;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class ControllerReview {
     private MovieRepository movieRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UsuarioRepository userRepository;
 
     @PostMapping("/newreview")
     public String crearReview(@RequestParam("movieId") Integer movieId,
@@ -32,11 +32,11 @@ public class ControllerReview {
                               @RequestParam("comment") String description,
                               HttpSession session) {
 
-        MovieEntity movie = movieRepository.findById(movieId).orElse(null);
+        Movie movie = movieRepository.findById(movieId).orElse(null);
 
-        UserEntity user = (UserEntity) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 
-        ReviewEntity review = new ReviewEntity();
+        Review review = new Review();
         review.setMovie(movie);
         review.setUser(user);
         review.setRating(rating);
