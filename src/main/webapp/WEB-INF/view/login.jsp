@@ -21,7 +21,7 @@
 </form>
 
 <!-- Botón de registro -->
-<form action="${pageContext.request.contextPath}/Register" method="get">
+<form action="${pageContext.request.contextPath}/register" method="get">
     <button type="submit">Register</button>
 </form>
 
