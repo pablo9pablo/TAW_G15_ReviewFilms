@@ -15,8 +15,6 @@
 <head>
     <title><%= movie.getTitle() %></title>
     <link rel="stylesheet" type="text/css" href="/css/VerPeliculaEstilo.css">
-    <script src="/js/VerPeliculaScript.js"></script>
-
 </head>
 <body>
 <div class="page-container">
@@ -66,8 +64,9 @@
                         <% } %>
                     </div>
                     <br/>
-                    <input type="submit" value="Submit"/>
+                    <input type="submit" value="Añadir review"/>
                 </form>
+
                     <% for (Review review : reviews) {
                             int score = review.getRating();
                             String scoreClass = score >= 8 ? "score-green" : score >= 5 ? "score-yellow" : "score-red";
@@ -91,5 +90,7 @@
     </div>
     <jsp:include page="footer.jsp"/>
 </div>
+<script src="/js/VerPeliculaScript.js"></script>
+
 </body>
 </html>

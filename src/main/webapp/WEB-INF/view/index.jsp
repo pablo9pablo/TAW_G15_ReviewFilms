@@ -6,7 +6,6 @@
 <head>
     <title>ReviewFilms</title>
     <link rel="stylesheet" type="text/css" href="/css/indexEstilo.css">
-    <script src="/js/indexScript.js"></script>
 </head>
 <%
     List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
@@ -38,5 +37,6 @@
         <% } %>
         <jsp:include page="footer.jsp"/>
     </div>
+    <script src="/js/indexScript.js"></script>
 </body>
 </html>
