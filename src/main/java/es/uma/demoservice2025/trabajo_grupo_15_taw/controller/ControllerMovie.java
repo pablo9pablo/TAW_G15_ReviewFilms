@@ -49,8 +49,7 @@ public class ControllerMovie {
             return "redirect:/";
         }
 
-        // Listas y conjuntos para las peliculas recomendadas
-
+        // Listas y conjuntos para las películas recomendadas
         List<Genre> genres = this.movieRepository.findGenresByMovieId(id);
         Set<Movie> relatedMoviesGenre = relatedMoviesGenre(genres, id);
 
@@ -84,7 +83,7 @@ public class ControllerMovie {
 //        return "VerPelicula";
 //    }
 
-    // Métodos auxiliares
+    // Métodos auxiliares para la recomendación de películas
     public Set<Movie> relatedMoviesGenre(List<Genre> genres, Integer id) {
         Set<Movie> relatedMoviesGenre = new HashSet<>();
 

@@ -55,16 +55,20 @@
             <div class="movie-info">
                 <h3>Películas similares por género</h3>
                 <div class="carousel-container">
-                    <div class="nav-arrow" onclick="scrollCarousel('genre', -1)">&#10094;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
                     <div class="carousel" id="genre-carousel">
-                        <% for (Movie relatedMovie : relatedMoviesGenre) { %>
+                        <%
+                            for (Movie relatedMovie : relatedMoviesGenre) {
+                        %>
                         <a href="/viewmovie?id=<%= relatedMovie.getId() %>" class="movie-card">
                             <img src="<%= relatedMovie.getImageUrl() %>" alt="<%= relatedMovie.getOriginalTitle() %>">
                             <p><%= relatedMovie.getOriginalTitle() %></p>
                         </a>
-                        <% } %>
+                        <%
+                            }
+                        %>
                     </div>
-                    <div class="nav-arrow" onclick="scrollCarousel('genre', 1)">&#10095;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
                 </div>
             </div>
             <% } %>
@@ -74,16 +78,20 @@
             <div class="movie-info">
                 <h3>Películas de la misma productora</h3>
                 <div class="carousel-container">
-                    <div class="nav-arrow" onclick="scrollCarousel('prod', -1)">&#10094;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
                     <div class="carousel" id="prod-carousel">
-                        <% for (Movie relatedMovie : relatedMoviesProductionCompany) { %>
+                        <%
+                            for (Movie relatedMovie : relatedMoviesProductionCompany) {
+                        %>
                         <a href="/viewmovie?id=<%= relatedMovie.getId() %>" class="movie-card">
                             <img src="<%= relatedMovie.getImageUrl() %>" alt="<%= relatedMovie.getOriginalTitle() %>">
                             <p><%= relatedMovie.getOriginalTitle() %></p>
                         </a>
-                        <% } %>
+                        <%
+                            }
+                        %>
                     </div>
-                    <div class="nav-arrow" onclick="scrollCarousel('prod', 1)">&#10095;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
                 </div>
             </div>
             <% } %>

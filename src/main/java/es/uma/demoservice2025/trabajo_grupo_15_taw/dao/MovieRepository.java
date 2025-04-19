@@ -33,7 +33,7 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
 
 
 
-
+    // Consultas para la recomendación de películas
     @Query("SELECT g FROM Genre g JOIN MovieGenre mg ON g.id = mg.genre.id WHERE mg.movie.id = :movieId")
     List<Genre> findGenresByMovieId(@Param("movieId") Integer movieId);
 
