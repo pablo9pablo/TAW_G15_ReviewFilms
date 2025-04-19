@@ -6,6 +6,8 @@
 <%
     Movie movie = (Movie) request.getAttribute("movie");
     Set<Review> reviews = movie.getReviews();
+    Set<Movie> relatedMoviesGenre = (Set<Movie>) request.getAttribute("relatedMoviesGenre");
+    Set<Movie> relatedMoviesProductionCompany = (Set<Movie>) request.getAttribute("relatedMoviesProductionCompany");
 
     boolean isAdmin = true; //permisos
 %>
@@ -48,6 +50,43 @@
                 <p><%= movie.getOverview() %></p>
             </div>
 
+            <!-- Sección de recomendaciones por género -->
+            <% if (!relatedMoviesGenre.isEmpty()) { %>
+            <div class="movie-info">
+                <h3>Películas similares por género</h3>
+                <div class="carousel-container">
+                    <div class="nav-arrow" onclick="scrollCarousel('genre', -1)">&#10094;</div>
+                    <div class="carousel" id="genre-carousel">
+                        <% for (Movie relatedMovie : relatedMoviesGenre) { %>
+                        <a href="/viewmovie?id=<%= relatedMovie.getId() %>" class="movie-card">
+                            <img src="<%= relatedMovie.getImageUrl() %>" alt="<%= relatedMovie.getOriginalTitle() %>">
+                            <p><%= relatedMovie.getOriginalTitle() %></p>
+                        </a>
+                        <% } %>
+                    </div>
+                    <div class="nav-arrow" onclick="scrollCarousel('genre', 1)">&#10095;</div>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Sección de recomendaciones por productora -->
+            <% if (!relatedMoviesProductionCompany.isEmpty()) { %>
+            <div class="movie-info">
+                <h3>Películas de la misma productora</h3>
+                <div class="carousel-container">
+                    <div class="nav-arrow" onclick="scrollCarousel('prod', -1)">&#10094;</div>
+                    <div class="carousel" id="prod-carousel">
+                        <% for (Movie relatedMovie : relatedMoviesProductionCompany) { %>
+                        <a href="/viewmovie?id=<%= relatedMovie.getId() %>" class="movie-card">
+                            <img src="<%= relatedMovie.getImageUrl() %>" alt="<%= relatedMovie.getOriginalTitle() %>">
+                            <p><%= relatedMovie.getOriginalTitle() %></p>
+                        </a>
+                        <% } %>
+                    </div>
+                    <div class="nav-arrow" onclick="scrollCarousel('prod', 1)">&#10095;</div>
+                </div>
+            </div>
+            <% } %>
 
             <div class="reviews">
                 <h3>Reviews (<%=reviews.size()%>)</h3>
