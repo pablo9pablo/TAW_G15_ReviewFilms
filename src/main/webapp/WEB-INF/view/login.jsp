@@ -4,23 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
 </head>
 <body>
 <h2>Login</h2>
 
-<!-- Mensaje de error -->
 <% if (request.getParameter("error") != null) { %>
-<p style="color: red;">Usuario o contraseña incorrectos.</p>
+<p>Usuario o contraseña incorrectos.</p>
 <% } %>
 
-<!-- Formulario sin CSRF (para pruebas) -->
 <form method="post" action="${pageContext.request.contextPath}/login">
-    <label>Email: <input type="email" name="username" required></label><br>
-    <label>Contraseña: <input type="password" name="password" required></label><br>
+    <label>Email:</label>
+    <input type="email" name="username" required>
+
+    <label>Contraseña:</label>
+    <input type="password" name="password" required>
+
     <button type="submit">Entrar</button>
 </form>
 
-<!-- Botón de registro -->
 <form action="${pageContext.request.contextPath}/register" method="get">
     <button type="submit">Register</button>
 </form>
