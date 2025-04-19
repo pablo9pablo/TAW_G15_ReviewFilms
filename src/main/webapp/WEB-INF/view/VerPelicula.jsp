@@ -1,97 +1,20 @@
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.MovieEntity" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    MovieEntity movie = (MovieEntity) request.getAttribute("movie");
-    boolean isAdmin = true; // Actualízalo según sesión o rol
+    Movie movie = (Movie) request.getAttribute("movie");
+    Set<Review> reviews = movie.getReviews();
+
+    boolean isAdmin = true; //permisos
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title><%= movie.getTitle() %></title>
-    <style>
-        body {
-            height: 100%;
-            margin: 0;
-        }
-
-        .page-container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .movie-container {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            flex: 1;
-        }
-
-        .left-panel {
-            width: 200px;
-            flex-shrink: 0;
-        }
-
-        .right-panel{
-            flex: 1;
-        }
-
-        .movie-info, .reviews {
-            margin-top: 20px;
-        }
-
-        .rating-box {
-            background-color: darkgreen;
-            color: white;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-            float: right;
-        }
-
-        .tabs button {
-            padding: 8px 12px;
-            margin: 0 5px;
-            border-radius: 5px;
-            border: 1px solid #aaa;
-            background-color: white;
-            cursor: pointer;
-        }
-
-        .review {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .review-score {
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
-            float: right;
-        }
-
-        .score-green {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .score-yellow {
-            background-color: #ffc107;
-            color: black;
-        }
-
-        .score-red {
-            background-color: #ff0707;
-            color: white;
-        }
-
-        .actions a {
-            margin-right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/VerPeliculaEstilo.css">
 </head>
 <body>
 <div class="page-container">
@@ -114,7 +37,7 @@
             </h1>
 
             <div class="tabs">
-                <button class="active">Overview</button>
+                <button>Overview</button>
                 <button>Cast</button>
                 <button>Trailer</button>
                 <button>Crew</button>
@@ -125,28 +48,35 @@
                 <p><%= movie.getOverview() %></p>
             </div>
 
-            <div class="reviews">
-                <h3>Reviews</h3>
 
-                <form action="/editarreview" method="post">
+            <div class="reviews">
+                <h3>Reviews (<%=reviews.size()%>)</h3>
+
+                <form action="/newreview" method="post">
                     <input type="hidden" name="movieId" value="<%= movie.getId() %>"/>
+                    <input type="hidden" name="rating" id="rating" required>
+
                     <textarea name="comment" placeholder="Write a review" rows="2" cols="60"></textarea><br/>
-                    <input type="submit" value="Submit"/>
+
+                    <div class="star-rating">
+                        <% for (int i = 1; i <= 5; i++) { %>
+                            <span class="star" data-value="<%= i * 2 %>">&#9733;</span>
+                        <% } %>
+                    </div>
+                    <br/>
+                    <input type="submit" value="Añadir review"/>
                 </form>
 
-                <div class="review">
-                    <span class="review-score score-yellow">5/10</span>
-                    <p><strong>User 1:</strong></p>
-                    <p>BORING</p>
-                </div>
-
-                <div class="review">
-                    <span class="review-score score-green">10/10</span>
-                    <p><strong>User 2:</strong></p>
-                    <p>THE BEST FILM IN THE WORLD</p>
-                </div>
-
-                <a href="#">Show more...</a>
+                    <% for (Review review : reviews) {
+                            int score = review.getRating();
+                            String scoreClass = score >= 8 ? "score-green" : score >= 5 ? "score-yellow" : "score-red";
+                        %>
+                        <div class="review">
+                            <span class="review-score <%= scoreClass %>"><%= score %>/10</span>
+                            <p><strong><%= review.getUser().getEmail() %>:</strong></p>
+                            <p><%= review.getDescription() %></p>
+                        </div>
+                    <% } %>
             </div>
 
             <% if (isAdmin) { %>
@@ -160,5 +90,7 @@
     </div>
     <jsp:include page="footer.jsp"/>
 </div>
+<script src="/js/VerPeliculaScript.js"></script>
+
 </body>
 </html>

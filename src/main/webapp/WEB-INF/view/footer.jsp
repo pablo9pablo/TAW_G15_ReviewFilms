@@ -24,17 +24,17 @@
 </head>
 <body>
 
-<footer>
-  <div>
-    <p>&copy; 2025 ReviewFilms. Todos los derechos reservados.</p>
-    <p>
-      <a href="/about">Sobre nosotros</a> |
-      <a href="/contact">Contacto</a> |
-      <a href="/terms">Términos de uso</a>
-    </p>
-    Fecha de entrada al sistema: <%= new Date(session.getCreationTime()) %>
+  <footer>
+    <div>
+      <p>&copy; 2025 ReviewFilms. Todos los derechos reservados.</p>
+      <p>
+        <a href="/about">Sobre nosotros</a> |
+        <a href="/contact">Contacto</a> |
+        <a href="/terms">Términos de uso</a>
+      </p>
+      Fecha de entrada al sistema: <%= new Date(session.getCreationTime()) %>
 
-  </div>
-</footer>
+    </div>
+  </footer>
 </body>
 </html>
