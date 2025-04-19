@@ -1,6 +1,6 @@
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.MovieEntity" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.GenreEntity" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -187,9 +187,9 @@
 </head>
 
 <%
-    List<MovieEntity> movieList = (List<MovieEntity>) request.getAttribute("movieList");
-    List<MovieEntity> movieListBusqueda=(List<MovieEntity>) request.getAttribute("movieListBusqueda");
-    List<GenreEntity> genreList = (List<GenreEntity>) request.getAttribute("genreList");
+    List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
+    List<Movie> movieListBusqueda=(List<Movie>) request.getAttribute("movieListBusqueda");
+    List<Genre> genreList = (List<Genre>) request.getAttribute("genreList");
 %>
 
 <body>

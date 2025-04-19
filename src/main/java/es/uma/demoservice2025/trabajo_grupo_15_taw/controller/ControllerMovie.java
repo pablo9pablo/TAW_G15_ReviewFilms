@@ -1,7 +1,7 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.MovieEntity;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ public class ControllerMovie {
 
     @GetMapping("/")
     public String index(Model model) {
-        List<MovieEntity> movieList = this.movieRepository.findAll();
+        List<Movie> movieList = this.movieRepository.findAll();
         model.addAttribute("movieList", movieList);
         return "index";
     }
@@ -27,7 +27,7 @@ public class ControllerMovie {
     @GetMapping("/viewmovie")
     public String verPelicula(@RequestParam("id") Integer id,
                               Model model) {
-        MovieEntity movie = movieRepository.findById(id).orElse(null);
+        Movie movie = movieRepository.findById(id).orElse(null);
         model.addAttribute("movie", movie);
         return "VerPelicula";
     }
@@ -43,7 +43,7 @@ public class ControllerMovie {
     @GetMapping("/editmovie")
     public String editarPelicula(@RequestParam("id") Integer id,
                                  Model model) {
-        MovieEntity movie = movieRepository.findById(id).orElse(null);
+        Movie movie = movieRepository.findById(id).orElse(null);
         model.addAttribute("movie", movie);
         return "editmovie";
     }
