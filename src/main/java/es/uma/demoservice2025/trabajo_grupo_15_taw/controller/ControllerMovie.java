@@ -37,6 +37,7 @@ public class ControllerMovie {
     public String index(Model model) {
         List<Movie> movieList = this.movieRepository.findAll();
         model.addAttribute("movieList", movieList);
+
         return "index";
     }
 
