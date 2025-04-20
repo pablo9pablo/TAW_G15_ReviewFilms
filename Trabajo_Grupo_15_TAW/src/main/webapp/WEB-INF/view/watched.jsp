@@ -1,35 +1,28 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>ReviewFilms</title>
-    <link rel="stylesheet" type="text/css" href="/css/indexEstilo.css">
+    <link rel="stylesheet" type="text/css" href="/css/watched.css">
 </head>
 <%
     List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
-    List<Genre> genreList = (List<Genre>) request.getAttribute("genreList");
-    boolean esEditor = true;
+    List<Seen>seenMovies=(List<Seen>) request.getAttribute("seenMovies");
+    List<Genre>genreList=(List<Genre>) request.getAttribute("genreList");
 %>
+
+
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
 
-    <!-- Formulario de búsqueda -->
-    <form method="post" action="/buscar" class="search-form">
-        <div class="search-input-wrapper">
-            <div class="search-field">
-                <input type="text" id="searchInput" name="busqueda" class="search-input" placeholder="Buscar película...">
-                <span class="search-icon">🔍</span>
-            </div>
-            <input type="submit" class="search-button" value="Buscar">
-        </div>
-    </form>
 
     <!-- Formulario de filtrado -->
-    <form method="post" action="/filtrar" class="filter-form">
+    <form method="post" action="/filtrarSeen" class="filter-form">
         <div class="filters-wrapper">
             <span class="filter-label">Filtrar por:</span>
 
@@ -70,40 +63,40 @@
         </div>
     </form>
 
-    <!-- Carrusel de películas -->
-    <div class="carousel-container">
-        <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
-        <div class="carousel" id="carousel">
-            <%
-                for (Movie movie : movieList) {
-            %>
-            <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
-                <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>">
-                <p><%= movie.getOriginalTitle() %></p>
-            </a>
-            <%
-                }
-            %>
-        </div>
-        <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
+    <!-- Tabla de películas vistas -->
+    <div class="table-wrapper">
+        <form>
+            <table class="movie-table">
+                <thead>
+                <tr>
+                    <th>Portada</th>
+                    <th>Título</th>
+                    <th>Duración</th>
+                    <th>Calificación Media</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%
+                    for (Seen movie : seenMovies) {
+                %>
+                <tr>
+                    <td>
+                        <a href="/viewmovie?id=<%=movie.getId()%>">
+                            <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
+                        </a>
+                    </td>
+                    <td><%= movie.getMovie().getOriginalTitle() %></td>
+                    <td><%= movie.getMovie().getRuntime()%> min</td>
+                    <td><%= movie.getMovie().getVoteAverage() %></td>
+                </tr>
+                <%
+                    }
+                %>
+                </tbody>
+            </table>
+        </form>
     </div>
+        <jsp:include page="footer.jsp"/>
 
-    <% if (esEditor) { %>
-    <form action="/editmovie" method="post">
-        <input type="submit" value="+ Añadir nueva película" class="add-movie-btn">
-    </form>
-    <% } %>
-
-    <jsp:include page="footer.jsp"/>
-</div>
-
-<script src="/js/indexScript.js"></script>
-<script>
-    function scrollCarousel(direction) {
-        const container = document.getElementById('carousel');
-        const scrollAmount = 300;
-        container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-    }
-</script>
 </body>
 </html>
