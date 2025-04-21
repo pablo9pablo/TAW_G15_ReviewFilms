@@ -6,17 +6,20 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.ProductionCompanyReposito
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
-
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
-import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +35,7 @@ public class ControllerMovie {
 
     @Autowired
     protected ProductionCompanyRepository productionCompanyRepository;
+
 
     @GetMapping("/")
     public String index(Model model) {
@@ -64,6 +68,47 @@ public class ControllerMovie {
         return "VerPelicula";
 
     }
+
+    @PostMapping("/editmovie")
+    public String crearMovie(@RequestParam(value = "id", defaultValue = "-1") Integer id,
+                             Model model) {
+
+        Movie movie = movieRepository.findById(id).orElse(new Movie());
+        model.addAttribute("movie", movie);
+
+        return "editarPelicula";
+
+    }
+
+    @PostMapping("/savemovie")
+    public String guardarPelicula(@RequestParam("id") Integer id,
+                                  @RequestParam("title") String title,
+                                  @RequestParam("originalTitle") String originalTitle,
+                                  @RequestParam("releaseDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate releaseDate,
+                                  @RequestParam("runtime") Integer runtime,
+                                  @RequestParam("budget") BigDecimal budget,
+                                  @RequestParam("revenue") BigDecimal revenue,
+                                  @RequestParam("originalLanguage") String originalLanguage,
+                                  @RequestParam("overview") String overview,
+                                  @RequestParam("imageUrl") String imageUrl) {
+
+        Movie movie = (id != null) ? movieRepository.findById(id).orElse(new Movie()) : new Movie();
+
+        movie.setTitle(title);
+        movie.setOriginalTitle(originalTitle);
+        movie.setReleaseDate(releaseDate);
+        movie.setRuntime(runtime);
+        movie.setBudget(budget);
+        movie.setRevenue(revenue);
+        movie.setOriginalLanguage(originalLanguage);
+        movie.setOverview(overview);
+        movie.setImageUrl(imageUrl);
+
+        movieRepository.save(movie);
+
+        return "redirect:/";
+    }
+
 
     @GetMapping("/deletemovie")
     public String eliminarPelicula(@RequestParam("id") Integer movieId) {

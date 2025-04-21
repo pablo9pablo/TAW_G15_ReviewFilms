@@ -124,7 +124,10 @@
 
             <% if (isAdmin) { %>
             <div class="actions">
-                <a href="/editmovie?id=<%= movie.getId() %>">Modificar Película</a>
+                <form action="/editmovie" method="post">
+                    <input type="hidden" name="id" value="<%= movie.getId() %>">
+                    <input type="submit" value="Modificar Película">
+                </form>
                 <a href="/deletemovie?id=<%= movie.getId() %>" onclick="return confirm('¿Está seguro de que quiere borrar la película <%= movie.getTitle() %>?')">Borrar</a>
             </div>
             <% } %>
