@@ -1,6 +1,7 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
+<%@ page import="java.math.BigDecimal" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
@@ -23,25 +24,20 @@
         <div class="left-panel">
             <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" width="180"/>
             <div class="movie-meta">
-                <p><strong>Director:</strong> [director aquí]</p> <!--FALTA-->
-                <p><strong>Main actor:</strong> [actor aquí]</p> <!--FALTA-->
                 <p><strong>Release:</strong> <%= movie.getReleaseDate() %></p>
                 <p><strong>Runtime:</strong> <%= movie.getRuntime() %> mins</p>
                 <p><strong>Budget:</strong> <%=movie.getBudget()%>€</p>
             </div>
         </div>
         <div class="right-panel">
-            <h1>
-                <%= movie.getTitle() %>
-                <span class="rating-box"><%= movie.getVoteAverage()%>/10</span>
+            <h1><%= movie.getTitle() %>
+                <span class="rating-box"><%= movie.getVoteAverage() != null ? movie.getVoteAverage() : "–" %>/10</span>
             </h1>
 
             <div class="tabs">
-                <button>Overview</button>
                 <button>Cast</button>
                 <button>Trailer</button>
                 <button>Crew</button>
-                <button>Details</button>
             </div>
 
             <div class="movie-info">

@@ -14,6 +14,7 @@ import java.util.Set;
 @Table(name = "movie", schema = "reviewfilms")
 public class Movie {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
 

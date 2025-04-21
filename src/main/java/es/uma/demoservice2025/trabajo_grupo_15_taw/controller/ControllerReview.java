@@ -6,7 +6,6 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Controller
 public class ControllerReview {
@@ -53,6 +55,21 @@ public class ControllerReview {
         review.setDate(LocalDate.now());
 
         reviewRepository.save(review);
+
+        //Cálculo de media dinámicamente
+        Set<Review> reviews = movie.getReviews();
+
+        if (reviews != null && !reviews.isEmpty()) {
+            double avg = reviews.stream()
+                                .mapToInt(Review::getRating)
+                                .average()
+                                .orElse(0); //para obtener la media
+
+            movie.setVoteAverage(BigDecimal.valueOf(avg)
+                    .setScale(1, RoundingMode.HALF_UP)); //para que el redondeo sea de un decimal y que redondee hacia arriba
+
+            movieRepository.save(movie);
+        }
 
         return "redirect:/viewmovie?id=" + movieId;
     }
