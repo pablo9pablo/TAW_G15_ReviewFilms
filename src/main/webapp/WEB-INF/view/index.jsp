@@ -96,14 +96,6 @@
 
     <jsp:include page="footer.jsp"/>
 </div>
-
 <script src="/js/indexScript.js"></script>
-<script>
-    function scrollCarousel(direction) {
-        const container = document.getElementById('carousel');
-        const scrollAmount = 300;
-        container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-    }
-</script>
 </body>
 </html>
