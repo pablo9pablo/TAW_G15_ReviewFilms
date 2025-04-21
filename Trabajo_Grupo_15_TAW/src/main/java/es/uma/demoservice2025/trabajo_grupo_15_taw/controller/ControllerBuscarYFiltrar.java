@@ -32,16 +32,16 @@ public class ControllerBuscarYFiltrar {
     }
 
     @PostMapping("/filtrar")
-    public String doFiltrar(@RequestParam("year") Integer year,
-                            @RequestParam("rating") Integer rating,
-                            @RequestParam("genre") String genre,
+    public String doFiltrar(@RequestParam(value="year",required=false) Integer year,
+                            @RequestParam(value="popularity",required=false) Double popularity,
+                            @RequestParam(value="genre",required=false) String genre,
                             Model model) {
 
-        List<Movie>movieList=this.movieRepository.findAll();
+        List<Movie>movieListFiltros=this.movieRepository.buscarPorFiltros(year,popularity,genre);
         List<Genre>genreList=this.genreRepository.findAll();
 
         model.addAttribute("genreList",genreList);
-        model.addAttribute("movieList",movieList);
+        model.addAttribute("movieList",movieListFiltros);
 
         return "index";
 

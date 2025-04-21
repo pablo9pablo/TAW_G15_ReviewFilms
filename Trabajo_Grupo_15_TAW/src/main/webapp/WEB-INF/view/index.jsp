@@ -42,7 +42,7 @@
 
             <div class="range-group">
                 <label for="ratingSelect">Calificación:</label>
-                <select id="ratingSelect" name="rating" class="rating-select">
+                <select id="ratingSelect" name="popularity" class="rating-select">
                     <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>

@@ -28,7 +28,7 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
     public List<Movie> buscarPorFiltros(@Param("anyo") Integer anyo, @Param("pop") Double pop, @Param("genre")  String genre);
 
 
-    
+
     // Consultas para la recomendación de películas
     @Query("SELECT g FROM Genre g JOIN MovieGenre mg ON g.id = mg.genre.id WHERE mg.movie.id = :movieId")
     List<Genre> findGenresByMovieId(@Param("movieId") Integer movieId);
