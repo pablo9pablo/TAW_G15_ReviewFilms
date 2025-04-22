@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="/css/watched.css">
 </head>
 <%
-    List<Seen> movieList = (List<Seen>) request.getAttribute("seenMovies");
     List<Genre> genreList = (List<Genre>) request.getAttribute("genreList");
     Integer genreId = (Integer) request.getAttribute("genreId");
     boolean esEditor = true;
@@ -63,40 +62,42 @@
 
         </form>
 
-    <!-- Tabla de películas vistas -->
-    <div class="table-wrapper">
-        <form>
-            <table class="movie-table">
-                <thead>
-                <tr>
-                    <th>Portada</th>
-                    <th>Título</th>
-                    <th>Duración</th>
-                    <th>Calificación Media</th>
-                </tr>
-                </thead>
-                <tbody>
-                <%
-                    for (Seen movie : seenMovies) {
-                %>
-                <tr>
-                    <td>
-                        <a href="/viewmovie?id=<%=movie.getId()%>">
-                            <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
-                        </a>
-                    </td>
-                    <td><%= movie.getMovie().getOriginalTitle() %></td>
-                    <td><%= movie.getMovie().getRuntime()%> min</td>
-                    <td><%= movie.getMovie().getVoteAverage() %></td>
-                </tr>
-                <%
-                    }
-                %>
-                </tbody>
-            </table>
-        </form>
-    </div>
-        <jsp:include page="footer.jsp"/>
+        <!-- Tabla de películas vistas -->
+        <div class="table-wrapper table-wrapper-scroll-left">
+            <form>
+                <div class="content">
+                    <table class="movie-table">
+                        <thead>
+                        <tr>
+                            <th>Portada</th>
+                            <th>Título</th>
+                            <th>Duración</th>
+                            <th>Calificación Media</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                            for (Seen movie : seenMovies) {
+                        %>
+                        <tr>
+                            <td>
+                                <a href="/viewmovie?id=<%=movie.getId()%>">
+                                    <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
+                                </a>
+                            </td>
+                            <td><%= movie.getMovie().getOriginalTitle() %></td>
+                            <td><%= movie.getMovie().getRuntime()%> min</td>
+                            <td><%= movie.getMovie().getVoteAverage() %></td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+
 
 </body>
 </html>
