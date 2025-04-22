@@ -81,7 +81,7 @@
                         %>
                         <tr>
                             <td>
-                                <a href="/viewmovie?id=<%=movie.getId()%>">
+                                <a href="/viewmovieSeen?id=<%=movie.getMovie().getId()%>">
                                     <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
                                 </a>
                             </td>
