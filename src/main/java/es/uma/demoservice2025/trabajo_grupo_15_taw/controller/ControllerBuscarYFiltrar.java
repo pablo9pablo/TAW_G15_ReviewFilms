@@ -27,16 +27,6 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/buscar")
-    public String doBuscar(@RequestParam("busqueda") String busqueda, RedirectAttributes redirectAttributes) {
-
-        // Redirige con el parámetro 'busqueda' para que el controlador 'GET' lo reciba
-        redirectAttributes.addAttribute("busqueda", busqueda);
-
-        // Redirige al GET con el parámetro de búsqueda
-        return "redirect:/buscar";
-    }
-
-    @GetMapping("/buscar")
     public String doBuscarGet(@RequestParam("busqueda") String busqueda, Model model) {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda);
@@ -51,20 +41,6 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/filtrar")
-    public String doFiltrar(@RequestParam(value = "year", required = false) Integer year,
-                            @RequestParam(value = "vote", required = false) Double vote,
-                            @RequestParam(value = "genre", required = false) String genre,
-                            RedirectAttributes redirectAttributes) {
-
-
-        redirectAttributes.addAttribute("year", year);
-        redirectAttributes.addAttribute("vote", vote);
-        redirectAttributes.addAttribute("genre", genre);
-
-        return "redirect:/filtrar";
-    }
-
-    @GetMapping("/filtrar")
     public String doFiltrarGet(@RequestParam(value = "year", required = false) Integer year,
                                @RequestParam(value = "vote", required = false) Double vote,
                                @RequestParam(value = "genre", required = false) String genre,
