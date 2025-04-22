@@ -48,7 +48,9 @@
             <div class="range-group">
                 <label for="genreSelect">Género:</label>
                 <select id="genreSelect" name="genreId">
-                    <option value="" <%=(selectedGenre.isEmpty()) ? "selected" : "" %>>-- Todos los géneros --</option>
+                    <!-- Opción para todos los géneros -->
+                    <option value="" <%= (selectedGenre.isEmpty()) ? "selected" : "" %>>-- Todos los géneros --</option>
+
                     <%
                         for (Genre g : genreList) {
                             String seleccionado = (selectedGenre.equals(g.getId().toString())) ? "selected" : "";

@@ -31,8 +31,8 @@ public class ControllerBuscarYFiltrar {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda);
         List<Genre>genreList=this.genreRepository.findAll();
-        model.addAttribute("genreList",genreList);
 
+        model.addAttribute("genreList",genreList);
         model.addAttribute("movieList", movieListBusqueda);
         model.addAttribute("busqueda", busqueda);
 
@@ -48,11 +48,13 @@ public class ControllerBuscarYFiltrar {
         LocalDate startDate = null;
         LocalDate endDate = null;
 
+        // Definir el rango de fechas si se pasa el año
         if (year != null) {
             startDate = getStartDateOfYear(year);
             endDate = getEndDateOfYear(year);
         }
 
+        // Filtrado de películas por género si se pasa genreId
         if (genreId == null) {
             List<Movie> movieListFiltros = this.movieRepository.buscarPorFiltrosSinGenero(year, vote, startDate, endDate);
             model.addAttribute("movieList", movieListFiltros);
@@ -61,11 +63,12 @@ public class ControllerBuscarYFiltrar {
             model.addAttribute("movieList", movieListFiltros);
         }
 
+        // Obtener todos los géneros para la lista del select
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
         model.addAttribute("year", year);
         model.addAttribute("vote", vote);
-        model.addAttribute("selectedGenre", genreId);  // Este es el valor que se pasa al JSP para mostrar el género seleccionado
+        model.addAttribute("selectedGenre", genreId);  // Pasar el genreId al JSP para mantener la opción seleccionada
 
         return "index";
     }

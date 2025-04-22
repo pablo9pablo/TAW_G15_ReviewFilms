@@ -32,6 +32,7 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
                                         @Param("endDate") LocalDate endDate);
 
 
+
     //Filtrado
     @Query("SELECT m FROM Movie m " +
             "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
