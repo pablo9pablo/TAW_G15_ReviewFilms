@@ -18,19 +18,19 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
     @Query("select m from Movie m where m.title like concat('%', :titulo, '%')")
     public List<Movie> buscarPorTitulo(@Param("titulo") String titulo);
 
-
     //Filtrado
     @Query("SELECT m FROM Movie m " +
             "JOIN MovieGenre mg ON mg.movie = m " +
             "JOIN mg.genre g " +
             "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (:genre IS NULL OR g.name = :genre)")
+            " AND (:genre IS NULL OR g.name = :genre)")
     public List<Movie> buscarPorFiltros(@Param("anyo") Integer anyo,
                                         @Param("vote") Double vote,
-                                        @Param("genre") String genre,
+                                        @Param("genreId") String genre,
                                         @Param("startDate") LocalDate startDate,
                                         @Param("endDate") LocalDate endDate);
+
 
     //Filtrado
     @Query("SELECT m FROM Movie m " +

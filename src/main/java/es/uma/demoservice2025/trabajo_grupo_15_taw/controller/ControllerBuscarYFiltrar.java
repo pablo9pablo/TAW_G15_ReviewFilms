@@ -27,7 +27,7 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/buscar")
-    public String doBuscarGet(@RequestParam("busqueda") String busqueda, Model model) {
+    public String doBuscar(@RequestParam("busqueda") String busqueda, Model model) {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda);
         List<Genre>genreList=this.genreRepository.findAll();
@@ -41,7 +41,7 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/filtrar")
-    public String doFiltrarGet(@RequestParam(value = "year", required = false) Integer year,
+    public String doFiltrar(@RequestParam(value = "year", required = false) Integer year,
                                @RequestParam(value = "vote", required = false) Double vote,
                                @RequestParam(value = "genre", required = false) String genre,
                                Model model) {
@@ -82,5 +82,7 @@ public class ControllerBuscarYFiltrar {
     }
 
 }
+
+
 
 

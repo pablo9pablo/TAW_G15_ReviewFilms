@@ -17,6 +17,7 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
+    <% String selectedGenre=""; %>
 
     <!-- Formulario de búsqueda -->
     <form method="post" action="/buscar" class="search-form">
@@ -46,21 +47,18 @@
 
             <div class="range-group">
                 <label for="genreSelect">Género:</label>
-                <select id="genreSelect" name="genre">
-                    <% String selectedGenre = ""; %>
-                    <option value="" <%=(selectedGenre == null || selectedGenre.isEmpty()) ? "selected" : "" %>>-- Todos los géneros --</option>
+                <select id="genreSelect" name="genreId">
+                    <!-- Opción vacía para representar "todos los géneros" -->
+                    <option value="" <%= (selectedGenre == null || selectedGenre.isEmpty()) ? "selected" : "" %>>-- Todos los géneros --</option>
 
-                    <%
+                    <% if (genreList != null) {
                         for (Genre g : genreList) {
-                            String seleccionado = "";
-                            if (selectedGenre != null && selectedGenre.equals(g.getName())) {
-                                seleccionado = "selected";
-                            }
+                            boolean isSelected = selectedGenre != null && selectedGenre.equals(g.getName());
                     %>
-                    <option value="<%= g.getId() %>" <%= seleccionado %>><%= g.getName() %></option>
+                    <option value="<%= g.getName() %>" <%= isSelected ? "selected" : "" %>><%= g.getName() %></option>
                     <%
-                        }
-                    %>
+                            }
+                        } %>
                 </select>
             </div>
 
