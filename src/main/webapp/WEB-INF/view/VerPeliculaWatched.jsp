@@ -16,7 +16,7 @@
 <html>
 <head>
     <title><%= movie.getTitle() %></title>
-    <link rel="stylesheet" type="text/css" href="/css/VerPeliculaEstilo.css">
+    <link rel="stylesheet" type="text/css" href="/css/VerPeliculaWatched.css">
 </head>
 <body>
 <div class="page-container">

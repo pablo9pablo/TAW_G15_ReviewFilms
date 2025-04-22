@@ -46,6 +46,7 @@
                 <p><%= movie.getOverview() %></p>
             </div>
 
+
             <!-- Sección de recomendaciones por género -->
             <% if (!relatedMoviesGenre.isEmpty()) { %>
             <div class="movie-info">
@@ -120,6 +121,7 @@
                             <p><%= review.getDescription() %></p>
                         </div>
                     <% } %>
+
             </div>
 
             <% if (isAdmin) { %>
@@ -133,10 +135,19 @@
             <% } %>
 
         </div>
+
+        <form  method="post" action="/marcarComoVista" class="watched-button-form">
+            <input type="hidden" name="movieId" value="<%= movie.getId() %>">
+            <button type="submit" class="watched-button">
+                &#128065;
+            </button>
+        </form>
+
     </div>
+
     <jsp:include page="footer.jsp"/>
+
 </div>
 <script src="/js/VerPeliculaScript.js"></script>
-
 </body>
 </html>

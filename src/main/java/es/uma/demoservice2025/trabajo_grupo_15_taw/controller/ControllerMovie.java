@@ -1,13 +1,10 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.ProductionCompanyRepository;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.math.BigDecimal;
@@ -36,12 +34,21 @@ public class ControllerMovie {
     @Autowired
     protected ProductionCompanyRepository productionCompanyRepository;
 
+    @Autowired
+    protected SeenRepository seenRepository;
+
+    @Autowired
+    protected UsuarioRepository usuarioRepository;
+
+    @Autowired
+    protected SeenIdRepository seenIdRepository;
+
 
     @GetMapping("/")
     public String index(Model model) {
         List<Movie> movieList = this.movieRepository.findAll();
         model.addAttribute("movieList", movieList);
-        List<Genre>genreList=this.genreRepository.findAll();
+        List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
 
@@ -150,4 +157,43 @@ public class ControllerMovie {
         }
         return relatedMoviesProductionCompany;
     }
+
+    @PostMapping("/marcarComoVista")
+    public String addToWatched(@RequestParam("movieId") Integer movieId, HttpSession session, RedirectAttributes redirectAttributes) {
+
+        // Verifica si hay un usuario en la sesión
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para agregar una película a tu lista de vistas.");
+            return "redirect:/login";
+        }
+
+        Movie movie = this.movieRepository.findById(movieId).orElse(null);
+
+        SeenId seenId = new SeenId();
+        seenId.setMovieId(movieId);
+        seenId.setUserId(user.getId());
+
+        if (!seenRepository.existsById(seenId)) {
+            // Si no está marcada como vista, crear y guardar el objeto Seen
+            Seen seen = new Seen();
+            seen.setId(seenId);
+            seen.setUser(user);
+            seen.setMovie(movie);
+
+            // Guardar la entidad en la base de datos
+            seenRepository.save(seen);
+            redirectAttributes.addFlashAttribute("success", "Película marcada como vista.");
+            return "redirect:/viewmovieSeen?id=" + movieId;
+        } else {
+            // Si ya estaba marcada como vista
+            redirectAttributes.addFlashAttribute("info", "Esta película ya está marcada como vista.");
+            return "redirect:/viewmovieSeen?id=" + movieId;
+        }
+    }
+
 }
+
+
+
+

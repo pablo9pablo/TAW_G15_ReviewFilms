@@ -3,6 +3,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.SeenId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface SeenRepository extends JpaRepository<Seen,Integer> {
+public interface SeenRepository extends JpaRepository<Seen, SeenId> {
 
 
     // Filtrado con género
@@ -21,7 +22,7 @@ public interface SeenRepository extends JpaRepository<Seen,Integer> {
             "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
             "AND (:genreId IS NULL OR g.id = :genreId)")
-    List<Seen> buscarPorFiltros(@Param("anyo") Integer anyo,
+    public List<Seen> buscarPorFiltros(@Param("anyo") Integer anyo,
                                 @Param("vote") Double vote,
                                 @Param("genreId") Integer genreId,
                                 @Param("startDate") LocalDate startDate,
@@ -32,10 +33,13 @@ public interface SeenRepository extends JpaRepository<Seen,Integer> {
             "JOIN s.movie m " +
             "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote)")
-    List<Seen> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
+    public List<Seen> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
                                          @Param("vote") Double vote,
                                          @Param("startDate") LocalDate startDate,
                                          @Param("endDate") LocalDate endDate);
+
+    public boolean existsById(SeenId seenId);
+
 
 
 }
