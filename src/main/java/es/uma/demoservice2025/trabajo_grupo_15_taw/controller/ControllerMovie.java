@@ -41,8 +41,6 @@ public class ControllerMovie {
     protected UsuarioRepository usuarioRepository;
 
 
-
-
     @GetMapping("/")
     public String index(Model model) {
         List<Movie> movieList = this.movieRepository.findAll();
@@ -158,23 +156,26 @@ public class ControllerMovie {
     }
 
     @PostMapping("/marcarComoVista")
-    public String addToWatched(@RequestParam("id") Integer movieId,
-                               HttpSession session) {
+    public String addToWatched(@RequestParam("id") Integer movieId, HttpSession session) {
 
-        Movie movie = this.movieRepository.findById(movieId).orElse(null);
-
-
-        Seen seen=new Seen();
-        seen.setMovie(movie);
 
         User user = (User) session.getAttribute("user");
-        seen.setUser(user);
+
+        Seen seen = new Seen();
+        SeenId seenId = new SeenId();
+
+        Integer userId = user.getId();
+        seenId.setMovieId(movieId);
+        seenId.setUserId(userId);
+
+        seen.setId(seenId);
+
 
         this.seenRepository.save(seen);
 
         return "VerPelicula";
-
     }
+
 
 }
 
