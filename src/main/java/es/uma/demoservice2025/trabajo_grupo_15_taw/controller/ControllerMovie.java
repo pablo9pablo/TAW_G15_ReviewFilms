@@ -41,6 +41,9 @@ public class ControllerMovie {
     public String index(Model model) {
         List<Movie> movieList = this.movieRepository.findAll();
         model.addAttribute("movieList", movieList);
+        List<Genre>genreList=this.genreRepository.findAll();
+        model.addAttribute("genreList", genreList);
+
 
         return "index";
     }

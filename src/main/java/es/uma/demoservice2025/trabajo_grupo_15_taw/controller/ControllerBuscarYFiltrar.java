@@ -27,7 +27,7 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/buscar")
-    public String doBuscar(@RequestParam("busqueda") String busqueda, Model model) {
+    public String doBuscarGet(@RequestParam("busqueda") String busqueda, Model model) {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda);
         List<Genre>genreList=this.genreRepository.findAll();
@@ -41,9 +41,9 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/filtrar")
-    public String doFiltrar(@RequestParam(value = "year", required = false) Integer year,
+    public String doFiltrarGet(@RequestParam(value = "year", required = false) Integer year,
                                @RequestParam(value = "vote", required = false) Double vote,
-                               @RequestParam(value = "genre", required = false) String genre,
+                               @RequestParam(value = "genreId", required = false) Integer genreId,
                                Model model) {
         LocalDate startDate = null;
         LocalDate endDate = null;
@@ -53,20 +53,19 @@ public class ControllerBuscarYFiltrar {
             endDate = getEndDateOfYear(year);
         }
 
-        if (genre == null || genre.isEmpty()) {
+        if (genreId == null) {
             List<Movie> movieListFiltros = this.movieRepository.buscarPorFiltrosSinGenero(year, vote, startDate, endDate);
             model.addAttribute("movieList", movieListFiltros);
         } else {
-            List<Movie> movieListFiltros = this.movieRepository.buscarPorFiltros(year, vote, genre, startDate, endDate);
+            List<Movie> movieListFiltros = this.movieRepository.buscarPorFiltros(year, vote, genreId, startDate, endDate);
             model.addAttribute("movieList", movieListFiltros);
         }
 
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
-
         model.addAttribute("year", year);
         model.addAttribute("vote", vote);
-        model.addAttribute("selectedGenre", genre);
+        model.addAttribute("selectedGenre", genreId);  // Este es el valor que se pasa al JSP para mostrar el género seleccionado
 
         return "index";
     }
@@ -82,7 +81,5 @@ public class ControllerBuscarYFiltrar {
     }
 
 }
-
-
 
 
