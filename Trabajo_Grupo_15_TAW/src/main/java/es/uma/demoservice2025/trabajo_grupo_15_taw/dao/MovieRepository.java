@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -20,8 +18,10 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
 
     //Filtrado
     @Query("SELECT m FROM Movie m " +
+            "JOIN m.reviews r " +
             "JOIN MovieGenre mg ON mg.movie = m " +
             "JOIN mg.genre g " +
+<<<<<<< HEAD:src/main/java/es/uma/demoservice2025/trabajo_grupo_15_taw/dao/MovieRepository.java
             "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
             " AND (:genre IS NULL OR g.name = :genre)")
@@ -40,6 +40,14 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
                                         @Param("vote") Double vote,
                                         @Param("startDate") LocalDate startDate,
                                         @Param("endDate") LocalDate endDate);
+=======
+            "WHERE (:anyo IS NULL OR YEAR(m.releaseDate) = :anyo) " +
+            "AND (:pop IS NULL OR m.popularity = :pop) " +
+            "AND (:genre IS NULL OR g.name = :genre)")
+    public List<Movie> buscarPorFiltros(@Param("anyo") Integer anyo, @Param("pop") Double pop, @Param("genre")  String genre);
+
+
+>>>>>>> parent of 164b88b (arreglado el filtro y mejora de redirect):Trabajo_Grupo_15_TAW/src/main/java/es/uma/demoservice2025/trabajo_grupo_15_taw/dao/MovieRepository.java
 
     // Consultas para la recomendación de películas
     @Query("SELECT g FROM Genre g JOIN MovieGenre mg ON g.id = mg.genre.id WHERE mg.movie.id = :movieId")

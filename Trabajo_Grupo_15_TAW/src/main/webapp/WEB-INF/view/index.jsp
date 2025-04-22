@@ -11,13 +11,11 @@
 <%
     List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
     List<Genre> genreList = (List<Genre>) request.getAttribute("genreList");
-    String genre = (String) request.getAttribute("genre");
     boolean esEditor = true;
 %>
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
-    <% String selectedGenre=""; %>
 
     <!-- Formulario de búsqueda -->
     <form method="post" action="/buscar" class="search-form">
@@ -35,8 +33,10 @@
         <div class="filters-wrapper">
             <span class="filter-label">Filtrar por:</span>
 
+
             <div class="range-group">
                 <label for="yearInput">Año:</label>
+<<<<<<< HEAD:src/main/webapp/WEB-INF/view/index.jsp
                 <input type="number" id="yearInput" name="year" min="1895" max="2025" class="year-input" value="<%= request.getAttribute("year") != null ? request.getAttribute("year") : "" %>">
             </div>
 
@@ -62,13 +62,42 @@
                 </select>
             </div>
 
+=======
+                <input type="number" id="yearInput" name="year" min="1895" max="2025" value=" " class="year-input">
+            </div>
+
+
+            <div class="range-group">
+                <label for="ratingSelect">Calificación:</label>
+                <select id="ratingSelect" name="popularity" class="rating-select">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+
+            <div class="range-group">
+                <label for="genreSelect">Genre:</label>
+                <select id="genreSelect" name="genre">
+                    <c:forEach var="genre" items="${genreList}">
+                        <option value="${genre.name}">${genre.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+>>>>>>> parent of 164b88b (arreglado el filtro y mejora de redirect):Trabajo_Grupo_15_TAW/src/main/webapp/WEB-INF/view/index.jsp
 
             <input type="submit" class="filter-button" value="Filtrar">
         </div>
 
     </form>
-
-
 
     <!-- Carrusel de películas -->
     <div class="carousel-container">

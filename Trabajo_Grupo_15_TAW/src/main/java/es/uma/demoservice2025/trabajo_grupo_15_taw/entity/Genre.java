@@ -11,12 +11,11 @@ import lombok.Setter;
         @UniqueConstraint(name = "NAME", columnNames = {"NAME"})
 })
 public class Genre {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Column(name = "NAME", nullable = false, length = 100)
     private String name;
+
 }
