@@ -137,11 +137,12 @@
         </div>
 
         <form  method="post" action="/marcarComoVista" class="watched-button-form">
-            <input type="hidden" name="movieId" value="<%= movie.getId() %>">
+            <input type="hidden" name="id" value="<%= movie.getId() %>">
             <button type="submit" class="watched-button">
                 &#128065;
             </button>
         </form>
+
 
     </div>
 

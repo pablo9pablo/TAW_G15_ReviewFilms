@@ -11,8 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface SeenRepository extends JpaRepository<Seen, SeenId> {
-
+public interface SeenRepository extends JpaRepository<Seen,Integer> {
 
     // Filtrado con género
     @Query("SELECT s FROM Seen s " +
@@ -37,9 +36,6 @@ public interface SeenRepository extends JpaRepository<Seen, SeenId> {
                                          @Param("vote") Double vote,
                                          @Param("startDate") LocalDate startDate,
                                          @Param("endDate") LocalDate endDate);
-
-    public boolean existsById(SeenId seenId);
-
 
 
 }

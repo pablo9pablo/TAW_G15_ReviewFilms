@@ -40,8 +40,7 @@ public class ControllerMovie {
     @Autowired
     protected UsuarioRepository usuarioRepository;
 
-    @Autowired
-    protected SeenIdRepository seenIdRepository;
+
 
 
     @GetMapping("/")
@@ -159,37 +158,22 @@ public class ControllerMovie {
     }
 
     @PostMapping("/marcarComoVista")
-    public String addToWatched(@RequestParam("movieId") Integer movieId, HttpSession session, RedirectAttributes redirectAttributes) {
-
-        // Verifica si hay un usuario en la sesión
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para agregar una película a tu lista de vistas.");
-            return "redirect:/login";
-        }
+    public String addToWatched(@RequestParam("id") Integer movieId,
+                               HttpSession session) {
 
         Movie movie = this.movieRepository.findById(movieId).orElse(null);
 
-        SeenId seenId = new SeenId();
-        seenId.setMovieId(movieId);
-        seenId.setUserId(user.getId());
 
-        if (!seenRepository.existsById(seenId)) {
-            // Si no está marcada como vista, crear y guardar el objeto Seen
-            Seen seen = new Seen();
-            seen.setId(seenId);
-            seen.setUser(user);
-            seen.setMovie(movie);
+        Seen seen=new Seen();
+        seen.setMovie(movie);
 
-            // Guardar la entidad en la base de datos
-            seenRepository.save(seen);
-            redirectAttributes.addFlashAttribute("success", "Película marcada como vista.");
-            return "redirect:/viewmovieSeen?id=" + movieId;
-        } else {
-            // Si ya estaba marcada como vista
-            redirectAttributes.addFlashAttribute("info", "Esta película ya está marcada como vista.");
-            return "redirect:/viewmovieSeen?id=" + movieId;
-        }
+        User user = (User) session.getAttribute("user");
+        seen.setUser(user);
+
+        this.seenRepository.save(seen);
+
+        return "VerPelicula";
+
     }
 
 }
