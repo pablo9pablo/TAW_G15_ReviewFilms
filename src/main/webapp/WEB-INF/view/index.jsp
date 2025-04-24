@@ -46,11 +46,12 @@
 
             <div class="range-group">
                 <label for="genreSelect">Género:</label>
-                <form:select path="generoIds" id="genreSelect">
+                <form:select path="generoIds" id="genreSelect" cssClass="genre-select">
                     <form:option value="" label="-- Todos los géneros --"/>
                     <form:options items="${genreList}" itemValue="id" itemLabel="name"/>
                 </form:select>
             </div>
+
             <form:button class="filter-button">Filtrar</form:button>
         </div>
     </form:form>

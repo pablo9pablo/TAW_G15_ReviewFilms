@@ -27,19 +27,16 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
                                                  @Param("startDate") LocalDate startDate,
                                                  @Param("endDate") LocalDate endDate);
 
-
-
-
     //Filtrado con genero
     @Query("SELECT m FROM Movie m " +
             "JOIN MovieGenre mg ON mg.movie = m " +
             "JOIN mg.genre g " +
             "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (:genreIds IS NULL OR g.id in :genreIds)")
+            "AND (:generoIds IS NULL OR g.id in :generoIds)")
     public List<Movie> buscarPorFiltrosConGenero(@Param("anyo") Integer anyo,
                                                 @Param("vote") Double vote,
-                                                @Param("genreId") List<Integer>genreList,
+                                                @Param("generoIds") List<Integer>genreList,
                                                 @Param("startDate") LocalDate startDate,
                                                 @Param("endDate") LocalDate endDate);
     

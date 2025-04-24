@@ -8,10 +8,10 @@
 }
 
 .carousel {
-    display: flex; /* Flex para alinearlos en una fila */
-    overflow-x: auto; /* Permite el desplazamiento horizontal */
-    scroll-behavior: smooth; /* Suaviza el desplazamiento */
-    gap: 10px; /* Espaciado entre los elementos */
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 10px;
     padding: 10px;
 }
 
@@ -27,9 +27,9 @@
 }
 
 .movie-card img {
-    width: 100%; /* Asegura que las imágenes no se distorsionen */
+    width: 100%;
     height: auto;
-    object-fit: cover; /* Para cubrir el área sin deformar la imagen */
+    object-fit: cover;
     border-radius: 10px;
 }
 
@@ -52,7 +52,6 @@
 .nav-arrow:last-child {
     right: 0;
 }
-
 
 .search-form,
 .filter-form {
@@ -119,13 +118,8 @@
     flex-wrap: wrap;
 }
 
-.filter-group {
-    display: flex;
-    flex-direction: column;
-}
 
-.filter-group input,
-.filter-group select {
+.filter-group input{
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -133,10 +127,29 @@
     box-sizing: border-box;
 }
 
+.filter-group {
+    display: flex;
+    flex-direction: column; /* Apila el label y el select */
+    align-items: flex-start; /* Alinea los elementos hacia el inicio */
+    margin-bottom: 15px; /* Agrega espacio entre los elementos */
+}
+
 .filter-group label {
-    margin-bottom: 5px;
+    margin-bottom: 5px; /* Espacio entre el label y el select */
     font-weight: bold;
 }
+
+.filter-group select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 200px; /* Asegura que el select tenga un tamaño adecuado */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+}
+
+
+
+
 
 .filter-button {
     background-color: #2c3e50;
@@ -185,6 +198,13 @@
 .add-movie-btn:hover {
     background-color: #34495e;
 }
+
+.genre-line {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 
 
 
