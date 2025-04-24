@@ -18,29 +18,31 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
     @Query("select m from Movie m where m.title like concat('%', :titulo, '%')")
     public List<Movie> buscarPorTitulo(@Param("titulo") String titulo);
 
-    //Filtrado
+    //Filtrado Sin genero
+    @Query("SELECT m FROM Movie m " +
+            "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "AND (:vote IS NULL OR m.voteAverage >= :vote) ")
+    public List<Movie> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
+                                                 @Param("vote") Double vote,
+                                                 @Param("startDate") LocalDate startDate,
+                                                 @Param("endDate") LocalDate endDate);
+
+
+
+
+    //Filtrado con genero
     @Query("SELECT m FROM Movie m " +
             "JOIN MovieGenre mg ON mg.movie = m " +
             "JOIN mg.genre g " +
             "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (:genreId IS NULL OR g.id = :genreId)")
-    public List<Movie> buscarPorFiltros(@Param("anyo") Integer anyo,
-                                        @Param("vote") Double vote,
-                                        @Param("genreId") Integer genreId,
-                                        @Param("startDate") LocalDate startDate,
-                                        @Param("endDate") LocalDate endDate);
-
-
-
-    //Filtrado
-    @Query("SELECT m FROM Movie m " +
-            "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
-            "AND (:vote IS NULL OR m.voteAverage >= :vote) ")
-    public List<Movie> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
-                                        @Param("vote") Double vote,
-                                        @Param("startDate") LocalDate startDate,
-                                        @Param("endDate") LocalDate endDate);
+            "AND (:genreIds IS NULL OR g.id in :genreIds)")
+    public List<Movie> buscarPorFiltrosConGenero(@Param("anyo") Integer anyo,
+                                                @Param("vote") Double vote,
+                                                @Param("genreId") List<Integer>genreList,
+                                                @Param("startDate") LocalDate startDate,
+                                                @Param("endDate") LocalDate endDate);
+    
 
     // Consultas para la recomendación de películas
     @Query("SELECT g FROM Genre g JOIN MovieGenre mg ON g.id = mg.genre.id WHERE mg.movie.id = :movieId")

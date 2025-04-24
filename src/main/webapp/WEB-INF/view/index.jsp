@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
@@ -10,10 +11,7 @@
 </head>
 <%
     List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
-    List<Genre> genreList = (List<Genre>) request.getAttribute("genreList");
-    Integer genreId = (Integer) request.getAttribute("genreId");
     boolean esEditor = true;
-    String selectedGenre = (genreId != null) ? genreId.toString() : "";
 %>
 <body>
 <div class="page-container">
@@ -30,44 +28,32 @@
         </div>
     </form>
 
+
     <!-- Formulario de filtrado -->
-    <form method="post" action="/filtrar" class="filter-form">
+    <form:form method="post" action="/filtrar" modelAttribute="filtro" class="filter-form">
         <div class="filters-wrapper">
             <span class="filter-label">Filtrar por:</span>
 
             <div class="range-group">
                 <label for="yearInput">Año:</label>
-                <input type="number" id="yearInput" name="year" min="1895" max="2025" class="year-input" value="<%= request.getAttribute("year") != null ? request.getAttribute("year") : "" %>">
+                <form:input path="year" id="yearInput" type="number" min="1895" max="2025" cssClass="year-input"/>
             </div>
 
             <div class="range-group">
                 <label for="ratingInput">Calificación mínima:</label>
-                <input type="number" id="ratingInput" name="vote" step="0.1" min="0" max="10" class="rating-input" value="<%= request.getAttribute("vote") != null ? request.getAttribute("vote") : "" %>">
+                <form:input path="vote" id="ratingInput" type="number" step="0.1" min="0" max="10" cssClass="rating-input"/>
             </div>
 
             <div class="range-group">
                 <label for="genreSelect">Género:</label>
-                <select id="genreSelect" name="genreId">
-                    <!-- Opción para todos los géneros -->
-                    <option value="" <%= (selectedGenre.isEmpty()) ? "selected" : "" %>>-- Todos los géneros --</option>
-
-                    <%
-                        for (Genre g : genreList) {
-                            String seleccionado = (selectedGenre.equals(g.getId().toString())) ? "selected" : "";
-                    %>
-                    <option value="<%= g.getId() %>" <%= seleccionado %>><%= g.getName() %></option>
-                    <%
-                        }
-                    %>
-                </select>
+                <form:select path="generoIds" id="genreSelect">
+                    <form:option value="" label="-- Todos los géneros --"/>
+                    <form:options items="${genreList}" itemValue="id" itemLabel="name"/>
+                </form:select>
             </div>
-
-
-            <input type="submit" class="filter-button" value="Filtrar">
+            <form:button class="filter-button">Filtrar</form:button>
         </div>
-
-    </form>
-
+    </form:form>
 
 
     <!-- Carrusel de películas -->

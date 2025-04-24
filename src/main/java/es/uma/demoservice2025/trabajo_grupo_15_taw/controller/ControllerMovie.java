@@ -4,6 +4,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,17 +41,19 @@ public class ControllerMovie {
     @Autowired
     protected UsuarioRepository usuarioRepository;
 
-
+    //AÑADIDO CON FILTROS
     @GetMapping("/")
     public String index(Model model) {
         List<Movie> movieList = this.movieRepository.findAll();
         model.addAttribute("movieList", movieList);
+
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-
+        model.addAttribute("filtro", new Filtro());
         return "index";
     }
+
 
     @GetMapping("/viewmovie")
     public String verPelicula(@RequestParam("id") Integer id,

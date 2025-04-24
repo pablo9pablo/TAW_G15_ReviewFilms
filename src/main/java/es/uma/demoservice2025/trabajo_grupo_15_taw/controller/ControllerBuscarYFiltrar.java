@@ -7,6 +7,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,7 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/buscar")
-    public String doBuscarGet(@RequestParam("busqueda") String busqueda, Model model) {
+    public String doBuscar(@RequestParam("busqueda") String busqueda, Model model) {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda);
         List<Genre>genreList=this.genreRepository.findAll();
@@ -40,37 +41,40 @@ public class ControllerBuscarYFiltrar {
     }
 
 
-    @PostMapping("/filtrar")
-    public String doFiltrarGet(@RequestParam(value = "year", required = false) Integer year,
-                               @RequestParam(value = "vote", required = false) Double vote,
-                               @RequestParam(value = "genreId", required = false) Integer genreId,
-                               Model model) {
+    protected String listarPeliculasConFiltrado(Filtro filtro, Model model) {
+
+        List<Movie>movies;
+
         LocalDate startDate = null;
         LocalDate endDate = null;
 
-        // Definir el rango de fechas si se pasa el año
-        if (year != null) {
-            startDate = getStartDateOfYear(year);
-            endDate = getEndDateOfYear(year);
+        if (filtro.getYear() != null) {
+            startDate = getStartDateOfYear(filtro.getYear());
+            endDate = getEndDateOfYear(filtro.getYear());
         }
 
-        // Filtrado de películas por género si se pasa genreId
-        if (genreId == null) {
-            List<Movie> movieListFiltros = this.movieRepository.buscarPorFiltrosSinGenero(year, vote, startDate, endDate);
-            model.addAttribute("movieList", movieListFiltros);
+        List<Genre>genreList=this.genreRepository.findAll();
+        model.addAttribute("genreList",genreList);
+
+        if (filtro == null) {
+            filtro = new Filtro();
+            movies = movieRepository.findAll();
+
+        } else if (filtro.getGeneroIds().isEmpty()) {
+            movies = this.movieRepository.buscarPorFiltrosSinGenero(filtro.getYear(), filtro.getVote(), startDate, endDate);
         } else {
-            List<Movie> movieListFiltros = this.movieRepository.buscarPorFiltros(year, vote, genreId, startDate, endDate);
-            model.addAttribute("movieList", movieListFiltros);
+            movies = this.movieRepository.buscarPorFiltrosConGenero(filtro.getYear(), filtro.getVote(),filtro.getGeneroIds(),startDate,endDate);
         }
-
-        // Obtener todos los géneros para la lista del select
-        List<Genre> genreList = this.genreRepository.findAll();
-        model.addAttribute("genreList", genreList);
-        model.addAttribute("year", year);
-        model.addAttribute("vote", vote);
-        model.addAttribute("selectedGenre", genreId);  // Pasar el genreId al JSP para mantener la opción seleccionada
+        model.addAttribute("movieList",movies);
+        model.addAttribute("filtro", filtro);
 
         return "index";
+    }
+
+    @PostMapping("/filtrar")
+    public String doFiltrar(@ModelAttribute("filtro") Filtro filtro, Model model) {
+
+        return this.listarPeliculasConFiltrado(filtro,model);
     }
 
 
