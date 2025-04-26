@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
 
@@ -17,9 +18,11 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        // Obtenemos los roles del usuario a través de la relación UserRole
+        return user.getUserRoles().stream()
+                .map(userRole -> new SimpleGrantedAuthority(userRole.getName())) // Usamos el nombre del rol
+                .collect(Collectors.toList());
     }
-
     @Override
     public String getPassword() {
         return user.getPasswordHash();

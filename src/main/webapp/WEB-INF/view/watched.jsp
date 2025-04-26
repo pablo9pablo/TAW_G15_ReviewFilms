@@ -22,6 +22,8 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
+    <jsp:include page="logout.jsp"/>
+
 
 
         <!-- Formulario de filtrado -->

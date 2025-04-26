@@ -13,6 +13,8 @@
     <title><%= isEditing ? "Editar Película" : "Crear Película" %></title>
 </head>
 <body>
+<jsp:include page="logout.jsp"/>
+
 
 <h2><%= isEditing ? "Editar " + movie.getTitle() : "Crear Película" %></h2>
 
