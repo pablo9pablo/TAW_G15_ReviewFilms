@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +47,7 @@ public class ControllerMovie {
 
     @GetMapping("/")
     public String index(Model model) {
+
         List<Movie> movieList = this.movieRepository.findAll();
         model.addAttribute("movieList", movieList);
 
@@ -56,6 +59,8 @@ public class ControllerMovie {
 
         return "index";
     }
+
+
 
 
     @GetMapping("/viewmovie")
@@ -180,6 +185,91 @@ public class ControllerMovie {
         this.seenRepository.save(seen);
 
         return "VerPelicula";
+    }
+
+
+    /*
+     *---------------------------- BUSQUEDA----------------------------------------------------------*
+     */
+
+    protected String listarPeliculasConBusqueda(Busqueda busqueda,Model model) {
+
+        List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda.getTexto());
+        model.addAttribute("movieList", movieListBusqueda);
+
+        List<Genre> genreList = this.genreRepository.findAll();
+        model.addAttribute("genreList", genreList);
+
+        model.addAttribute("filtro", new Filtro());
+        model.addAttribute("busqueda", new Busqueda());
+
+        return "index";
+
+
+    }
+
+    @PostMapping("/buscar")
+    public String doBuscar(@ModelAttribute("busqueda") Busqueda busqueda, Model model) {
+
+        return this.listarPeliculasConBusqueda(busqueda, model);
+    }
+
+    /*
+     *----------------------------------FILTRADO--------------------------------------------------------*
+     */
+
+    protected String listarPeliculasConFiltrado(Filtro filtro, Model model) {
+        if (filtro == null) {
+            filtro = new Filtro();
+        }
+        if (filtro.getGeneroIds() == null) {
+            filtro.setGeneroIds(new ArrayList<>());
+        }
+
+        List<Movie> movies;
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+
+        if (filtro.getYear() != null) {
+            startDate = getStartDateOfYear(filtro.getYear());
+            endDate = getEndDateOfYear(filtro.getYear());
+        }
+
+        List<Genre> genreList = this.genreRepository.findAll();
+        model.addAttribute("genreList", genreList);
+
+        if (filtro.getGeneroIds().isEmpty()) {
+            movies = this.movieRepository.buscarPorFiltrosSinGenero(
+                    filtro.getYear(), filtro.getVote(), startDate, endDate
+            );
+        } else {
+            movies = this.movieRepository.buscarPorFiltrosConGenero(
+                    filtro.getYear(), filtro.getVote(), filtro.getGeneroIds(), startDate, endDate
+            );
+        }
+
+        model.addAttribute("movieList", movies);
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("busqueda", new Busqueda());
+
+        return "index";
+    }
+
+
+    @PostMapping("/filtrar")
+    public String doFiltrar(@ModelAttribute("filtro") Filtro filtro, Model model) {
+
+        return this.listarPeliculasConFiltrado(filtro,model);
+    }
+
+
+    public LocalDate getStartDateOfYear(int year) {
+        return LocalDate.of(year, Month.JANUARY, 1);
+    }
+
+
+    public LocalDate getEndDateOfYear(int year) {
+        return LocalDate.of(year, Month.DECEMBER, 31);
     }
 
 
