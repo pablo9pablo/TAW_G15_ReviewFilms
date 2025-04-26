@@ -18,15 +18,15 @@
     <jsp:include page="cabecera.jsp"/>
 
     <!-- Formulario de búsqueda -->
-    <form method="post" action="/buscar" class="search-form">
+    <form:form method="post" action="/buscar" modelAttribute="busqueda" class="search-form">
         <div class="search-input-wrapper">
             <div class="search-field">
-                <input type="text" id="searchInput" name="busqueda" class="search-input" placeholder="Buscar película...">
+                <form:input path="texto" type="text" id="searchInput" name="busqueda" class="search-input" placeholder="Buscar película..."/>
                 <span class="search-icon">🔍</span>
             </div>
-            <input type="submit" class="search-button" value="Buscar">
+            <form:button class="search-button">Buscar</form:button>
         </div>
-    </form>
+    </form:form>
 
 
     <!-- Formulario de filtrado -->

@@ -15,8 +15,8 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie,Integer> {
     //Busqueda
-    @Query("select m from Movie m where m.title like concat('%', :titulo, '%')")
-    public List<Movie> buscarPorTitulo(@Param("titulo") String titulo);
+    @Query("select m from Movie m where m.title like concat('%', :texto, '%')")
+    public List<Movie> buscarPorTitulo(@Param("texto") String texto);
 
     //Filtrado Sin genero
     @Query("SELECT m FROM Movie m " +

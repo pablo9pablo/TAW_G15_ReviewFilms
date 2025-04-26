@@ -7,6 +7,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,14 +29,15 @@ public class ControllerBuscarYFiltrar {
 
 
     @PostMapping("/buscar")
-    public String doBuscar(@RequestParam("busqueda") String busqueda, Model model) {
-
-        List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda);
-        List<Genre>genreList=this.genreRepository.findAll();
-
-        model.addAttribute("genreList",genreList);
+    public String doBuscar(@ModelAttribute("busqueda") Busqueda busqueda, Model model) {
+        List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda.getTexto());
         model.addAttribute("movieList", movieListBusqueda);
-        model.addAttribute("busqueda", busqueda);
+
+        List<Genre> genreList = this.genreRepository.findAll();
+        model.addAttribute("genreList", genreList);
+
+        model.addAttribute("filtro", new Filtro());
+        model.addAttribute("busqueda", new Busqueda());
 
         return "index";
     }
@@ -67,6 +69,7 @@ public class ControllerBuscarYFiltrar {
         }
         model.addAttribute("movieList",movies);
         model.addAttribute("filtro", filtro);
+        model.addAttribute("busqueda", new Busqueda());
 
         return "index";
     }
