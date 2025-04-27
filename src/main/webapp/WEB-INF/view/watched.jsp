@@ -51,28 +51,32 @@
         </div>
         </form:form>
 
+        <!-- Formulario para ordenar ASC -->
+        <div class="table-controls">
+            <form:form method="post" action="/asc" modelAttribute="filtroSeen">
+                <form:hidden path="year" />
+                <form:hidden path="vote" />
+                <c:forEach var="id" items="${filtroSeen.generoIds}">
+                    <input type="hidden" name="generoIds" value="${id}" />
+                </c:forEach>
+                <button type="submit" class="scroll-btn" id="scroll-up">↑</button>
+            </form:form>
+        </div>
+
+        <!-- Formulario para ordenar DESC -->
+        <div class="table-controls">
+            <form:form method="post" action="/desc" modelAttribute="filtroSeen">
+                <form:hidden path="year" />
+                <form:hidden path="vote" />
+                <c:forEach var="id" items="${filtroSeen.generoIds}">
+                    <input type="hidden" name="generoIds" value="${id}" />
+                </c:forEach>
+                <button type="submit" class="scroll-btn" id="scroll-down">↓</button>
+            </form:form>
+        </div>
+
 
         <!-- Tabla de películas vistas -->
-
-        <!-- Formulario para ordenar ascendente -->
-        <form action="/asc" method="get">
-            <div class="table-controls">
-                <button type="submit" class="scroll-btn" id="scroll-up">
-                    ↑
-                </button>
-            </div>
-        </form>
-
-        <!-- Formulario para ordenar descendente -->
-        <form action="/desc" method="get">
-            <div class="table-controls">
-                <button type="submit" class="scroll-btn" id="scroll-down">
-                    ↓
-                </button>
-            </div>
-        </form>
-
-
         <div class="table-wrapper table-wrapper-scroll-left">
             <form>
                 <div class="content">

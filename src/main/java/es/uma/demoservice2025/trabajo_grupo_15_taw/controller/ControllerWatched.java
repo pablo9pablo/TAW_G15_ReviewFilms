@@ -51,33 +51,6 @@ public class ControllerWatched {
 
     }
 
-    @GetMapping("/asc")
-    public String doListarWatchedAsc(Model model) {
-
-        List<Seen> seenMovies = this.seenRepository.buscarPorTituloAscendente();
-        List<Genre> genreList = this.genreRepository.findAll();
-
-        model.addAttribute("genreList", genreList);
-        model.addAttribute("seenMovies", seenMovies);
-        model.addAttribute("filtroSeen", new Filtro());
-
-        return "watched";
-    }
-
-    @GetMapping("/desc")
-    public String doListarWatchedDesc(Model model) {
-
-        List<Seen> seenMovies = this.seenRepository.buscarPorTituloDescendente();
-        List<Genre> genreList = this.genreRepository.findAll();
-
-        model.addAttribute("genreList", genreList);
-        model.addAttribute("seenMovies", seenMovies);
-        model.addAttribute("filtroSeen", new Filtro());
-
-        return "watched";
-    }
-
-
 
     @GetMapping("/viewmovieSeen")
     public String verPelicula(@RequestParam("id") Integer id,
@@ -125,7 +98,7 @@ public class ControllerWatched {
      *----------------------------------FILTRADO--------------------------------------------------------*
      */
 
-    protected String listarPeliculasVistasConFiltrado(Filtro filtroSeen, Model model) {
+    protected String listarPeliculasVistasConFiltrado(Filtro filtroSeen, Model model, String orden) {
 
         if (filtroSeen == null) {
             filtroSeen = new Filtro();
@@ -134,7 +107,7 @@ public class ControllerWatched {
             filtroSeen.setGeneroIds(new ArrayList<>());
         }
 
-        List<Seen>seenMovies;
+        List<Seen> seenMovies;
         LocalDate startDate = null;
         LocalDate endDate = null;
 
@@ -143,17 +116,42 @@ public class ControllerWatched {
             endDate = getEndDateOfYear(filtroSeen.getYear());
         }
 
+        List<Integer> generos = filtroSeen.getGeneroIds();
+        if (generos != null && generos.isEmpty()) {
+            generos = null;
+        }
+
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        if (filtroSeen.getGeneroIds().isEmpty()) {
-            seenMovies = this.seenRepository.buscarPorFiltrosSinGenero(
-                    filtroSeen.getYear(), filtroSeen.getVote(), startDate, endDate
-            );
+        if (generos == null) {
+            if ("asc".equals(orden)) {
+                seenMovies = this.seenRepository.buscarPorFiltrosSinGeneroOrdenAsc(
+                        filtroSeen.getYear(), filtroSeen.getVote(), startDate, endDate
+                );
+            } else if ("desc".equals(orden)) {
+                seenMovies = this.seenRepository.buscarPorFiltrosSinGeneroOrdenDesc(
+                        filtroSeen.getYear(), filtroSeen.getVote(), startDate, endDate
+                );
+            } else {
+                seenMovies = this.seenRepository.buscarPorFiltrosSinGenero(
+                        filtroSeen.getYear(), filtroSeen.getVote(), startDate, endDate
+                );
+            }
         } else {
-            seenMovies = this.seenRepository.buscarPorFiltrosConGenero(
-                    filtroSeen.getYear(), filtroSeen.getVote(), filtroSeen.getGeneroIds(), startDate, endDate
-            );
+            if ("asc".equals(orden)) {
+                seenMovies = this.seenRepository.buscarPorFiltrosConGeneroOrdenAsc(
+                        filtroSeen.getYear(), filtroSeen.getVote(), generos, startDate, endDate   // <-- USAR generos!
+                );
+            } else if ("desc".equals(orden)) {
+                seenMovies = this.seenRepository.buscarPorFiltrosConGeneroOrdenDesc(
+                        filtroSeen.getYear(), filtroSeen.getVote(), generos, startDate, endDate
+                );
+            } else {
+                seenMovies = this.seenRepository.buscarPorFiltrosConGenero(
+                        filtroSeen.getYear(), filtroSeen.getVote(), generos, startDate, endDate
+                );
+            }
         }
 
         model.addAttribute("seenMovies", seenMovies);
@@ -163,11 +161,22 @@ public class ControllerWatched {
     }
 
 
+
     @PostMapping("/filtrarSeen")
     public String doFiltrar(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
-
-        return this.listarPeliculasVistasConFiltrado(filtroSeen, model);
+        return this.listarPeliculasVistasConFiltrado(filtroSeen, model, null);
     }
+
+    @PostMapping("/asc")
+    public String doFiltrarAsc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
+        return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "asc");
+    }
+
+    @PostMapping("/desc")
+    public String doFiltrarDesc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
+        return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "desc");
+    }
+
 
 
     public LocalDate getStartDateOfYear(int year) {
