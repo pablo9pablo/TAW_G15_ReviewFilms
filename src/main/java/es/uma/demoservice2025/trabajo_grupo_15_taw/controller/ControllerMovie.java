@@ -48,8 +48,7 @@ public class ControllerMovie {
 
     @Autowired
     protected MovieCastRepository movieCast;
-    @Autowired
-    private MovieCastRepository movieCastRepository;
+
 
 
     @GetMapping("/")
@@ -124,7 +123,7 @@ public class ControllerMovie {
                                   @RequestParam("generos") String[] generos,
                                   @RequestParam("pcompany") String[] pCompany,
                                   @RequestParam("actores") String[] actores
-                                  ) {
+    ) {
 
         Movie movie = (id != null) ? movieRepository.findById(id).orElse(new Movie()) : new Movie();
 
@@ -137,23 +136,31 @@ public class ControllerMovie {
         movie.setOriginalLanguage(originalLanguage);
         movie.setOverview(overview);
         movie.setImageUrl(imageUrl);
-        Set<Genre> selectedGenres = new HashSet<>();
 
+        // Asociar géneros
+        Set<Genre> selectedGenres = new HashSet<>();
         for (String genreId : generos) {
             selectedGenres.add(genreRepository.findById(Integer.parseInt(genreId)).get());
         }
         movie.setGenres(selectedGenres);
 
+        // Asociar compañías de producción
         Set<ProductionCompany> selectedCompanies = new HashSet<>();
-
         for (String pcompanyID : pCompany) {
             selectedCompanies.add(productionCompanyRepository.findById(Integer.parseInt(pcompanyID)).get());
         }
-        movie.setGenres(selectedGenres);
         movie.setProductionCompanies(selectedCompanies);
 
-        movieCast.deleteByMovieId(id);
 
+        movie = movieRepository.save(movie);  // Guardar nueva película
+
+
+        // Eliminar actores antiguos solo si la película ya existe
+        if (id != null) {
+            movieCast.deleteByMovieId(id);  // Eliminar actores asociados a la película si ya existe
+        }
+
+        // Crear y guardar las relaciones de actores
         for (String actorId : actores) {
             Actor actor = actorRepository.findById(Integer.parseInt(actorId)).orElse(null);
             if (actor != null) {
@@ -163,13 +170,10 @@ public class ControllerMovie {
 
                 MovieCast mc = new MovieCast();
                 mc.setId(movieCastId);  // Establecer la clave compuesta
-
                 mc.setMovie(movie);  // Establecer la relación con la película
                 mc.setActor(actor);  // Establecer la relación con el actor
 
-
-
-                movieCastRepository.save(mc);  // Guardar la entidad MovieCast
+                movieCast.save(mc);  // Guardar la relación MovieCast
             }
         }
 
