@@ -16,6 +16,8 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
+    <jsp:include page="logout.jsp"/>
+
 
     <!-- Formulario de búsqueda -->
     <form:form method="post" action="/buscar" modelAttribute="busqueda" class="search-form">
