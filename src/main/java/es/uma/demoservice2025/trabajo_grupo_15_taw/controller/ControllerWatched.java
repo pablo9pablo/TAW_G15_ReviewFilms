@@ -7,15 +7,19 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,59 +37,20 @@ public class ControllerWatched {
     protected GenreRepository genreRepository;
 
     @GetMapping("/watched")
-    public String doListar(Model model) {
+    public String doListarWatched(Model model) {
 
-        List<Seen>seenMovies = this.seenRepository.findAll();
-        List<Genre>genreList=this.genreRepository.findAll();
-
-        model.addAttribute("genreList",genreList);
+        List<Seen> seenMovies = this.seenRepository.findAll();
         model.addAttribute("seenMovies", seenMovies);
-        return "watched";
 
-    }
-
-    @PostMapping("/filtrarSeen")
-    public String doFiltrarGet(@RequestParam(value = "year", required = false) Integer year,
-                               @RequestParam(value = "vote", required = false) Double vote,
-                               @RequestParam(value = "genreId", required = false) Integer genreId,
-                               Model model) {
-        LocalDate startDate = null;
-        LocalDate endDate = null;
-
-        // Definir el rango de fechas si se pasa el año
-        if (year != null) {
-            startDate = getStartDateOfYear(year);
-            endDate = getEndDateOfYear(year);
-        }
-
-        // Filtrado de películas por género si se pasa genreId
-        if (genreId == null) {
-            List<Seen> movieListFiltros = this.seenRepository.buscarPorFiltrosSinGenero(year, vote, startDate, endDate);
-            model.addAttribute("seenMovies", movieListFiltros);
-        } else {
-            List<Seen> movieListFiltros = this.seenRepository.buscarPorFiltros(year, vote, genreId, startDate, endDate);
-            model.addAttribute("seenMovies", movieListFiltros);
-        }
-
-        // Obtener todos los géneros para la lista del select
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
-        model.addAttribute("year", year);
-        model.addAttribute("vote", vote);
-        model.addAttribute("selectedGenre", genreId);  // Pasar el genreId al JSP para mantener la opción seleccionada
+
+        model.addAttribute("filtroSeen", new Filtro());
 
         return "watched";
+
     }
 
-
-    public LocalDate getStartDateOfYear(int year) {
-        return LocalDate.of(year, Month.JANUARY, 1);
-    }
-
-
-    public LocalDate getEndDateOfYear(int year) {
-        return LocalDate.of(year, Month.DECEMBER, 31);
-    }
 
     @GetMapping("/viewmovieSeen")
     public String verPelicula(@RequestParam("id") Integer id,
@@ -128,4 +93,64 @@ public class ControllerWatched {
         }
         return relatedMoviesProductionCompany;
     }
+
+    /*
+     *----------------------------------FILTRADO--------------------------------------------------------*
+     */
+
+    protected String listarPeliculasVistasConFiltrado(Filtro filtroSeen, Model model) {
+
+        if (filtroSeen == null) {
+            filtroSeen = new Filtro();
+        }
+        if (filtroSeen.getGeneroIds() == null) {
+            filtroSeen.setGeneroIds(new ArrayList<>());
+        }
+
+        List<Seen>seenMovies;
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+
+        if (filtroSeen.getYear() != null) {
+            startDate = getStartDateOfYear(filtroSeen.getYear());
+            endDate = getEndDateOfYear(filtroSeen.getYear());
+        }
+
+        List<Genre> genreList = this.genreRepository.findAll();
+        model.addAttribute("genreList", genreList);
+
+        if (filtroSeen.getGeneroIds().isEmpty()) {
+            seenMovies = this.seenRepository.buscarPorFiltrosSinGenero(
+                    filtroSeen.getYear(), filtroSeen.getVote(), startDate, endDate
+            );
+        } else {
+            seenMovies = this.seenRepository.buscarPorFiltrosConGenero(
+                    filtroSeen.getYear(), filtroSeen.getVote(), filtroSeen.getGeneroIds(), startDate, endDate
+            );
+        }
+
+        model.addAttribute("seenMovies", seenMovies);
+        model.addAttribute("filtroSeen", filtroSeen);
+
+        return "watched";
+    }
+
+
+    @PostMapping("/filtrarSeen")
+    public String doFiltrar(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
+
+        return this.listarPeliculasVistasConFiltrado(filtroSeen, model);
+    }
+
+
+    public LocalDate getStartDateOfYear(int year) {
+        return LocalDate.of(year, Month.JANUARY, 1);
+    }
+
+
+    public LocalDate getEndDateOfYear(int year) {
+        return LocalDate.of(year, Month.DECEMBER, 31);
+    }
+
+
 }

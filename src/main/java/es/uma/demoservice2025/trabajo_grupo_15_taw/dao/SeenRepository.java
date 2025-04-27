@@ -13,19 +13,20 @@ import java.util.List;
 
 public interface SeenRepository extends JpaRepository<Seen,Integer> {
 
-    // Filtrado con género
+    //Filtrado con genero
     @Query("SELECT s FROM Seen s " +
             "JOIN s.movie m " +
             "JOIN MovieGenre mg ON mg.movie = m " +
             "JOIN mg.genre g " +
-            "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (:genreId IS NULL OR g.id = :genreId)")
-    public List<Seen> buscarPorFiltros(@Param("anyo") Integer anyo,
-                                @Param("vote") Double vote,
-                                @Param("genreId") Integer genreId,
-                                @Param("startDate") LocalDate startDate,
-                                @Param("endDate") LocalDate endDate);
+            "AND (:generoIds IS NULL OR g.id IN :generoIds)")
+    public List<Seen> buscarPorFiltrosConGenero(@Param("anyo") Integer anyo,
+                                                @Param("vote") Double vote,
+                                                @Param("generoIds") List<Integer> generoIds,
+                                                @Param("startDate") LocalDate startDate,
+                                                @Param("endDate") LocalDate endDate);
+
 
     // Filtrado sin género
     @Query("SELECT s FROM Seen s " +

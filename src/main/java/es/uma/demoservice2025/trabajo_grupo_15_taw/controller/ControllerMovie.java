@@ -61,8 +61,6 @@ public class ControllerMovie {
     }
 
 
-
-
     @GetMapping("/viewmovie")
     public String verPelicula(@RequestParam("id") Integer id,
                               Model model) {
@@ -219,6 +217,7 @@ public class ControllerMovie {
      */
 
     protected String listarPeliculasConFiltrado(Filtro filtro, Model model) {
+
         if (filtro == null) {
             filtro = new Filtro();
         }
