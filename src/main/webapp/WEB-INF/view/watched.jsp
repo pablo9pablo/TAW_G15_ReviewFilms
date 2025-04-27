@@ -19,13 +19,10 @@
     List<Seen>seenMovies=(List<Seen>) request.getAttribute("seenMovies");
 %>
 
-
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
     <jsp:include page="logout.jsp"/>
-
-
 
         <!-- Formulario de filtrado -->
         <form:form method="post" action="/filtrarSeen" modelAttribute="filtroSeen" class="filter-form">
@@ -57,14 +54,21 @@
 
         <!-- Tabla de películas vistas -->
 
-        <div class="table-controls">
-            <button type="button" class="scroll-btn" id="scroll-up">
-                ↑
-            </button>
-            <button type="button" class="scroll-btn" id="scroll-down">
-                ↓
-            </button>
-        </div>
+        <form action="/asc" method="get">
+            <div class="table-controls">
+                <button type="button" class="scroll-btn" id="scroll-up">
+                    ↑
+                </button>
+            </div>
+        </form>
+
+        <form action="/desc" method="get">
+            <div class="table-controls">
+                <button type="button" class="scroll-btn" id="scroll-down">
+                    ↓
+                </button>
+            </div>
+        </form>
 
         <div class="table-wrapper table-wrapper-scroll-left">
             <form>

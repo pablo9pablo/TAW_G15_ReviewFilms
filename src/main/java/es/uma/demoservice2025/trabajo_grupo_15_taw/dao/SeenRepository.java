@@ -39,4 +39,20 @@ public interface SeenRepository extends JpaRepository<Seen,Integer> {
                                          @Param("endDate") LocalDate endDate);
 
 
+    // Orden Ascendente (Alfabético)
+    @Query("SELECT s FROM Seen s " +
+            "JOIN s.movie m " +
+            "WHERE m.title = :titulo " +  // Agrega un espacio aquí
+            "ORDER BY m.title ASC")
+    public List<Seen> buscarPorTituloAscendente(@Param("titulo") String titulo);
+
+
+    //Orden Descendente
+    @Query("SELECT s FROM Seen s " +
+            "JOIN s.movie m " +
+            "WHERE m.title = :titulo " +  // Agrega un espacio aquí
+            "ORDER BY m.title DESC ")
+    public List<Seen> buscarPorTituloDescendente(@Param("titulo") String titulo);
+
+
 }
