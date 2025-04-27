@@ -51,6 +51,33 @@ public class ControllerWatched {
 
     }
 
+    @GetMapping("/asc")
+    public String doListarWatchedAsc(Model model) {
+
+        List<Seen> seenMovies = this.seenRepository.buscarPorTituloAscendente();
+        List<Genre> genreList = this.genreRepository.findAll();
+
+        model.addAttribute("genreList", genreList);
+        model.addAttribute("seenMovies", seenMovies);
+        model.addAttribute("filtroSeen", new Filtro());
+
+        return "watched";
+    }
+
+    @GetMapping("/desc")
+    public String doListarWatchedDesc(Model model) {
+
+        List<Seen> seenMovies = this.seenRepository.buscarPorTituloDescendente();
+        List<Genre> genreList = this.genreRepository.findAll();
+
+        model.addAttribute("genreList", genreList);
+        model.addAttribute("seenMovies", seenMovies);
+        model.addAttribute("filtroSeen", new Filtro());
+
+        return "watched";
+    }
+
+
 
     @GetMapping("/viewmovieSeen")
     public String verPelicula(@RequestParam("id") Integer id,

@@ -54,21 +54,24 @@
 
         <!-- Tabla de películas vistas -->
 
+        <!-- Formulario para ordenar ascendente -->
         <form action="/asc" method="get">
             <div class="table-controls">
-                <button type="button" class="scroll-btn" id="scroll-up">
+                <button type="submit" class="scroll-btn" id="scroll-up">
                     ↑
                 </button>
             </div>
         </form>
 
+        <!-- Formulario para ordenar descendente -->
         <form action="/desc" method="get">
             <div class="table-controls">
-                <button type="button" class="scroll-btn" id="scroll-down">
+                <button type="submit" class="scroll-btn" id="scroll-down">
                     ↓
                 </button>
             </div>
         </form>
+
 
         <div class="table-wrapper table-wrapper-scroll-left">
             <form>
