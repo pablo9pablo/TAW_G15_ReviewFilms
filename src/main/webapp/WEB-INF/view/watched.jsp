@@ -56,6 +56,16 @@
 
 
         <!-- Tabla de películas vistas -->
+
+        <div class="table-controls">
+            <button type="button" class="scroll-btn" id="scroll-up">
+                ↑
+            </button>
+            <button type="button" class="scroll-btn" id="scroll-down">
+                ↓
+            </button>
+        </div>
+
         <div class="table-wrapper table-wrapper-scroll-left">
             <form>
                 <div class="content">
@@ -89,8 +99,8 @@
                     </table>
                 </div>
             </form>
-       </div>
+        </div>
 
-        <jsp:include page="footer.jsp"/>
+     <jsp:include page="footer.jsp"/>
 </body>
 </html>
