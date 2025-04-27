@@ -1,11 +1,11 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,6 +20,9 @@ public class Actor {
     private String name;
 
     @Column(name = "GENDER")
-    private Integer gender;
+    private String gender;
+
+    @OneToMany(mappedBy = "actor")
+    private Set<MovieCast> movieCasts = new LinkedHashSet<>();
 
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,10 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ControllerMovie {
@@ -44,6 +43,14 @@ public class ControllerMovie {
 
     @Autowired
     protected UsuarioRepository usuarioRepository;
+
+    @Autowired
+    protected ActorRepository actorRepository;
+
+    @Autowired
+    protected MovieCastRepository movieCast;
+    @Autowired
+    private MovieCastRepository movieCastRepository;
 
 
     @GetMapping("/")
@@ -92,13 +99,20 @@ public class ControllerMovie {
                              Model model) {
 
         Movie movie = movieRepository.findById(id).orElse(new Movie());
-        model.addAttribute("movie", movie);
+        List<Genre> genre = genreRepository.findAll();
+        List<ProductionCompany> pcompany = productionCompanyRepository.findAll();
+        List <Actor> actores = actorRepository.findAll();
 
+        model.addAttribute("movie", movie);
+        model.addAttribute("genre", genre);
+        model.addAttribute("pcompany", pcompany);
+        model.addAttribute("actores", actores);
         return "editarPelicula";
 
     }
 
     @PostMapping("/savemovie")
+    @Transactional
     public String guardarPelicula(@RequestParam("id") Integer id,
                                   @RequestParam("title") String title,
                                   @RequestParam("originalTitle") String originalTitle,
@@ -108,7 +122,11 @@ public class ControllerMovie {
                                   @RequestParam("revenue") BigDecimal revenue,
                                   @RequestParam("originalLanguage") String originalLanguage,
                                   @RequestParam("overview") String overview,
-                                  @RequestParam("imageUrl") String imageUrl) {
+                                  @RequestParam("imageUrl") String imageUrl,
+                                  @RequestParam("generos") String[] generos,
+                                  @RequestParam("pcompany") String[] pCompany,
+                                  @RequestParam("actores") String[] actores
+                                  ) {
 
         Movie movie = (id != null) ? movieRepository.findById(id).orElse(new Movie()) : new Movie();
 
@@ -121,8 +139,41 @@ public class ControllerMovie {
         movie.setOriginalLanguage(originalLanguage);
         movie.setOverview(overview);
         movie.setImageUrl(imageUrl);
+        Set<Genre> selectedGenres = new HashSet<>();
 
-        movieRepository.save(movie);
+        for (String genreId : generos) {
+            selectedGenres.add(genreRepository.findById(Integer.parseInt(genreId)).get());
+        }
+        movie.setGenres(selectedGenres);
+
+        Set<ProductionCompany> selectedCompanies = new HashSet<>();
+
+        for (String pcompanyID : pCompany) {
+            selectedCompanies.add(productionCompanyRepository.findById(Integer.parseInt(pcompanyID)).get());
+        }
+        movie.setGenres(selectedGenres);
+        movie.setProductionCompanies(selectedCompanies);
+
+        movieCast.deleteByMovieId(id);
+
+        for (String actorId : actores) {
+            Actor actor = actorRepository.findById(Integer.parseInt(actorId)).orElse(null);
+            if (actor != null) {
+                MovieCastId movieCastId = new MovieCastId();
+                movieCastId.setMovieId(movie.getId());
+                movieCastId.setActorId(Integer.parseInt(actorId));
+
+                MovieCast mc = new MovieCast();
+                mc.setId(movieCastId);  // Establecer la clave compuesta
+
+                mc.setMovie(movie);  // Establecer la relación con la película
+                mc.setActor(actor);  // Establecer la relación con el actor
+
+
+
+                movieCastRepository.save(mc);  // Guardar la entidad MovieCast
+            }
+        }
 
         return "redirect:/";
     }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -19,4 +22,8 @@ public class Genre {
 
     @Column(name = "NAME", nullable = false, length = 100)
     private String name;
+
+    @ManyToMany(mappedBy = "genres")
+    private Set<Movie> movies = new LinkedHashSet<>();
+
 }

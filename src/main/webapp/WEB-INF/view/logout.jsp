@@ -4,25 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logout</title>
-    <!-- Vinculamos el archivo CSS externo -->
     <link rel="stylesheet" type="text/css" href="/css/logout.css">
+    <script type="text/javascript">
+        function confirmarLogout() {
+            return confirm('¿Estás seguro de que quieres cerrar sesión?');
+        }
+    </script>
 </head>
 <body>
 
-<!-- Verificación de cierre de sesión -->
-<%
-    String logout = request.getParameter("logout");
-    if ("true".equals(logout)) {
-%>
-
-<%
-    }
-%>
-
-
-
-<!-- Formulario de cierre de sesión -->
-<form action="<%= request.getContextPath() + "/logout" %>" method="post">
+<form action="/logout" method="post" onsubmit="return confirmarLogout();">
     <button type="submit" class="logout-button">Cerrar sesión</button>
 </form>
 

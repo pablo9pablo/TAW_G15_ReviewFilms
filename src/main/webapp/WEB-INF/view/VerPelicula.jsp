@@ -9,7 +9,7 @@
     Set<Movie> relatedMoviesGenre = (Set<Movie>) request.getAttribute("relatedMoviesGenre");
     Set<Movie> relatedMoviesProductionCompany = (Set<Movie>) request.getAttribute("relatedMoviesProductionCompany");
 
-    boolean isAdmin = true; //permisos
+
 %>
 
 <!DOCTYPE html>
@@ -126,16 +126,22 @@
 
             </div>
 
+            <%
+                boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
+            %>
+
             <% if (isAdmin) { %>
             <div class="actions">
-                <form action="/editmovie" method="post">
+                <form action="<%= request.getContextPath() %>/editmovie" method="post">
                     <input type="hidden" name="id" value="<%= movie.getId() %>">
                     <input type="submit" value="Modificar Película">
                 </form>
-                <a href="/deletemovie?id=<%= movie.getId() %>" onclick="return confirm('¿Está seguro de que quiere borrar la película <%= movie.getTitle() %>?')">Borrar</a>
+                <a href="<%= request.getContextPath() %>/deletemovie?id=<%= movie.getId() %>"
+                   onclick="return confirm('¿Está seguro de que quiere borrar la película <%= movie.getTitle() %>?')">
+                    Borrar
+                </a>
             </div>
             <% } %>
-
         </div>
 
         <form  method="post" action="/marcarComoVista" class="watched-button-form">

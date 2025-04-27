@@ -1,6 +1,7 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -28,13 +29,15 @@ public class MovieCast {
     @JoinColumn(name = "ACTOR_ID", nullable = false)
     private Actor actor;
 
-    @Column(name = "`CHARACTER`")
+    @Column(name = "CHARACTER_NAME")
     private String character;
 
-    @Column(name = "CREDIT_ID", nullable = false, length = 60)
+    @Column(name = "CREDIT_ID", length = 60)
     private String creditId;
 
     @Column(name = "CREDIT_ORDER")
     private Integer creditOrder;
+
+
 
 }
