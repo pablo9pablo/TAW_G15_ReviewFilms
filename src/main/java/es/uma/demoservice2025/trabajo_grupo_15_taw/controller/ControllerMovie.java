@@ -9,7 +9,6 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -67,7 +66,6 @@ public class ControllerMovie {
 
         return "index";
     }
-
 
 
     @GetMapping("/viewmovie")
@@ -270,6 +268,7 @@ public class ControllerMovie {
      */
 
     protected String listarPeliculasConFiltrado(Filtro filtro, Model model) {
+
         if (filtro == null) {
             filtro = new Filtro();
         }

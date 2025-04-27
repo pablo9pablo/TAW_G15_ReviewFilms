@@ -127,3 +127,27 @@
 .table-wrapper-scroll-left {
     scrollbar-width: thin;
 }
+
+.table-controls {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 10px;
+    margin-right: 50px;
+}
+
+.scroll-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 5px;
+    transition: background-color 0.3s;
+}
+
+.scroll-btn:hover {
+    background-color: #0056b3;
+}
+

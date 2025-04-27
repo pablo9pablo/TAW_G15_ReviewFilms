@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
@@ -18,51 +19,62 @@
     List<Seen>seenMovies=(List<Seen>) request.getAttribute("seenMovies");
 %>
 
-
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
     <jsp:include page="logout.jsp"/>
 
-
-
         <!-- Formulario de filtrado -->
-        <form method="post" action="/filtrarSeen" class="filter-form">
-            <div class="filters-wrapper">
-                <span class="filter-label">Filtrar por:</span>
+        <form:form method="post" action="/filtrarSeen" modelAttribute="filtroSeen" class="filter-form">
+        <div class="filters-wrapper">
+            <span class="filter-label">Filtrar por:</span>
 
-                <div class="range-group">
-                    <label for="yearInput">Año:</label>
-                    <input type="number" id="yearInput" name="year" min="1895" max="2025" class="year-input" value="<%= request.getAttribute("year") != null ? request.getAttribute("year") : "" %>">
-                </div>
-
-                <div class="range-group">
-                    <label for="ratingInput">Calificación mínima:</label>
-                    <input type="number" id="ratingInput" name="vote" step="0.1" min="0" max="10" class="rating-input" value="<%= request.getAttribute("vote") != null ? request.getAttribute("vote") : "" %>">
-                </div>
-
-                <div class="range-group">
-                    <label for="genreSelect">Género:</label>
-                    <select id="genreSelect" name="genreId">
-                        <!-- Opción para todos los géneros -->
-                        <option value="" <%= (selectedGenre.isEmpty()) ? "selected" : "" %>>-- Todos los géneros --</option>
-
-                        <%
-                            for (Genre g : genreList) {
-                                String seleccionado = (selectedGenre.equals(g.getId().toString())) ? "selected" : "";
-                        %>
-                        <option value="<%= g.getId() %>" <%= seleccionado %>><%= g.getName() %></option>
-                        <%
-                            }
-                        %>
-                    </select>
-                </div>
-
-
-                <input type="submit" class="filter-button" value="Filtrar">
+            <div class="range-group">
+                <label for="yearInput">Año:</label>
+                <form:input path="year" id="yearInput" type="number" min="1895" max="2025" cssClass="year-input"/>
             </div>
 
-        </form>
+            <div class="range-group">
+                <label for="ratingInput">Calificación mínima:</label>
+                <form:input path="vote" id="ratingInput" type="number" step="0.1" min="0" max="10" cssClass="rating-input"/>
+            </div>
+
+            <div class="range-group">
+                <label for="genreSelect">Género:</label>
+                <form:select path="generoIds" id="genreSelect" cssClass="genre-select">
+                    <form:option value="" label="-- Todos los géneros --"/>
+                    <form:options items="${genreList}" itemValue="id" itemLabel="name"/>
+                </form:select>
+            </div>
+
+            <form:button class="filter-button">Filtrar</form:button>
+        </div>
+        </form:form>
+
+        <!-- Formulario para ordenar ASC -->
+        <div class="table-controls">
+            <form:form method="post" action="/asc" modelAttribute="filtroSeen">
+                <form:hidden path="year" />
+                <form:hidden path="vote" />
+                <c:forEach var="id" items="${filtroSeen.generoIds}">
+                    <input type="hidden" name="generoIds" value="${id}" />
+                </c:forEach>
+                <button type="submit" class="scroll-btn" id="scroll-up">↑</button>
+            </form:form>
+        </div>
+
+        <!-- Formulario para ordenar DESC -->
+        <div class="table-controls">
+            <form:form method="post" action="/desc" modelAttribute="filtroSeen">
+                <form:hidden path="year" />
+                <form:hidden path="vote" />
+                <c:forEach var="id" items="${filtroSeen.generoIds}">
+                    <input type="hidden" name="generoIds" value="${id}" />
+                </c:forEach>
+                <button type="submit" class="scroll-btn" id="scroll-down">↓</button>
+            </form:form>
+        </div>
+
 
         <!-- Tabla de películas vistas -->
         <div class="table-wrapper table-wrapper-scroll-left">
@@ -98,8 +110,8 @@
                     </table>
                 </div>
             </form>
-       </div>
+        </div>
 
-        <jsp:include page="footer.jsp"/>
+     <jsp:include page="footer.jsp"/>
 </body>
 </html>
