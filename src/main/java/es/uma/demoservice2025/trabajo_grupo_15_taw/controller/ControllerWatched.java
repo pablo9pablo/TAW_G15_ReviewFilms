@@ -3,12 +3,12 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.SeenRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Vista;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class ControllerWatched {
 
     @Autowired
     protected GenreRepository genreRepository;
+
+    @Autowired
+    protected UsuarioRepository usuarioRepository;
 
     @GetMapping("/watched")
     public String doListarWatched(Model model) {
@@ -71,6 +75,8 @@ public class ControllerWatched {
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMoviesGenre", relatedMoviesGenre);
         model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
+        model.addAttribute("id",id);
+        model.addAttribute("vista",new Vista());
 
         return "VerPeliculaWatched";
 
@@ -92,7 +98,27 @@ public class ControllerWatched {
             relatedMoviesProductionCompany.addAll(this.movieRepository.findMoviesByProductionCompany(productionCompany.getId(), id));
         }
         return relatedMoviesProductionCompany;
+
     }
+
+        /*
+         *----------------------------QUITAR COMO VISTA----------------------------------------------------------*
+         */
+
+    @PostMapping("/quitarComoVista")
+    public String quitarDeVistas(@ModelAttribute("vista") Vista vista, Principal principal) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        Seen seen = seenRepository.findByUserIdAndMovieId(user.getId(), vista.getIdMovie());
+
+        if (seen != null) {
+            seenRepository.delete(seen);
+        }
+
+        return "redirect:/watched";
+    }
+
 
     /*
      *----------------------------------FILTRADO--------------------------------------------------------*

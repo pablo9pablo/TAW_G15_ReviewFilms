@@ -1,3 +1,5 @@
+<%@ taglib prefix="method" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
@@ -8,7 +10,6 @@
     Set<Review> reviews = movie.getReviews();
     Set<Movie> relatedMoviesGenre = (Set<Movie>) request.getAttribute("relatedMoviesGenre");
     Set<Movie> relatedMoviesProductionCompany = (Set<Movie>) request.getAttribute("relatedMoviesProductionCompany");
-
 
 %>
 
@@ -33,6 +34,15 @@
             </div>
         </div>
         <div class="right-panel">
+            <%
+                String error = (String) session.getAttribute("error");
+                if (error != null) {
+            %>
+            <p style="color:red"><%= error %></p>
+            <%
+                    session.removeAttribute("error");
+                }
+            %>
 
             <h1><%= movie.getTitle() %>
                 <span class="rating-box"><%= movie.getVoteAverage() != null ? movie.getVoteAverage() : "–" %>/10</span>
@@ -144,14 +154,13 @@
             <% } %>
         </div>
 
-        <form  method="post" action="/marcarComoVista" class="watched-button-form">
-            <input type="hidden" name="id" value="<%= movie.getId() %>">
-            <button type="submit" class="watched-button">
-                &#128065;
-            </button>
-        </form>
 
-
+        <!-- MARCAR COMO VISTA UNA PELÍCULA -->
+        <form:form method="post" action="/marcarComoVista" modelAttribute="vista" class="watched-button-form">
+            <form:input path="idMovie" type="hidden" value="${id}" />
+            <form:button>Seen</form:button>
+        </form:form>
+        <!------------------------------------------>
     </div>
 
     <jsp:include page="footer.jsp"/>

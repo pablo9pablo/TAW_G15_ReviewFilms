@@ -6,6 +6,8 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Vista;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -86,6 +89,8 @@ public class ControllerMovie {
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMoviesGenre", relatedMoviesGenre);
         model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
+        model.addAttribute("vista", new Vista());
+        model.addAttribute("id",id);
 
         return "VerPelicula";
 
@@ -219,26 +224,40 @@ public class ControllerMovie {
         return relatedMoviesProductionCompany;
     }
 
+    /*
+     *----------------------------MARCAR COMO VISTA----------------------------------------------------------*
+     */
+
     @PostMapping("/marcarComoVista")
-    public String addToWatched(@RequestParam("id") Integer movieId, HttpSession session) {
+    public String addToWatched(@ModelAttribute("vista") Vista vista, HttpSession session, Principal principal, Model model) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
 
+        SeenId seenId = new SeenId();
+        seenId.setMovieId(vista.getIdMovie());
+        seenId.setUserId(user.getId());
 
-        User user = (User) session.getAttribute("user");
+        boolean alreadySeen = seenRepository.existsById(seenId);
+
+        if (alreadySeen) {
+
+            session.setAttribute("error", "La película fue marcada como vista anteriormente");
+            return "redirect:/viewmovie?id=" + vista.getIdMovie();
+        }
 
         Seen seen = new Seen();
-        SeenId seenId = new SeenId();
+        Movie movie = movieRepository.findById(vista.getIdMovie()).orElse(null);
+        if (movie != null) {
+            seen.setMovie(movie);
+            seen.setId(seenId);
+            seen.setUser(user);
 
-        Integer userId = user.getId();
-        seenId.setMovieId(movieId);
-        seenId.setUserId(userId);
+            seenRepository.save(seen);
+        }
 
-        seen.setId(seenId);
-
-
-        this.seenRepository.save(seen);
-
-        return "VerPelicula";
+        return "redirect:/viewmovie?id=" + vista.getIdMovie();
     }
+
 
 
     /*
