@@ -1,4 +1,3 @@
-<%@ taglib prefix="method" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
@@ -11,13 +10,14 @@
     Set<Movie> relatedMoviesGenre = (Set<Movie>) request.getAttribute("relatedMoviesGenre");
     Set<Movie> relatedMoviesProductionCompany = (Set<Movie>) request.getAttribute("relatedMoviesProductionCompany");
 
+    boolean isAdmin = true; //permisos
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title><%= movie.getTitle() %></title>
-    <link rel="stylesheet" type="text/css" href="/css/VerPeliculaEstilo.css">
+    <link rel="stylesheet" type="text/css" href="/css/VerPeliculaWatched.css">
 </head>
 <body>
 <div class="page-container">
@@ -34,15 +34,6 @@
             </div>
         </div>
         <div class="right-panel">
-            <%
-                String error = (String) session.getAttribute("error");
-                if (error != null) {
-            %>
-            <p style="color:red"><%= error %></p>
-            <%
-                    session.removeAttribute("error");
-                }
-            %>
 
             <h1><%= movie.getTitle() %>
                 <span class="rating-box"><%= movie.getVoteAverage() != null ? movie.getVoteAverage() : "–" %>/10</span>
@@ -57,7 +48,6 @@
             <div class="movie-info">
                 <p><%= movie.getOverview() %></p>
             </div>
-
 
             <!-- Sección de recomendaciones por género -->
             <% if (!relatedMoviesGenre.isEmpty()) { %>
@@ -103,69 +93,24 @@
                     <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
                 </div>
             </div>
-            <% } %>
-
-            <div class="reviews">
-                <h3>Reviews (<%=reviews.size()%>)</h3>
-
-                <form action="/newreview" method="post">
-                    <input type="hidden" name="movieId" value="<%= movie.getId() %>"/>
-                    <input type="hidden" name="rating" id="rating" required>
-
-                    <textarea name="comment" placeholder="Write a review" rows="2" cols="60"></textarea><br/>
-
-                    <div class="star-rating">
-                        <% for (int i = 1; i <= 5; i++) { %>
-                            <span class="star" data-value="<%= i * 2 %>">&#9733;</span>
-                        <% } %>
-                    </div>
-                    <br/>
-                    <input type="submit" value="Añadir review"/>
-                </form>
-
-                    <% for (Review review : reviews) {
-                            int score = review.getRating();
-                            String scoreClass = score >= 8 ? "score-green" : score >= 5 ? "score-yellow" : "score-red";
-                        %>
-                        <div class="review">
-                            <span class="review-score <%= scoreClass %>"><%= score %>/10</span>
-                            <p><strong><%= review.getUser().getEmail() %>:</strong></p>
-                            <p><%= review.getDescription() %></p>
-                        </div>
-                    <% } %>
-
-            </div>
 
             <%
-                boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
+
+               }
+
             %>
 
-            <% if (isAdmin) { %>
-            <div class="actions">
-                <form action="<%= request.getContextPath() %>/editmovie" method="post">
-                    <input type="hidden" name="id" value="<%= movie.getId() %>">
-                    <input type="submit" value="Modificar Película">
-                </form>
-                <a href="<%= request.getContextPath() %>/deletemovie?id=<%= movie.getId() %>"
-                   onclick="return confirm('¿Está seguro de que quiere borrar la película <%= movie.getTitle() %>?')">
-                    Borrar
-                </a>
-            </div>
-            <% } %>
         </div>
-
-
-        <!-- MARCAR COMO VISTA UNA PELÍCULA -->
-        <form:form method="post" action="/marcarComoVista" modelAttribute="vista" class="watched-button-form">
+        <!--QUITAR COMO VISTA UNA PELICULA-->
+        <form:form method="post" action="/quitarComoVista" modelAttribute="vista" class="watched-button-form">
             <form:input path="idMovie" type="hidden" value="${id}" />
-            <form:button>Seen</form:button>
+            <form:button>Not Seen</form:button>
         </form:form>
-        <!------------------------------------------>
+        <!----------------------------------->
     </div>
-
     <jsp:include page="footer.jsp"/>
-
 </div>
 <script src="/js/VerPeliculaScript.js"></script>
+
 </body>
 </html>

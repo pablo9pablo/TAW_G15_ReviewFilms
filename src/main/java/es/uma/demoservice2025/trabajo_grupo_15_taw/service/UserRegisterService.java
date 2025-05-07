@@ -27,4 +27,9 @@ public class UserRegisterService {
         }
     }
 
+
+    public boolean emailYaExiste(String email) {
+        return repo.existsByEmail(email);
+    }
+
 }

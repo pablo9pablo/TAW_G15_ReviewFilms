@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -66,4 +67,35 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Review> reviews;
+
+    @ManyToMany(mappedBy = "favorites")
+    private Set<User> usersfavorites = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MovieCast> movieCasts = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "movie_genre",
+            joinColumns = @JoinColumn(name = "MOVIE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "GENRE_ID"))
+    private Set<Genre> genres = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "movie_keyword",
+            joinColumns = @JoinColumn(name = "MOVIE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "KEYWORD_ID"))
+    private Set<Keyword> keywords = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "movie_production_company",
+            joinColumns = @JoinColumn(name = "MOVIE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCTION_COMPANY_ID"))
+    private Set<ProductionCompany> productionCompanies = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "movies")
+    private Set<User> usersseen = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "watchlist")
+    private Set<User> users = new LinkedHashSet<>();
+
 }

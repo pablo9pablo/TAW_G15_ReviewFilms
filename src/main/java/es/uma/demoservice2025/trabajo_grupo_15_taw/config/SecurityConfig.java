@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -13,8 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 @Configuration
+@EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig {
 
@@ -25,13 +29,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login", "/Register","/AddUser","/signin", "/WEB-INF/view/**").permitAll()
+                        .requestMatchers("/login", "/register","/signin", "/WEB-INF/view/**", "/css/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/signin")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/", true)
+                ).logout(logout -> logout
+                        .logoutUrl("/logout") // URL de logout
+                        .logoutSuccessUrl("/signin") // Redirección después del logout
+                        .invalidateHttpSession(true) // Invalidar la sesión
+                        .clearAuthentication(true) // Limpiar la autenticación
+                        .deleteCookies("JSESSIONID") // Eliminar cookies
                 )
                 .csrf(AbstractHttpConfigurer::disable); // ⚠️ Solo para pruebas
 

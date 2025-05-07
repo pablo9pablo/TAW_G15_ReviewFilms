@@ -6,6 +6,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,9 +62,9 @@ public class ControllerReview {
 
         if (reviews != null && !reviews.isEmpty()) {
             double avg = reviews.stream()
-                                .mapToInt(Review::getRating)
-                                .average()
-                                .orElse(0); //para obtener la media
+                    .mapToInt(Review::getRating)
+                    .average()
+                    .orElse(0); //para obtener la media
 
             movie.setVoteAverage(BigDecimal.valueOf(avg)
                     .setScale(1, RoundingMode.HALF_UP)); //para que el redondeo sea de un decimal y que redondee hacia arriba
@@ -74,3 +75,5 @@ public class ControllerReview {
         return "redirect:/viewmovie?id=" + movieId;
     }
 }
+
+
