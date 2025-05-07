@@ -2,7 +2,6 @@
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Set" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Actor" %>
 

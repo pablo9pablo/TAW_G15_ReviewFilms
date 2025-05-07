@@ -326,7 +326,7 @@ CREATE TABLE `review` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `MOVIE_ID` int NOT NULL,
   `USER_ID` int NOT NULL,
-  `description` tinytext,
+  `description` TEXT,
   `RATING` int NOT NULL,
   `DATE` date NOT NULL,
   PRIMARY KEY (`ID`),

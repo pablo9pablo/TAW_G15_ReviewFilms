@@ -1,4 +1,3 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
@@ -17,7 +16,9 @@
 <html>
 <head>
     <title><%= movie.getTitle() %></title>
-    <link rel="stylesheet" type="text/css" href="/css/VerPeliculaWatched.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/VerPeliculaWatched.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
 </head>
 <body>
 <div class="page-container">
@@ -101,12 +102,6 @@
             %>
 
         </div>
-        <!--QUITAR COMO VISTA UNA PELICULA-->
-        <form:form method="post" action="/quitarComoVista" modelAttribute="vista" class="watched-button-form">
-            <form:input path="idMovie" type="hidden" value="${id}" />
-            <form:button>Not Seen</form:button>
-        </form:form>
-        <!----------------------------------->
     </div>
     <jsp:include page="footer.jsp"/>
 </div>

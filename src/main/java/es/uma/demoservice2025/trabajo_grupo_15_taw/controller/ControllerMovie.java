@@ -6,8 +6,6 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Vista;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,15 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class ControllerMovie {
@@ -89,14 +84,12 @@ public class ControllerMovie {
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMoviesGenre", relatedMoviesGenre);
         model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
-        model.addAttribute("vista", new Vista());
-        model.addAttribute("id",id);
 
         return "VerPelicula";
 
     }
 
-    @PostMapping("/editmovie")
+    @GetMapping("/editmovie")
     public String crearMovie(@RequestParam(value = "id", defaultValue = "-1") Integer id,
                              Model model) {
 
@@ -193,17 +186,6 @@ public class ControllerMovie {
         return "redirect:/";
     }
 
-//    @PostMapping("/editmovie")
-//    public String editarPelicula(@RequestParam(value = "id", required = false) Integer id,
-//                                 Model model,
-//                                 HttpSession session) {
-//
-//        //FALTA: Comprobacion de q este autenticado y de q tenga rol de editor
-//        Movie movie = movieRepository.findById(id).orElse(null);
-//        model.addAttribute("movie", movie);
-//
-//        return "VerPelicula";
-//    }
 
     // Métodos auxiliares para la recomendación de películas
     public Set<Movie> relatedMoviesGenre(List<Genre> genres, Integer id) {
@@ -224,40 +206,26 @@ public class ControllerMovie {
         return relatedMoviesProductionCompany;
     }
 
-    /*
-     *----------------------------MARCAR COMO VISTA----------------------------------------------------------*
-     */
-
     @PostMapping("/marcarComoVista")
-    public String addToWatched(@ModelAttribute("vista") Vista vista, HttpSession session, Principal principal, Model model) {
-        String email = principal.getName();
-        User user = usuarioRepository.findByEmail(email);
+    public String addToWatched(@RequestParam("id") Integer movieId, HttpSession session) {
 
-        SeenId seenId = new SeenId();
-        seenId.setMovieId(vista.getIdMovie());
-        seenId.setUserId(user.getId());
 
-        boolean alreadySeen = seenRepository.existsById(seenId);
-
-        if (alreadySeen) {
-
-            session.setAttribute("error", "La película fue marcada como vista anteriormente");
-            return "redirect:/viewmovie?id=" + vista.getIdMovie();
-        }
+        User user = (User) session.getAttribute("user");
 
         Seen seen = new Seen();
-        Movie movie = movieRepository.findById(vista.getIdMovie()).orElse(null);
-        if (movie != null) {
-            seen.setMovie(movie);
-            seen.setId(seenId);
-            seen.setUser(user);
+        SeenId seenId = new SeenId();
 
-            seenRepository.save(seen);
-        }
+        Integer userId = user.getId();
+        seenId.setMovieId(movieId);
+        seenId.setUserId(userId);
 
-        return "redirect:/viewmovie?id=" + vista.getIdMovie();
+        seen.setId(seenId);
+
+
+        this.seenRepository.save(seen);
+
+        return "VerPelicula";
     }
-
 
 
     /*
