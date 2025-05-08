@@ -56,7 +56,7 @@
 
                 <!-- Formulario para ordenar ASC -->
                 <div class="table-controls">
-                    <form:form method="post" action="/asc" modelAttribute="filtroSeen">
+                    <form:form method="post" action="/ascSeen" modelAttribute="filtroSeen">
                         <form:hidden path="year" />
                         <form:hidden path="vote" />
                         <c:forEach var="id" items="${filtroSeen.generoIds}">
@@ -68,7 +68,7 @@
 
                 <!-- Formulario para ordenar DESC -->
                 <div class="table-controls">
-                    <form:form method="post" action="/desc" modelAttribute="filtroSeen">
+                    <form:form method="post" action="/descSeen" modelAttribute="filtroSeen">
                         <form:hidden path="year" />
                         <form:hidden path="vote" />
                         <c:forEach var="id" items="${filtroSeen.generoIds}">

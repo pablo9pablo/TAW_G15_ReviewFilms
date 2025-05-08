@@ -192,12 +192,12 @@ public class ControllerWatched {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, null);
     }
 
-    @PostMapping("/asc")
+    @PostMapping("/ascSeen")
     public String doFiltrarAsc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "asc");
     }
 
-    @PostMapping("/desc")
+    @PostMapping("/descSeen")
     public String doFiltrarDesc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "desc");
     }
