@@ -98,8 +98,8 @@
                                 %>
                                 <tr>
                                     <td>
-                                        <a href="/viewmovie?id=<%=movie.getMovie().getId()%>">
-                                            <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
+                                        <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeWatched=true">
+                                        <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
                                         </a>
 
                                     </td>

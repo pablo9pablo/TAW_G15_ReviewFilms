@@ -156,14 +156,21 @@
         </div>
 
         <!-- MARCAR COMO VISTA UNA PELÍCULA -->
+        <%
+            String desdeWatched = request.getParameter("desdeWatched");
+            boolean ocultarBotonVista = "true".equals(desdeWatched);
+        %>
+
+        <% if (!ocultarBotonVista) { %>
+
         <form method="post" action="/marcarComoVista" class="watched-button-form">
             <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
             <button type="submit" class="icon-button green-icon" title="Marcar como vista">
                 <i class="fas fa-eye"></i>
             </button>
         </form>
-
-        <!------------------------------------------>
+        <% } %>
+        <!----------------------------------------->
 
     </div>
 
