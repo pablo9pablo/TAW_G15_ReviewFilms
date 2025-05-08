@@ -101,9 +101,9 @@ public class ControllerWatched {
 
     }
 
-        /*
-         *----------------------------QUITAR COMO VISTA----------------------------------------------------------*
-         */
+    /*
+     *----------------------------QUITAR COMO VISTA----------------------------------------------------------*
+     */
 
     @PostMapping("/quitarComoVista")
     public String quitarDeVistas(@ModelAttribute("vista") Vista vista, Principal principal) {
@@ -118,7 +118,6 @@ public class ControllerWatched {
 
         return "redirect:/watched";
     }
-
 
     /*
      *----------------------------------FILTRADO--------------------------------------------------------*

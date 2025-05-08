@@ -35,6 +35,16 @@
         </div>
         <div class="right-panel">
 
+            <%
+                String error = (String) session.getAttribute("error");
+                if (error != null) {
+            %>
+            <p style="color:red"><%= error %></p>
+            <%
+                    session.removeAttribute("error");
+                }
+            %>
+
             <h1><%= movie.getTitle() %>
                 <span class="rating-box"><%= movie.getVoteAverage() != null ? movie.getVoteAverage() + "/10" : "Sin calificacion" %></span>
             </h1>
@@ -144,13 +154,12 @@
             <% } %>
         </div>
 
-        <form  method="post" action="/marcarComoVista" class="watched-button-form">
-            <input type="hidden" name="id" value="<%= movie.getId() %>">
-            <button type="submit" class="watched-button">
-                &#128065;
-            </button>
-        </form>
-
+        <!-- MARCAR COMO VISTA UNA PELÍCULA -->
+        <form:form method="post" action="/marcarComoVista" modelAttribute="vista" class="watched-button-form">
+            <form:input path="idMovie" type="hidden" value="${id}" />
+            <form:button>Seen</form:button>
+        </form:form>
+        <!------------------------------------------>
 
     </div>
 

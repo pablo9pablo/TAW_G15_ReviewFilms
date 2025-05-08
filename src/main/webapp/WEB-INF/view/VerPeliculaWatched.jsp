@@ -1,4 +1,5 @@
 <%@ page import="java.util.Set" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -100,8 +101,13 @@
                }
 
             %>
-
         </div>
+        <!--QUITAR COMO VISTA UNA PELICULA-->
+        <form:form method="post" action="/quitarComoVista" modelAttribute="vista">
+            <form:input path="idMovie" type="hidden" value="${id}" />
+            <form:button>Not Seen</form:button>
+        </form:form>
+        <!----------------------------------->
     </div>
     <jsp:include page="footer.jsp"/>
 </div>
