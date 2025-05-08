@@ -81,3 +81,15 @@
     background-color: #0056b3;
 }
 
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4em;
+    color: #cc0000;
+}
+.icon-button:hover {
+    color: #a30000;
+}
+
+

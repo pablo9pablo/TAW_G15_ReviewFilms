@@ -6,7 +6,6 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Vista;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -86,8 +85,6 @@ public class ControllerMovie {
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMoviesGenre", relatedMoviesGenre);
         model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
-        model.addAttribute("vista", new Vista());
-        model.addAttribute("id",id);
 
         return "VerPelicula";
 
@@ -215,12 +212,12 @@ public class ControllerMovie {
      */
 
     @PostMapping("/marcarComoVista")
-    public String addToWatched(@ModelAttribute("vista") Vista vista, HttpSession session, Principal principal, Model model) {
+    public String addToWatched(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
         String email = principal.getName();
         User user = usuarioRepository.findByEmail(email);
 
         SeenId seenId = new SeenId();
-        seenId.setMovieId(vista.getIdMovie());
+        seenId.setMovieId(idMovie);
         seenId.setUserId(user.getId());
 
         boolean alreadySeen = seenRepository.existsById(seenId);
@@ -228,11 +225,11 @@ public class ControllerMovie {
         if (alreadySeen) {
 
             session.setAttribute("error", "La película fue marcada como vista anteriormente");
-            return "redirect:/viewmovie?id=" + vista.getIdMovie();
+            return "redirect:/viewmovie?id=" + idMovie;
         }
 
         Seen seen = new Seen();
-        Movie movie = movieRepository.findById(vista.getIdMovie()).orElse(null);
+        Movie movie = movieRepository.findById(idMovie).orElse(null);
         if (movie != null) {
             seen.setMovie(movie);
             seen.setId(seenId);
@@ -241,7 +238,7 @@ public class ControllerMovie {
             seenRepository.save(seen);
         }
 
-        return "redirect:/viewmovie?id=" + vista.getIdMovie();
+        return "redirect:/viewmovie?id=" + idMovie ;
     }
 
     /*

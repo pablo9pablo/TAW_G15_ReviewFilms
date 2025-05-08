@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/VerPeliculaEstilo.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <div class="page-container">
@@ -155,10 +156,13 @@
         </div>
 
         <!-- MARCAR COMO VISTA UNA PELÍCULA -->
-        <form:form method="post" action="/marcarComoVista" modelAttribute="vista" class="watched-button-form">
-            <form:input path="idMovie" type="hidden" value="${id}" />
-            <form:button>Seen</form:button>
-        </form:form>
+        <form method="post" action="/marcarComoVista" class="watched-button-form">
+            <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
+            <button type="submit" class="icon-button green-icon" title="Marcar como vista">
+                <i class="fas fa-eye"></i>
+            </button>
+        </form>
+
         <!------------------------------------------>
 
     </div>

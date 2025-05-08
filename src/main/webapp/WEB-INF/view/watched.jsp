@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/tablasComunes.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <%
     List<Genre> genreList = (List<Genre>) request.getAttribute("genreList");
@@ -78,10 +79,8 @@
                     </form:form>
                 </div>
 
-
                 <!-- Tabla de películas vistas -->
                 <div class="table-wrapper table-wrapper-scroll-left">
-                    <form>
                         <div class="content">
                             <table class="movie-table">
                                 <thead>
@@ -90,6 +89,7 @@
                                     <th>Título</th>
                                     <th>Duración</th>
                                     <th>Calificación Media</th>
+                                    <th>Desmarcar como Vista</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -98,13 +98,25 @@
                                 %>
                                 <tr>
                                     <td>
-                                        <a href="/viewmovieSeen?id=<%=movie.getMovie().getId()%>">
+                                        <a href="/viewmovie?id=<%=movie.getMovie().getId()%>">
                                             <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
                                         </a>
+
                                     </td>
                                     <td><%= movie.getMovie().getOriginalTitle() %></td>
                                     <td><%= movie.getMovie().getRuntime()%> min</td>
                                     <td><%= movie.getMovie().getVoteAverage() %></td>
+                                    <td>
+                                        <!--QUITAR COMO VISTA UNA PELICULA-->
+                                        <form method="post" action="/quitarComoVista" class="watched-button-form">
+                                            <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                            <button type="submit" class="icon-button" title="Desmarcar como vista">
+                                                <i class="fas fa-eye-slash"></i>
+                                            </button>
+                                        </form>
+
+                                        <!----------------------------------->
+                                    </td>
                                 </tr>
                                 <%
                                     }
@@ -112,7 +124,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </form>
                 </div>
             </div>
         <jsp:include page="footer.jsp"/>
