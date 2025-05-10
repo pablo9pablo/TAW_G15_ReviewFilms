@@ -48,6 +48,9 @@ public class ControllerMovie {
     @Autowired
     protected MovieCastRepository movieCast;
 
+    @Autowired
+    protected WatchlistRepository watchlistRepository;
+
 
 
     @GetMapping("/")
@@ -238,7 +241,45 @@ public class ControllerMovie {
             seenRepository.save(seen);
         }
 
-        return "redirect:/viewmovie?id=" + idMovie ;
+        return "redirect:/viewmovie?id=" + idMovie;
+
+    }
+
+    /*
+     *----------------------------MARCAR COMO PENDIENTE----------------------------------------------------------*
+     */
+
+    @PostMapping("/pendiente")
+    public String addToPending(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
+
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        WatchlistId watchlistId = new WatchlistId();
+        watchlistId.setMovieId(idMovie);
+        watchlistId.setUserId(user.getId());
+
+        boolean alreadyPending = watchlistRepository.existsById(watchlistId);
+
+        if (alreadyPending) {
+
+            session.setAttribute("error", "La película fue marcada como pendiente anteriormente");
+            return "redirect:/viewmovie?id=" + idMovie;
+        }
+
+        Watchlist watchlist= new Watchlist();
+        Movie movie = movieRepository.findById(idMovie).orElse(null);
+
+        if (movie != null) {
+            watchlist .setMovie(movie);
+            watchlist.setId(watchlistId);
+            watchlist.setUser(user);
+
+            watchlistRepository.save(watchlist);
+        }
+
+        return "redirect:/viewmovie?id=" + idMovie;
+
     }
 
     /*

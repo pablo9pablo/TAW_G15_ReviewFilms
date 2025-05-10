@@ -36,9 +36,12 @@ public class ControllerWatched {
     protected UsuarioRepository usuarioRepository;
 
     @GetMapping("/watched")
-    public String doListarWatched(Model model) {
+    public String doListarWatched(Model model,Principal principal) {
 
-        List<Seen> seenMovies = this.seenRepository.findAll();
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        List<Seen>seenMovies = this.seenRepository.findByUserId(user.getId());
         model.addAttribute("seenMovies", seenMovies);
 
         List<Genre> genreList = this.genreRepository.findAll();

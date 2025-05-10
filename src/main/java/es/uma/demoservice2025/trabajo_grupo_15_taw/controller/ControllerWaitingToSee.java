@@ -1,9 +1,11 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.WatchlistRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Watchlist;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -28,11 +32,16 @@ public class ControllerWaitingToSee {
     @Autowired
     protected GenreRepository genreRepository;
 
+    @Autowired
+    protected UsuarioRepository usuarioRepository;
+
 
     @GetMapping("/waiting")
-    public String doListarWaitingToSee(Model model) {
+    public String doListarWaitingToSee(Model model, Principal principal) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
 
-        List<Watchlist>watchlistList=this.watchlistRepository.findAll();
+        List<Watchlist>watchlistList = this.watchlistRepository.findByUserId(user.getId());
         model.addAttribute("watchlistList", watchlistList);
 
         List<Genre> genreList = this.genreRepository.findAll();
@@ -41,6 +50,22 @@ public class ControllerWaitingToSee {
         model.addAttribute("filtroWaitingToSee", new Filtro());
 
         return "waitingToSee";
+    }
+
+
+    /*
+     *----------------------------QUITAR COMO VISTA----------------------------------------------------------*
+     */
+
+    @PostMapping("/quitarComoPendiente")
+    public String quitarDeVistas(@RequestParam("idMovie") Integer idMovie, Principal principal) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        Watchlist watchlist = watchlistRepository.findByUserIdAndMovieId(user.getId(), idMovie);
+        watchlistRepository.delete(watchlist);
+
+        return "redirect:/waiting";
     }
 
     /*

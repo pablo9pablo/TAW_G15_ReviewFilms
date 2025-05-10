@@ -1,9 +1,6 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.SeenId;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface SeenRepository extends JpaRepository<Seen,SeenId> {
+
+    // Devuelve las películas de la watchlist del usuario
+    List<Seen>findByUserId(Integer userId);
 
     //Filtrado con genero
     @Query("SELECT s FROM Seen s " +

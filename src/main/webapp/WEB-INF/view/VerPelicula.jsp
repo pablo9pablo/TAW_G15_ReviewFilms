@@ -155,22 +155,35 @@
             <% } %>
         </div>
 
-        <!-- MARCAR COMO VISTA UNA PELÍCULA -->
         <%
             String desdeWatched = request.getParameter("desdeWatched");
-            boolean ocultarBotonVista = "true".equals(desdeWatched);
+            String desdeWaitingToSee = request.getParameter("desdeWaitingToSee");
+
+            boolean ocultarBotones = "true".equals(desdeWatched) || "true".equals(desdeWaitingToSee);
         %>
 
-        <% if (!ocultarBotonVista) { %>
-
+        <%
+            if (!ocultarBotones) {
+        %>
+        <!-- Botón "Marcar como vista" -->
         <form method="post" action="/marcarComoVista" class="watched-button-form">
             <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
             <button type="submit" class="icon-button green-icon" title="Marcar como vista">
                 <i class="fas fa-eye"></i>
             </button>
         </form>
-        <% } %>
-        <!----------------------------------------->
+
+        <!-- Botón "Marcar como pendiente" -->
+        <form method="post" action="/pendiente" class="watched-button-form">
+            <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
+            <button type="submit" class="icon-button brown-icon" title="Marcar como pendiente">
+                <i class="fas fa-hourglass-half"></i>
+            </button>
+        </form>
+        <%
+           }
+        %>
+
 
     </div>
 
