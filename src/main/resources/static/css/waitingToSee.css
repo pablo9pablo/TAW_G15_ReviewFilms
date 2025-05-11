@@ -85,3 +85,18 @@
     color: red;
     font-size: 1em;
 }
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4em;
+}
+
+.green-icon {
+    color: #28a745;
+}
+
+.green-icon:hover {
+    color: #1e7e34;
+}

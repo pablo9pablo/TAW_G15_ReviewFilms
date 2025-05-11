@@ -1,13 +1,9 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.WatchlistRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Watchlist;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +31,12 @@ public class ControllerWaitingToSee {
     @Autowired
     protected UsuarioRepository usuarioRepository;
 
+    @Autowired
+    protected SeenRepository seenRepository;
+
+    @Autowired
+    protected MovieRepository movieRepository;
+
 
     @GetMapping("/waiting")
     public String doListarWaitingToSee(Model model, Principal principal) {
@@ -54,10 +56,10 @@ public class ControllerWaitingToSee {
 
 
     /*
-     *----------------------------QUITAR COMO VISTA----------------------------------------------------------*
+     *----------------------------ELIMINAR DE LA LISTA DE PENDIENTE ----------------------------------------------------------*
      */
 
-    @PostMapping("/quitarComoPendiente")
+    @PostMapping("/eliminarDePendiente")
     public String quitarDeVistas(@RequestParam("idMovie") Integer idMovie, Principal principal) {
         String email = principal.getName();
         User user = usuarioRepository.findByEmail(email);
@@ -67,6 +69,36 @@ public class ControllerWaitingToSee {
 
         return "redirect:/waiting";
     }
+
+    /*
+     *----------------------------MARCAR COMO VISTA----------------------------------------------------------*
+     */
+
+    @PostMapping("/marcarComoVistaDesdePendiente")
+    public String addToWatched(@RequestParam("idMovie") Integer idMovie, Principal principal) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        SeenId seenId = new SeenId();
+        seenId.setMovieId(idMovie);
+        seenId.setUserId(user.getId());
+
+        Movie movie = movieRepository.findById(idMovie).orElse(null);
+
+            Seen seen = new Seen();
+            seen.setMovie(movie);
+            seen.setId(seenId);
+            seen.setUser(user);
+
+            seenRepository.save(seen);
+
+        Watchlist watchlist = watchlistRepository.findByUserIdAndMovieId(user.getId(), idMovie);
+
+        watchlistRepository.delete(watchlist);
+
+        return "redirect:/waiting";
+    }
+
 
     /*
      *----------------------------------FILTRADO--------------------------------------------------------*

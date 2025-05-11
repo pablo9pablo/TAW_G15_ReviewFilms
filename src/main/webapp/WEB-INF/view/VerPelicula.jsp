@@ -165,7 +165,7 @@
         <%
             if (!ocultarBotones) {
         %>
-        <!-- Botón "Marcar como vista" -->
+        <!-- MARCAR  UNA PELICULA COMO VISTA -->
         <form method="post" action="/marcarComoVista" class="watched-button-form">
             <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
             <button type="submit" class="icon-button green-icon" title="Marcar como vista">
@@ -173,7 +173,7 @@
             </button>
         </form>
 
-        <!-- Botón "Marcar como pendiente" -->
+        <!-- MARCAR UNA PELICULA COMO PENDIENTE -->
         <form method="post" action="/pendiente" class="watched-button-form">
             <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
             <button type="submit" class="icon-button brown-icon" title="Marcar como pendiente">

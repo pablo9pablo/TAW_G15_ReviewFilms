@@ -213,7 +213,6 @@ public class ControllerMovie {
     /*
      *----------------------------MARCAR COMO VISTA----------------------------------------------------------*
      */
-
     @PostMapping("/marcarComoVista")
     public String addToWatched(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
         String email = principal.getName();
@@ -226,24 +225,29 @@ public class ControllerMovie {
         boolean alreadySeen = seenRepository.existsById(seenId);
 
         if (alreadySeen) {
-
             session.setAttribute("error", "La película fue marcada como vista anteriormente");
             return "redirect:/viewmovie?id=" + idMovie;
         }
 
-        Seen seen = new Seen();
         Movie movie = movieRepository.findById(idMovie).orElse(null);
-        if (movie != null) {
+
+            Seen seen = new Seen();
             seen.setMovie(movie);
             seen.setId(seenId);
             seen.setUser(user);
-
             seenRepository.save(seen);
-        }
+
+            Watchlist watchlist = watchlistRepository.findByUserIdAndMovieId(user.getId(), idMovie);
+            if (watchlist != null) {
+                session.setAttribute("error", "La película fue marcada como pendiente anteriormente, a continuación se marcará como vista");
+                watchlistRepository.delete(watchlist);
+            }
+
+            watchlistRepository.delete(watchlist);
 
         return "redirect:/viewmovie?id=" + idMovie;
-
     }
+
 
     /*
      *----------------------------MARCAR COMO PENDIENTE----------------------------------------------------------*
@@ -251,7 +255,6 @@ public class ControllerMovie {
 
     @PostMapping("/pendiente")
     public String addToPending(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
-
         String email = principal.getName();
         User user = usuarioRepository.findByEmail(email);
 
@@ -262,25 +265,35 @@ public class ControllerMovie {
         boolean alreadyPending = watchlistRepository.existsById(watchlistId);
 
         if (alreadyPending) {
-
             session.setAttribute("error", "La película fue marcada como pendiente anteriormente");
             return "redirect:/viewmovie?id=" + idMovie;
         }
 
-        Watchlist watchlist= new Watchlist();
         Movie movie = movieRepository.findById(idMovie).orElse(null);
 
-        if (movie != null) {
-            watchlist .setMovie(movie);
+            Watchlist watchlist = new Watchlist();
+            watchlist.setMovie(movie);
             watchlist.setId(watchlistId);
             watchlist.setUser(user);
-
             watchlistRepository.save(watchlist);
-        }
+
+            SeenId seenId = new SeenId();
+            seenId.setMovieId(idMovie);
+            seenId.setUserId(user.getId());
+
+            boolean alreadySeen = seenRepository.existsById(seenId);
+            if (alreadySeen) {
+                session.setAttribute("error", "La película fue marcada como vista anteriormente, a continuación se marcará como pendiente");
+                seenRepository.deleteById(seenId);
+            }
+
+            if (seenRepository.existsById(seenId)) {
+                seenRepository.deleteById(seenId);
+            }
 
         return "redirect:/viewmovie?id=" + idMovie;
-
     }
+
 
     /*
      *---------------------------- BUSQUEDA----------------------------------------------------------*
