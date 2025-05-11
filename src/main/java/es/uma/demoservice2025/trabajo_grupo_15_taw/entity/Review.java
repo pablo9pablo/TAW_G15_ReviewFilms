@@ -30,7 +30,7 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "USER_ID", nullable = false)
-    private es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User user;
+    private User user;
 
     @Lob
     @Column(name = "DESCRIPTION")

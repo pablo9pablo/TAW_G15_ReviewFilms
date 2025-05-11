@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -98,4 +99,8 @@ public class Movie {
     @ManyToMany(mappedBy = "watchlist")
     private Set<User> users = new LinkedHashSet<>();
 
+    public BigDecimal calcularMedia(){
+        double avg = reviews.stream().mapToInt(Review::getRating).average().orElse(0);
+        return BigDecimal.valueOf(avg).setScale(1, RoundingMode.HALF_UP);
+    }
 }

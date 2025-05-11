@@ -20,10 +20,9 @@
         <jsp:include page="logout.jsp"/>
 
         <div class="page-content">
-            <h2 style="margin-left: 50px;">Total reviews: <%= request.getAttribute("reviewCount") %></h2>
+            <h2>Total reviews: <%=(reviews != null) ? reviews.size() : "0" %></h2>
 
             <div class="table-wrapper table-wrapper-scroll-left">
-                <div class="content">
                     <table class="movie-table">
                         <%
                             if (reviews != null && !reviews.isEmpty()) {
@@ -33,24 +32,26 @@
                             <td>
                                 <img src="<%= review.getMovie().getImageUrl() %>" alt="Portada" class="thumbnail">
                             </td>
-                            <td>
+                            <td class="descripcion-column">
                                 <strong><%= review.getMovie().getTitle() %></strong><br>
                                 <div class="descripcion-box">
                                     <span><%=review.getDescription()%></span>
                                 </div>
                             </td>
                             <td>
-                                <%= review.getRating() %> ⭐
+                                <%=review.getRating()%> ⭐
                             </td>
                             <td>
-                                <!--EDITAR REVIEW-------------------------------------------------->
-                                <a href="/editReview?id=<%= review.getId() %>">✏️</a>
+                                <div class="actions-container">
+                                    <!--EDITAR REVIEW-------------------------------------------------->
+                                    <a href="/editReview?id=<%=review.getId()%>" class="edit-button">✏️</a>
 
-                                <!--BORRAR REVIEW-------------------------------------------------->
-                                <form action="/deleteReview" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar esta reseña?');">
-                                    <input type="hidden" name="id" value="<%= review.getId() %>">
-                                    <button type="submit" style="background: none; border: none; cursor: pointer;">🗑️</button>
-                                </form>
+                                    <!--BORRAR REVIEW-------------------------------------------------->
+                                    <form action="/deleteReview" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar esta reseña?');">
+                                        <input type="hidden" name="id" value="<%=review.getId()%>">
+                                        <button type="submit" class="delete-button">🗑️</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         <%
@@ -64,7 +65,6 @@
                             }
                         %>
                     </table>
-                </div>
             </div>
         </div>
         <jsp:include page="footer.jsp"/>

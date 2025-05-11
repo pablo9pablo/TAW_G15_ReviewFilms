@@ -2,11 +2,14 @@
 <%@ page import="java.util.Set" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
+<%@ page import="java.util.Optional" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
     Movie movie = (Movie) request.getAttribute("movie");
     Set<Review> reviews = movie.getReviews();
+    Optional<Integer> hasReview = (Optional<Integer>) request.getAttribute("hasReview");
+
     Set<Movie> relatedMoviesGenre = (Set<Movie>) request.getAttribute("relatedMoviesGenre");
     Set<Movie> relatedMoviesProductionCompany = (Set<Movie>) request.getAttribute("relatedMoviesProductionCompany");
 %>
@@ -14,8 +17,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><%= movie.getTitle() %></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/VerPeliculaEstilo.css">
+    <title><%= movie.getTitle() %>
+    </title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/verPelicula.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
 </head>
@@ -28,7 +32,8 @@
         <div class="left-panel">
             <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" width="180"/>
             <div class="movie-meta">
-                <p><strong>Release:</strong> <%= movie.getReleaseDate() %></p>
+                <p><strong>Release:</strong> <%= movie.getReleaseDate() %>
+                </p>
                 <p><strong>Runtime:</strong> <%= movie.getRuntime() %> mins</p>
                 <p><strong>Budget:</strong> <%=movie.getBudget()%>€</p>
             </div>
@@ -36,7 +41,7 @@
         <div class="right-panel">
 
             <h1><%= movie.getTitle() %>
-                <span class="rating-box"><%= movie.getVoteAverage() != null ? movie.getVoteAverage() + "/10" : "Sin calificacion" %></span>
+                <span class="rating-box"><%= movie.getReviews() == null || movie.getReviews().isEmpty() ? "Sin calificacion" : movie.getVoteAverage() + "/10" %></span>
             </h1>
 
             <div class="tabs">
@@ -46,7 +51,8 @@
             </div>
 
             <div class="movie-info">
-                <p><%= movie.getOverview() == null? "No existe resumen de esta película": movie.getOverview()%></p>
+                <p><%= movie.getOverview() == null ? "No existe resumen de esta película" : movie.getOverview()%>
+                </p>
             </div>
 
 
@@ -62,7 +68,8 @@
                         %>
                         <a href="/viewmovie?id=<%= relatedMovie.getId() %>" class="movie-card">
                             <img src="<%= relatedMovie.getImageUrl() %>" alt="<%= relatedMovie.getOriginalTitle() %>">
-                            <p><%= relatedMovie.getOriginalTitle() %></p>
+                            <p><%= relatedMovie.getOriginalTitle() %>
+                            </p>
                         </a>
                         <%
                             }
@@ -85,7 +92,8 @@
                         %>
                         <a href="/viewmovie?id=<%= relatedMovie.getId() %>" class="movie-card">
                             <img src="<%= relatedMovie.getImageUrl() %>" alt="<%= relatedMovie.getOriginalTitle() %>">
-                            <p><%= relatedMovie.getOriginalTitle() %></p>
+                            <p><%= relatedMovie.getOriginalTitle() %>
+                            </p>
                         </a>
                         <%
                             }
@@ -98,34 +106,47 @@
 
             <!--CREAR REVIEW-------------------------------------------------->
             <div class="reviews">
-                <h3>Reviews (<%=reviews.size()%>)</h3>
+                <h3>Crear una nueva review:</h3>
+                <%
+                    if(hasReview.isPresent()){
+                %>
+                        <p class="error-message">Ya has creado una review para esta película.</p>
+                        <a href="/editReview?id=<%=hasReview.get()%>" class="edit-review-button">Editar Review</a>
+                <%
+                    }else{
+                %>
+                        <form:form modelAttribute="reviewUI" method="post" action="/savereview">
+                            <form:hidden path="id"/>
+                            <form:hidden path="movieId"/>
 
-                <form action="/newreview" method="post">
-                    <input type="hidden" name="movieId" value="<%= movie.getId() %>"/>
-                    <input type="hidden" name="rating" id="rating" required>
+                            <p><strong>Descripción:</strong></p>
+                            <form:textarea path="description" rows="3" cols="80" cssClass="review-textarea"
+                                           placeholder="Write a review"/>
 
-                    <textarea name="comment" placeholder="Write a review" rows="2" cols="60"></textarea><br/>
+                            <div class="rating-section">
+                                <p><strong>Rating:</strong></p>
+                                <form:input path="rating" type="number" min="0" max="10" required="true"
+                                            cssClass="rating-input"/>
+                                <span class="stars">⭐ (0-10)</span><br/>
+                            </div>
+                            <form:button>Añadir review</form:button>
+                        </form:form>
+                <%
+                    }
+                %>
+                <h3>Reviews (<%=movie.getVoteCount() == null ? "0" : movie.getVoteCount()%>)</h3>
+                <%
+                    for (Review review : reviews) {
+                    int score = review.getRating();
+                    String scoreClass = score >= 8 ? "score-green" : score >= 5 ? "score-yellow" : "score-red";
+                %>
 
-                    <div class="star-rating">
-                        <% for (int i = 1; i <= 5; i++) { %>
-                            <span class="star" data-value="<%= i * 2 %>">&#9733;</span>
-                        <% } %>
+                    <div class="review">
+                        <span class="review-score <%= scoreClass %>"><%= score %>/10</span>
+                        <p><strong><%= review.getUser().getEmail() %>:</strong></p>
+                        <p><%= review.getDescription() == null ? "" : review.getDescription() %></p>
                     </div>
-                    <br/>
-                    <input type="submit" value="Añadir review"/>
-                </form>
-
-                    <% for (Review review : reviews) {
-                            int score = review.getRating();
-                            String scoreClass = score >= 8 ? "score-green" : score >= 5 ? "score-yellow" : "score-red";
-                    %>
-                        <div class="review">
-                            <span class="review-score <%= scoreClass %>"><%= score %>/10</span>
-                            <p><strong><%= review.getUser().getEmail() %>:</strong></p>
-                            <p><%= review.getDescription() %></p>
-                        </div>
-                    <% } %>
-
+                <% } %>
             </div>
 
             <!--EDITAR MOVIE--------------------------------------------------------->
@@ -144,7 +165,7 @@
             <% } %>
         </div>
 
-        <form  method="post" action="/marcarComoVista" class="watched-button-form">
+        <form method="post" action="/marcarComoVista" class="watched-button-form">
             <input type="hidden" name="id" value="<%= movie.getId() %>">
             <button type="submit" class="watched-button">
                 &#128065;

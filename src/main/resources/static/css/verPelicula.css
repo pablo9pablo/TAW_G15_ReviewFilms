@@ -49,8 +49,11 @@ body {
 
 .review {
     border: 1px solid #ccc;
+    border-radius: 8px;
     padding: 10px;
     margin-top: 10px;
+    width: 70%;
+    background-color: #dcd9d9;
 }
 
 .review-score {
@@ -75,27 +78,37 @@ body {
     color: white;
 }
 
+.review-textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.rating-section {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.stars {
+    font-size: 18px;
+    color: #f39c12;
+}
+
 .actions a {
     margin-right: 10px;
 }
-
-.star-rating {
-    display: inline-block;
-}
-
-.star {
-    font-size: 25px;
-    color: #ccc;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.star.hovered,
-.star.selected {
-    color: gold;
-}
-
-
 
 /* Estilo para el carrusel */
 .carousel-container {
@@ -186,6 +199,34 @@ body {
     padding-left: 20px;
     color: #2c3e50;
 }
+
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid red;
+    background-color: #ffe6e6;
+    border-radius: 5px;
+    width: 70%;
+}
+
+.edit-review-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.edit-review-button:hover {
+    background-color: #202d3a;
+}
+
+
 
 
 

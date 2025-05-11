@@ -1,0 +1,37 @@
+.thumbnail-cell {
+    width: 100px;
+    padding-right: 10px;
+    vertical-align: top;
+}
+
+.year {
+    color: gray;
+}
+
+.review-textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.rating-section {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.stars {
+    font-size: 18px;
+    color: #f39c12;
+}

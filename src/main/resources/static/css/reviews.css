@@ -1,7 +1,25 @@
 .descripcion-box {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal;
+    max-width: 300px;
+}
+
+.movie-table td.descripcion-column {
+    width: auto;
+}
+
+.actions-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-button {
+    text-decoration: none;
 }

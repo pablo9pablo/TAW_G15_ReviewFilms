@@ -6,9 +6,11 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.ReviewUI;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.math.BigDecimal;
@@ -39,13 +42,13 @@ public class ControllerMovie {
     protected SeenRepository seenRepository;
 
     @Autowired
-    protected UsuarioRepository usuarioRepository;
-
-    @Autowired
     protected ActorRepository actorRepository;
 
     @Autowired
     protected MovieCastRepository movieCast;
+
+    @Autowired
+    protected ReviewRepository reviewRepository;
 
 
 
@@ -67,11 +70,18 @@ public class ControllerMovie {
 
     @GetMapping("/viewmovie")
     public String verPelicula(@RequestParam("id") Integer id,
+                              @AuthenticationPrincipal UserPrincipal userPrincipal,
                               Model model) {
+
         Movie movie = movieRepository.findById(id).orElse(null);
 
-        if (movie == null) {
-            return "redirect:/";
+        if (movie == null) return "redirect:/";
+
+        User user = userPrincipal.getUser();
+        Optional<Integer> hasReview = Optional.empty();
+
+        if (user != null){
+            hasReview = reviewRepository.findReviewIdByUserAndMovie(user.getId(), id);
         }
 
         // Listas y conjuntos para las películas recomendadas
@@ -81,9 +91,14 @@ public class ControllerMovie {
         List<ProductionCompany> productionCompanies = this.movieRepository.findProductionCompanyByMovieId(id);
         Set<Movie> relatedMoviesProductionCompany = relatedMoviesProductionCompany(productionCompanies, id);
 
+        ReviewUI reviewUI = new ReviewUI();
+        reviewUI.setMovieId(movie.getId());
+
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMoviesGenre", relatedMoviesGenre);
         model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
+        model.addAttribute("reviewUI", reviewUI);
+        model.addAttribute("hasReview", hasReview);
 
         return "VerPelicula";
 
