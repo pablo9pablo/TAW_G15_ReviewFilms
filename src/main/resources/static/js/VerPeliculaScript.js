@@ -2,6 +2,13 @@ const stars = document.querySelectorAll('.star-rating .star');
 const ratingInput = document.getElementById('rating');
 let selectedValue = 0;
 
+// Configuración del carrusel
+const CAROUSEL_CONFIG = {
+    moviesPerPage: 4,       // Número de películas a mostrar por página
+    scrollBehavior: 'smooth' // Comportamiento del scroll
+};
+
+
 // Event listeners para las estrellas (mantenemos tu código original)
 stars.forEach(star => {
     star.addEventListener('mouseenter', () => {
@@ -32,12 +39,6 @@ stars.forEach(star => {
 });
 
 
-// Configuración del carrusel
-const CAROUSEL_CONFIG = {
-    moviesPerPage: 4,       // Número de películas a mostrar por página
-    scrollBehavior: 'smooth' // Comportamiento del scroll
-};
-
 // Función para inicializar los carruseles
 function initCarousels() {
     document.querySelectorAll('.carousel').forEach(carousel => {
@@ -61,15 +62,21 @@ function initCarousels() {
 }
 // Función modificada para el scroll del carrusel
 function scrollCarousel(direction, carouselId) {
-    const carousel = document.getElementById(carouselId || 'carousel');
-    const movieCards = carousel.querySelectorAll('.movie-card');
+    const container = document.getElementById(carouselId || 'carousel');
 
-    if (movieCards.length === 0) return;
+    if (!container) {
+        return;
+    }
+
+    const movieCards = container.querySelectorAll('.movie-card');
+    if (movieCards.length === 0){
+        return;
+    }
 
     const cardWidth = movieCards[0].offsetWidth + 20; // Ancho + gap
     const scrollAmount = cardWidth * CAROUSEL_CONFIG.moviesPerPage;
 
-    carousel.scrollBy({
+    container.scrollBy({
         left: direction * scrollAmount,
         behavior: CAROUSEL_CONFIG.scrollBehavior
     });
