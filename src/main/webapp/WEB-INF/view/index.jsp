@@ -60,15 +60,17 @@
 
 
             <!-- Carrusel de películas -->
+            <!-- Carrusel de películas - Versión actualizada -->
             <div class="carousel-container">
+                <h3 class="carousel-section-title">Películas destacadas</h3>
                 <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
                 <div class="carousel" id="carousel">
                     <%
                         for (Movie movie : movieList) {
                     %>
                     <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
-                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>">
-                        <p><%= movie.getOriginalTitle() %></p>
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
                     </a>
                     <%
                         }
