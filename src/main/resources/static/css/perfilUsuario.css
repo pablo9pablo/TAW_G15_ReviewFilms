@@ -1,0 +1,52 @@
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+}
+
+.logout-btn {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #34495e;
+}
+
+.user-email {
+    margin: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+.stat-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.stat-section-title {
+    color: #2c3e50;
+    text-decoration: underline;
+    margin-bottom: 10px;
+}
+
+.simple-stat {
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.list-item {
+    margin-left: 20px;
+    color: #34495e;
+}

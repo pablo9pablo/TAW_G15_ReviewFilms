@@ -48,6 +48,8 @@ background-color: #7790ad;
                 <td><a href="/reviews">Reviews</a></td>
                 <td><a href="/waiting">Waiting to See</a></td>
                 <td><a href="/favourites">Favourites</a></td>
+                <td><a href="/perfil">Mi Perfil</a></td> <%-- NUEVO ENLACE --%>
+
             </tr>
         </table>
     </nav>
