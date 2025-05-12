@@ -162,9 +162,7 @@
             String desdeWaitingToSee = request.getParameter("desdeWaitingToSee");
 
             boolean ocultarBotones = "true".equals(desdeWatched) || "true".equals(desdeWaitingToSee);
-        %>
 
-        <%
             if (!ocultarBotones) {
         %>
         <!-- MARCAR  UNA PELICULA COMO VISTA -->
@@ -185,7 +183,13 @@
         <%
            }
         %>
-
+        <!-- MARCAR UNA PELICULA COMO FAVORITA -->
+        <form method="post" action="/favorita" class="watched-button-form">
+            <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
+            <button type="submit" class="icon-button" title="Marcar como favorita">
+                <i class="fas fa-star yellow-icon"></i>
+            </button>
+        </form>
 
     </div>
 
