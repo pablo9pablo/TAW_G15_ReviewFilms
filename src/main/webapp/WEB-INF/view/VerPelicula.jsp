@@ -160,8 +160,9 @@
         <%
             String desdeWatched = request.getParameter("desdeWatched");
             String desdeWaitingToSee = request.getParameter("desdeWaitingToSee");
+            String desdeFavoritas = request.getParameter("desdeFavoritas");
 
-            boolean ocultarBotones = "true".equals(desdeWatched) || "true".equals(desdeWaitingToSee);
+            boolean ocultarBotones = "true".equals(desdeWatched) || "true".equals(desdeWaitingToSee) || "true".equals(desdeFavoritas);
 
             if (!ocultarBotones) {
         %>
@@ -180,9 +181,7 @@
                 <i class="fas fa-hourglass-half"></i>
             </button>
         </form>
-        <%
-           }
-        %>
+
         <!-- MARCAR UNA PELICULA COMO FAVORITA -->
         <form method="post" action="/favorita" class="watched-button-form">
             <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
@@ -190,6 +189,9 @@
                 <i class="fas fa-star yellow-icon"></i>
             </button>
         </form>
+        <%
+            }
+        %>
 
     </div>
 
