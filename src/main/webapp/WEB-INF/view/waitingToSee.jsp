@@ -101,7 +101,7 @@
                                 </td>
                                 <td><%= movie.getMovie().getOriginalTitle() %></td>
                                 <td><%= movie.getMovie().getRuntime()%> min</td>
-                                <td><%= movie.getMovie().getVoteAverage() %></td>
+                                <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
                                 <td>
                                                 <!-- ELIMINAR UNA PELICULA  DE LA LISTA DE PENDIENTE -->
                                     <form method="post" action="/eliminarDePendiente" class="watched-button-form">
