@@ -75,6 +75,7 @@ public class ControllerMovie {
     @GetMapping("/viewmovie")
     public String verPelicula(@RequestParam("id") Integer id,
                               Model model) {
+
         Movie movie = movieRepository.findById(id).orElse(null);
 
         if (movie == null) {
@@ -246,7 +247,6 @@ public class ControllerMovie {
                 watchlistRepository.delete(watchlist);
             }
 
-            watchlistRepository.delete(watchlist);
 
         return "redirect:/viewmovie?id=" + idMovie;
     }

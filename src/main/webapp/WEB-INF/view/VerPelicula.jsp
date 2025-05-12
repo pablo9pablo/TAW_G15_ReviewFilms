@@ -142,9 +142,9 @@
             <!--EDITAR MOVIE--------------------------------------------------------->
             <%
                 boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
-            %>
 
-            <% if (isAdmin) { %>
+                if (isAdmin) {
+            %>
             <div class="actions">
                 <a href="<%= request.getContextPath() %>/editmovie?id=<%=movie.getId()%>">Modificar Película</a>
                 <a href="<%= request.getContextPath() %>/deletemovie?id=<%= movie.getId() %>"
@@ -152,7 +152,9 @@
                     Borrar
                 </a>
             </div>
-            <% } %>
+            <%
+            }
+            %>
         </div>
 
         <%
