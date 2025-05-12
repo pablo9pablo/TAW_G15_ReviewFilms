@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <%
     List<Watchlist>watchlistList=(List<Watchlist>) request.getAttribute("watchlistList");
@@ -84,7 +85,8 @@
                                 <th>Título</th>
                                 <th>Duración</th>
                                 <th>Calificación Media</th>
-                                <th>Desmarcar como Pendiente</th>
+                                <th>Eliminar de la lista</th>
+                                <th>Marcar como vista</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -101,11 +103,19 @@
                                 <td><%= movie.getMovie().getRuntime()%> min</td>
                                 <td><%= movie.getMovie().getVoteAverage() %></td>
                                 <td>
-                                    <!-- QUITAR COMO PENDIENTE UNA PELICULA -->
-                                    <form method="post" action="/quitarComoPendiente" class="watched-button-form">
+                                                <!-- ELIMINAR UNA PELICULA  DE LA LISTA DE PENDIENTE -->
+                                    <form method="post" action="/eliminarDePendiente" class="watched-button-form">
                                         <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
                                         <button type="submit" class="icon-button trash-button" title="Quitar de pendientes">
                                             <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                <td>
+                                                <!-- MARCAR  UNA PELICULA COMO VISTA -->
+                                    <form method="post" action="/marcarComoVistaDesdePendiente" class="watched-button-form">
+                                        <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                        <button type="submit" class="icon-button green-icon" title="Marcar como vista">
+                                            <i class="fas fa-eye"></i>
                                         </button>
                                     </form>
                                 </td>

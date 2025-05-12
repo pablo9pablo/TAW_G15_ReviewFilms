@@ -9,46 +9,66 @@
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
-    gap: 10px;
-    padding: 10px;
+    gap: 20px; /* Aumenta el espacio entre tarjetas */
+    padding: 20px; /* Aumenta el padding */
+    scrollbar-width: none; /* Oculta la barra de scroll en Firefox */
+    -ms-overflow-style: none; /* Oculta la barra de scroll en IE/Edge */
+}
+
+.carousel::-webkit-scrollbar {
+    display: none; /* Oculta la barra de scroll en Chrome/Safari */
 }
 
 .movie-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 10px;
     text-align: center;
     text-decoration: none;
     color: black;
-    max-width: 200px;
-    border-radius: 10px;
+    min-width: 250px; /* Establece un ancho mínimo mayor */
+    width: 250px; /* Fija el ancho */
+    flex-shrink: 0; /* Evita que las tarjetas se reduzcan */
+    transition: transform 0.3s ease; /* Agrega transición para hover */
+}
+
+.movie-card:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
 }
 
 .movie-card img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+    width: 250px; /* Fija el ancho */
+    height: 375px; /* Fija la altura (proporción 2:3 común para posters) */
     border-radius: 10px;
+    object-fit: cover; /* Asegura que la imagen cubra el espacio manteniendo proporciones */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agrega sombra */
+}
+
+.movie-title {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    white-space: nowrap; /* Evita saltos de línea */
+    overflow: hidden; /* Oculta texto que exceda */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es muy largo */
+    width: 100%; /* Asegura que el contenedor tenga el mismo ancho que la imagen */
 }
 
 .nav-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    font-size: 24px;
-    padding: 10px;
+    font-size: 2rem;
     cursor: pointer;
-    z-index: 1;
+    user-select: none;
+    padding: 10px;
+    color: #2c3e50;
+    background: none;
+    border: none;
+    transition: transform 0.2s ease;
 }
 
-.nav-arrow:first-child {
-    left: 0;
-}
-
-.nav-arrow:last-child {
-    right: 0;
+.nav-arrow:hover {
+    transform: scale(1.2);
+    color: #1a252f;
 }
 
 .search-form,

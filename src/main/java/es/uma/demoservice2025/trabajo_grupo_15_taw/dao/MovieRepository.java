@@ -54,4 +54,9 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
 
     @Query("SELECT m FROM Movie m JOIN MovieProductionCompany mpc ON m.id = mpc.movie.id WHERE mpc.productionCompany.id = :productionCompanyId AND mpc.movie.id <> :movieId")
     List<Movie> findMoviesByProductionCompany(@Param("productionCompanyId") Integer productionCompanyId, @Param("movieId") Integer movieId);
+
+    @Query("SELECT DISTINCT m FROM Movie m JOIN MovieGenre mg ON m.id = mg.movie.id JOIN Genre g ON mg.genre.id = g.id WHERE g.id = 21 ORDER BY m.releaseDate ASC")
+    List<Movie> findAllSuperheroMovies();
+
+
 }

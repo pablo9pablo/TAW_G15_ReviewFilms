@@ -66,7 +66,7 @@
             <div class="movie-info">
                 <h3>Películas similares por género</h3>
                 <div class="carousel-container">
-                    <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(-1, 'genre-carousel')">&#10094;</div>
                     <div class="carousel" id="genre-carousel">
                         <%
                             for (Movie relatedMovie : relatedMoviesGenre) {
@@ -79,7 +79,7 @@
                             }
                         %>
                     </div>
-                    <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(1, 'genre-carousel')">&#10095;</div>
                 </div>
             </div>
             <% } %>
@@ -89,7 +89,7 @@
             <div class="movie-info">
                 <h3>Películas de la misma productora</h3>
                 <div class="carousel-container">
-                    <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(-1, 'prod-carousel')">&#10094;</div>
                     <div class="carousel" id="prod-carousel">
                         <%
                             for (Movie relatedMovie : relatedMoviesProductionCompany) {
@@ -102,7 +102,7 @@
                             }
                         %>
                     </div>
-                    <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(1, 'prod-carousel')">&#10095;</div>
                 </div>
             </div>
             <% } %>
@@ -165,7 +165,7 @@
         <%
             if (!ocultarBotones) {
         %>
-        <!-- Botón "Marcar como vista" -->
+        <!-- MARCAR  UNA PELICULA COMO VISTA -->
         <form method="post" action="/marcarComoVista" class="watched-button-form">
             <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
             <button type="submit" class="icon-button green-icon" title="Marcar como vista">
@@ -173,7 +173,7 @@
             </button>
         </form>
 
-        <!-- Botón "Marcar como pendiente" -->
+        <!-- MARCAR UNA PELICULA COMO PENDIENTE -->
         <form method="post" action="/pendiente" class="watched-button-form">
             <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
             <button type="submit" class="icon-button brown-icon" title="Marcar como pendiente">
