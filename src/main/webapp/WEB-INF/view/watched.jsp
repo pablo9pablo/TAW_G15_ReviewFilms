@@ -105,7 +105,7 @@
                                     </td>
                                     <td><%= movie.getMovie().getOriginalTitle() %></td>
                                     <td><%= movie.getMovie().getRuntime()%> min</td>
-                                    <td><%= movie.getMovie().getVoteAverage() %></td>
+                                    <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
                                     <td>
                                         <!--QUITAR COMO VISTA UNA PELICULA-->
                                         <form method="post" action="/quitarComoVista" class="watched-button-form">

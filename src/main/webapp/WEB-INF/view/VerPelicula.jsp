@@ -142,9 +142,9 @@
             <!--EDITAR MOVIE--------------------------------------------------------->
             <%
                 boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
-            %>
 
-            <% if (isAdmin) { %>
+                if (isAdmin) {
+            %>
             <div class="actions">
                 <a href="<%= request.getContextPath() %>/editmovie?id=<%=movie.getId()%>">Modificar Película</a>
                 <a href="<%= request.getContextPath() %>/deletemovie?id=<%= movie.getId() %>"
@@ -152,17 +152,18 @@
                     Borrar
                 </a>
             </div>
-            <% } %>
+            <%
+            }
+            %>
         </div>
 
         <%
             String desdeWatched = request.getParameter("desdeWatched");
             String desdeWaitingToSee = request.getParameter("desdeWaitingToSee");
+            String desdeFavoritas = request.getParameter("desdeFavoritas");
 
-            boolean ocultarBotones = "true".equals(desdeWatched) || "true".equals(desdeWaitingToSee);
-        %>
+            boolean ocultarBotones = "true".equals(desdeWatched) || "true".equals(desdeWaitingToSee) || "true".equals(desdeFavoritas);
 
-        <%
             if (!ocultarBotones) {
         %>
         <!-- MARCAR  UNA PELICULA COMO VISTA -->
@@ -180,10 +181,17 @@
                 <i class="fas fa-hourglass-half"></i>
             </button>
         </form>
-        <%
-           }
-        %>
 
+        <!-- MARCAR UNA PELICULA COMO FAVORITA -->
+        <form method="post" action="/favorita" class="watched-button-form">
+            <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
+            <button type="submit" class="icon-button" title="Marcar como favorita">
+                <i class="fas fa-star yellow-icon"></i>
+            </button>
+        </form>
+        <%
+            }
+        %>
 
     </div>
 

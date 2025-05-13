@@ -53,6 +53,9 @@ public class ControllerMovie {
     @Autowired
     protected WatchlistRepository watchlistRepository;
 
+    @Autowired
+    protected FavouritesRepository favouritesRepository;
+
 
 
     @GetMapping("/")
@@ -77,6 +80,7 @@ public class ControllerMovie {
     @GetMapping("/viewmovie")
     public String verPelicula(@RequestParam("id") Integer id,
                               Model model) {
+
         Movie movie = movieRepository.findById(id).orElse(null);
 
         if (movie == null) {
@@ -202,7 +206,6 @@ public class ControllerMovie {
                 watchlistRepository.delete(watchlist);
             }
 
-            watchlistRepository.delete(watchlist);
 
         return "redirect:/viewmovie?id=" + idMovie;
     }
@@ -252,6 +255,39 @@ public class ControllerMovie {
 
         return "redirect:/viewmovie?id=" + idMovie;
     }
+
+    /*
+     *----------------------------MARCAR COMO FAVORITA----------------------------------------------------------*
+     */
+
+    @PostMapping("/favorita")
+    public String addToFavorites(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        FavoriteId favoriteId = new FavoriteId();
+        favoriteId.setMovieId(idMovie);
+        favoriteId.setUserId(user.getId());
+
+        boolean alreadyFavorite = favouritesRepository.existsById(favoriteId);
+
+        if (alreadyFavorite) {
+            session.setAttribute("error", "La película ya está marcada como favorita");
+            return "redirect:/viewmovie?id=" + idMovie;
+        }
+
+        Movie movie = movieRepository.findById(idMovie).orElse(null);
+
+        Favorite favorite = new Favorite();
+        favorite.setMovie(movie);
+        favorite.setId(favoriteId);
+        favorite.setUser(user);
+        favouritesRepository.save(favorite);
+
+        return "redirect:/viewmovie?id=" + idMovie;
+    }
+
+
 
 
     /*

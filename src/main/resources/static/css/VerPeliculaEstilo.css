@@ -206,7 +206,31 @@ body {
 
 .brown-icon {
     color: #8B4513;
+    transition: color 0.3s ease;
 }
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 18px;
+}
+
+
+.icon-button:hover .brown-icon {
+    color: #5C3310;
+}
+
+.yellow-icon {
+    color: gold;
+    transition: color 0.3s ease;
+}
+
+.icon-button:hover .yellow-icon {
+    color: darkorange;
+}
+
 
 
 
