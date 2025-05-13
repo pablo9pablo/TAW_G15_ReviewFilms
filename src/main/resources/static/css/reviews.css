@@ -1,13 +1,25 @@
+.page-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.review-count {
+    text-align: right;
+    margin: 20px auto;
+    width: 90%;
+}
+
 .descripcion-box {
     word-wrap: break-word;
     white-space: normal;
     max-width: 300px;
 }
 
-.movie-table td.descripcion-column {
-    width: auto;
+.bi-star-fill {
+    color: gold;
 }
 
+/*BOTONES DE EDITAR Y ELIMINAR*/
 .actions-container {
     display: flex;
     gap: 10px;
@@ -23,3 +35,25 @@
 .edit-button {
     text-decoration: none;
 }
+
+.edit-button i {
+    color: black;
+    transition: color 0.3s;
+}
+
+.edit-button i:hover {
+    color: blue;
+}
+
+.delete-button i {
+    color: black;
+    transition: color 0.3s;
+}
+
+.delete-button i:hover {
+    color: red;
+}
+
+
+
+

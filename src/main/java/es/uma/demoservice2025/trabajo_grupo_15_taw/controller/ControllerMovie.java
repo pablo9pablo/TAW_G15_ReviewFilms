@@ -2,14 +2,16 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.ReviewUI;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +20,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -42,6 +44,9 @@ public class ControllerMovie {
     protected SeenRepository seenRepository;
 
     @Autowired
+    protected UsuarioRepository usuarioRepository;
+
+    @Autowired
     protected ActorRepository actorRepository;
 
     @Autowired
@@ -50,13 +55,22 @@ public class ControllerMovie {
     @Autowired
     protected ReviewRepository reviewRepository;
 
+    @Autowired
+    protected WatchlistRepository watchlistRepository;
+
+    @Autowired
+    protected FavouritesRepository favouritesRepository;
+
 
 
     @GetMapping("/")
     public String index(Model model) {
 
         List<Movie> movieList = this.movieRepository.findAll();
+        List<Movie> superheroeMovieList = this.movieRepository.findAllSuperheroMovies();
+
         model.addAttribute("movieList", movieList);
+        model.addAttribute("superheroeMovieList", superheroeMovieList);
 
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
@@ -72,7 +86,6 @@ public class ControllerMovie {
     public String verPelicula(@RequestParam("id") Integer id,
                               @AuthenticationPrincipal UserPrincipal userPrincipal,
                               Model model) {
-
         Movie movie = movieRepository.findById(id).orElse(null);
 
         if (movie == null) return "redirect:/";
@@ -104,6 +117,7 @@ public class ControllerMovie {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editmovie")
     public String crearMovie(@RequestParam(value = "id", defaultValue = "-1") Integer id,
                              Model model) {
@@ -112,8 +126,16 @@ public class ControllerMovie {
         List<Genre> genre = genreRepository.findAll();
         List<ProductionCompany> pcompany = productionCompanyRepository.findAll();
         List <Actor> actores = actorRepository.findAll();
+        MovieDTO movieDTO = new MovieDTO();
+
+        if(id!=-1){
+             movieDTO = MovieMapper.toDTO(movie);
+
+        }
+
 
         model.addAttribute("movie", movie);
+        model.addAttribute("MovieDTO", movieDTO);
         model.addAttribute("genre", genre);
         model.addAttribute("pcompany", pcompany);
         model.addAttribute("actores", actores);
@@ -121,87 +143,36 @@ public class ControllerMovie {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/savemovie")
     @Transactional
-    public String guardarPelicula(@RequestParam("id") Integer id,
-                                  @RequestParam("title") String title,
-                                  @RequestParam("originalTitle") String originalTitle,
-                                  @RequestParam("releaseDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate releaseDate,
-                                  @RequestParam("runtime") Integer runtime,
-                                  @RequestParam("budget") BigDecimal budget,
-                                  @RequestParam("revenue") BigDecimal revenue,
-                                  @RequestParam("originalLanguage") String originalLanguage,
-                                  @RequestParam("overview") String overview,
-                                  @RequestParam("imageUrl") String imageUrl,
-                                  @RequestParam("generos") String[] generos,
-                                  @RequestParam("pcompany") String[] pCompany,
-                                  @RequestParam("actores") String[] actores
-    ) {
+    public String guardarPelicula(@ModelAttribute MovieDTO movieDTO) {
+        // Obtener la película a editar o crear una nueva
+        Movie movie = movieDTO.getId() != null
+                ? movieRepository.findById(movieDTO.getId()).orElse(new Movie())
+                : new Movie();
 
-        Movie movie = (id != null) ? movieRepository.findById(id).orElse(new Movie()) : new Movie();
+        // Actualizar la entidad con los datos del DTO
+        MovieMapper.updateEntity(movie, movieDTO,
+                genreRepository.findAllById(movieDTO.getGenreIds()),
+                productionCompanyRepository.findAllById(movieDTO.getProductionCompanyIds()));
 
-        movie.setTitle(title);
-        movie.setOriginalTitle(originalTitle);
-        movie.setReleaseDate(releaseDate);
-        movie.setRuntime(runtime);
-        movie.setBudget(budget);
-        movie.setRevenue(revenue);
-        movie.setOriginalLanguage(originalLanguage);
-        movie.setOverview(overview);
-        movie.setImageUrl(imageUrl);
-
-        // Asociar géneros
-        Set<Genre> selectedGenres = new HashSet<>();
-        for (String genreId : generos) {
-            selectedGenres.add(genreRepository.findById(Integer.parseInt(genreId)).get());
-        }
-        movie.setGenres(selectedGenres);
-
-        // Asociar compañías de producción
-        Set<ProductionCompany> selectedCompanies = new HashSet<>();
-        for (String pcompanyID : pCompany) {
-            selectedCompanies.add(productionCompanyRepository.findById(Integer.parseInt(pcompanyID)).get());
-        }
-        movie.setProductionCompanies(selectedCompanies);
+        // Guardar película actualizada
+        movie = movieRepository.save(movie);
 
 
-        movie = movieRepository.save(movie);  // Guardar nueva película
 
-
-        // Eliminar actores antiguos solo si la película ya existe
-        if (id != null) {
-            movieCast.deleteByMovieId(id);  // Eliminar actores asociados a la película si ya existe
-        }
-
-        // Crear y guardar las relaciones de actores
-        for (String actorId : actores) {
-            Actor actor = actorRepository.findById(Integer.parseInt(actorId)).orElse(null);
-            if (actor != null) {
-                MovieCastId movieCastId = new MovieCastId();
-                movieCastId.setMovieId(movie.getId());
-                movieCastId.setActorId(Integer.parseInt(actorId));
-
-                MovieCast mc = new MovieCast();
-                mc.setId(movieCastId);  // Establecer la clave compuesta
-                mc.setMovie(movie);  // Establecer la relación con la película
-                mc.setActor(actor);  // Establecer la relación con el actor
-
-                movieCast.save(mc);  // Guardar la relación MovieCast
-            }
-        }
 
         return "redirect:/";
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/deletemovie")
     public String eliminarPelicula(@RequestParam("id") Integer movieId) {
-        //FALTA: Comprobacion de q este autenticado y de q tenga rol de editor
         movieRepository.deleteById(movieId);
         return "redirect:/";
     }
-
-
     // Métodos auxiliares para la recomendación de películas
     public Set<Movie> relatedMoviesGenre(List<Genre> genres, Integer id) {
         Set<Movie> relatedMoviesGenre = new HashSet<>();
@@ -221,26 +192,119 @@ public class ControllerMovie {
         return relatedMoviesProductionCompany;
     }
 
+
     @PostMapping("/marcarComoVista")
-    public String addToWatched(@RequestParam("id") Integer movieId, HttpSession session) {
+    public String addToWatched(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
 
-
-        User user = (User) session.getAttribute("user");
-
-        Seen seen = new Seen();
         SeenId seenId = new SeenId();
+        seenId.setMovieId(idMovie);
+        seenId.setUserId(user.getId());
 
-        Integer userId = user.getId();
-        seenId.setMovieId(movieId);
-        seenId.setUserId(userId);
+        boolean alreadySeen = seenRepository.existsById(seenId);
 
-        seen.setId(seenId);
+        if (alreadySeen) {
+            session.setAttribute("error", "La película fue marcada como vista anteriormente");
+            return "redirect:/viewmovie?id=" + idMovie;
+        }
+
+        Movie movie = movieRepository.findById(idMovie).orElse(null);
+
+            Seen seen = new Seen();
+            seen.setMovie(movie);
+            seen.setId(seenId);
+            seen.setUser(user);
+            seenRepository.save(seen);
+
+            Watchlist watchlist = watchlistRepository.findByUserIdAndMovieId(user.getId(), idMovie);
+            if (watchlist != null) {
+                session.setAttribute("error", "La película fue marcada como pendiente anteriormente, a continuación se marcará como vista");
+                watchlistRepository.delete(watchlist);
+            }
 
 
-        this.seenRepository.save(seen);
-
-        return "VerPelicula";
+        return "redirect:/viewmovie?id=" + idMovie;
     }
+
+
+    /*
+     *----------------------------MARCAR COMO PENDIENTE----------------------------------------------------------*
+     */
+
+    @PostMapping("/pendiente")
+    public String addToPending(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        WatchlistId watchlistId = new WatchlistId();
+        watchlistId.setMovieId(idMovie);
+        watchlistId.setUserId(user.getId());
+
+        boolean alreadyPending = watchlistRepository.existsById(watchlistId);
+
+        if (alreadyPending) {
+            session.setAttribute("error", "La película fue marcada como pendiente anteriormente");
+            return "redirect:/viewmovie?id=" + idMovie;
+        }
+
+        Movie movie = movieRepository.findById(idMovie).orElse(null);
+
+            Watchlist watchlist = new Watchlist();
+            watchlist.setMovie(movie);
+            watchlist.setId(watchlistId);
+            watchlist.setUser(user);
+            watchlistRepository.save(watchlist);
+
+            SeenId seenId = new SeenId();
+            seenId.setMovieId(idMovie);
+            seenId.setUserId(user.getId());
+
+            boolean alreadySeen = seenRepository.existsById(seenId);
+            if (alreadySeen) {
+                session.setAttribute("error", "La película fue marcada como vista anteriormente, a continuación se marcará como pendiente");
+                seenRepository.deleteById(seenId);
+            }
+
+            if (seenRepository.existsById(seenId)) {
+                seenRepository.deleteById(seenId);
+            }
+
+        return "redirect:/viewmovie?id=" + idMovie;
+    }
+
+    /*
+     *----------------------------MARCAR COMO FAVORITA----------------------------------------------------------*
+     */
+
+    @PostMapping("/favorita")
+    public String addToFavorites(@RequestParam("idMovie") Integer idMovie, HttpSession session, Principal principal, Model model) {
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        FavoriteId favoriteId = new FavoriteId();
+        favoriteId.setMovieId(idMovie);
+        favoriteId.setUserId(user.getId());
+
+        boolean alreadyFavorite = favouritesRepository.existsById(favoriteId);
+
+        if (alreadyFavorite) {
+            session.setAttribute("error", "La película ya está marcada como favorita");
+            return "redirect:/viewmovie?id=" + idMovie;
+        }
+
+        Movie movie = movieRepository.findById(idMovie).orElse(null);
+
+        Favorite favorite = new Favorite();
+        favorite.setMovie(movie);
+        favorite.setId(favoriteId);
+        favorite.setUser(user);
+        favouritesRepository.save(favorite);
+
+        return "redirect:/viewmovie?id=" + idMovie;
+    }
+
+
 
 
     /*
@@ -251,12 +315,16 @@ public class ControllerMovie {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda.getTexto());
         model.addAttribute("movieList", movieListBusqueda);
+        List<Movie> superheroeMovieList = this.movieRepository.findAllSuperheroMovies();
+
 
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
         model.addAttribute("filtro", new Filtro());
         model.addAttribute("busqueda", new Busqueda());
+        model.addAttribute("superheroeMovieList", superheroeMovieList);
+
 
         return "index";
 
@@ -307,6 +375,7 @@ public class ControllerMovie {
         model.addAttribute("movieList", movies);
         model.addAttribute("filtro", filtro);
         model.addAttribute("busqueda", new Busqueda());
+
 
         return "index";
     }

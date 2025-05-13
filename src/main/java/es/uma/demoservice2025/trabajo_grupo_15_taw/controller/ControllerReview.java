@@ -6,6 +6,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.UserPrincipal;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.FiltroReview;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.ReviewUI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,11 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class ControllerReview {
@@ -33,33 +31,44 @@ public class ControllerReview {
     @Autowired
     private MovieRepository movieRepository;
 
+
+    protected String procesarFiltrado(FiltroReview filtroReview,
+                                      Model model,
+                                      User user) {
+
+        List<Review> userReviews;
+
+        if(filtroReview==null){
+            filtroReview = new FiltroReview();
+        }
+        userReviews = this.reviewRepository.filterReviews(user,filtroReview.getFecha(), filtroReview.getVote());
+
+        model.addAttribute("reviews", userReviews);
+        model.addAttribute("filtroReview", filtroReview);
+
+        return "reviews";
+    }
+
     @GetMapping("/reviews")
     public String mostrarReviews(@AuthenticationPrincipal UserPrincipal userPrincipal,
                                  Model model) {
-        //Recuperamos el user
         User user = userPrincipal.getUser();
+        return procesarFiltrado(null, model, user);
+    }
 
-        if (user == null) {
-            return "redirect:/signin"; // en caso de error o sesión inactiva
-        }
-
-        // Obtengo las reviews del usuario
-        List<Review> userReviews = this.reviewRepository.findByUser(user);
-        model.addAttribute("reviews", userReviews);
-
-        return "reviews";
+    @PostMapping("/filtrarReview")
+    public String dofiltrar(@AuthenticationPrincipal UserPrincipal userPrincipal,
+                            @ModelAttribute("filtroReview") FiltroReview filtroReview,
+                            Model model){
+        User user = userPrincipal.getUser();
+        return procesarFiltrado(filtroReview, model, user);
     }
 
     @PostMapping("/deleteReview")
     public String deleteReview(@RequestParam("id") Integer reviewId,
                                @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-        //Recuperamos el user
         User user = userPrincipal.getUser();
-
-        if (user == null) {
-            return "redirect:/signin"; // en caso de error o sesión inactiva
-        }
 
         Review review = reviewRepository.findById(reviewId).orElse(null);
 
@@ -67,9 +76,9 @@ public class ControllerReview {
             Movie movie = review.getMovie();
             reviewRepository.deleteById(reviewId);
 
-            if(movie.getReviews()!=null) {
+            if (movie.getReviews() != null) {
                 movie.setVoteAverage(movie.calcularMedia());
-                movie.setVoteCount(movie.getReviews()==null? 0: movie.getReviews().size());
+                movie.setVoteCount(movie.getReviews() == null ? 0 : movie.getReviews().size());
                 movieRepository.save(movie);
             }
         }
@@ -82,12 +91,7 @@ public class ControllerReview {
                                            @AuthenticationPrincipal UserPrincipal userPrincipal,
                                            Model model) {
 
-        //Recuperamos el user
         User user = userPrincipal.getUser();
-
-        if (user == null) {
-            return "redirect:/signin"; // en caso de error o sesión inactiva
-        }
 
         Review review = reviewRepository.findById(reviewId).orElse(null);
 
@@ -113,37 +117,33 @@ public class ControllerReview {
 
         User user = userPrincipal.getUser();
 
-        if (user == null) {
-            return "redirect:/signin";
-        }else{
-            Review review = (reviewUI.getId() != null)? reviewRepository.findById(reviewUI.getId()).orElse(new Review()): new Review();
-            String path;
+        Review review = (reviewUI.getId() != null) ? reviewRepository.findById(reviewUI.getId()).orElse(new Review()) : new Review();
+        String path;
 
-            if(review.getId()!=null){
-                path = "redirect:/reviews"; //editar review
-            }else{
-                Movie movie = movieRepository.findById(reviewUI.getMovieId()).orElse(null);
-                review.setUser(user);
-                review.setMovie(movie);
-                path = "redirect:/viewmovie?id=" + movie.getId();
-            }
-
-            review.setDescription(reviewUI.getDescription());
-            review.setRating(reviewUI.getRating());
-            review.setDate(LocalDate.now());
-            reviewRepository.save(review);
-
-            //Calculo de la media
-            Movie movie = review.getMovie();
-            BigDecimal avg = movie.calcularMedia();
-            movie.setVoteAverage(avg);
-            movie.setVoteCount(movie.getReviews()==null?0:movie.getReviews().size());
-            movieRepository.save(movie);
-
-
-            return path;
+        if (review.getId() != null) {
+            path = "redirect:/reviews"; //editar review
+        } else {
+            Movie movie = movieRepository.findById(reviewUI.getMovieId()).orElse(null);
+            review.setUser(user);
+            review.setMovie(movie);
+            path = "redirect:/viewmovie?id=" + movie.getId();
         }
+
+        review.setDescription(reviewUI.getDescription());
+        review.setRating(reviewUI.getRating());
+        review.setDate(LocalDate.now());
+        reviewRepository.save(review);
+
+        //Cálculo de la media
+        Movie movie = review.getMovie();
+        BigDecimal avg = movie.calcularMedia();
+        movie.setVoteAverage(avg);
+        movie.setVoteCount(movie.getReviews() == null ? 0 : movie.getReviews().size());
+        movieRepository.save(movie);
+
+        return path;
     }
+
 }
 
 

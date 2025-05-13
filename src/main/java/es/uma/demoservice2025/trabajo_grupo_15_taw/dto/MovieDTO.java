@@ -1,0 +1,33 @@
+package es.uma.demoservice2025.trabajo_grupo_15_taw.dto;
+
+
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+@Data
+public class MovieDTO {
+
+    private Integer id;
+    private BigDecimal budget;
+    private String homepage;
+    private String originalLanguage;
+    private String originalTitle;
+    private String overview;
+    private BigDecimal popularity;
+    private LocalDate releaseDate;
+    private BigDecimal revenue;
+    private Integer runtime;
+    private String status;
+    private String tagline;
+    private String title;
+    private BigDecimal voteAverage;
+    private Integer voteCount;
+    private String imageUrl;
+
+    private List<Integer> genreIds;
+    private List<Integer> productionCompanyIds;
+    private List<Integer> actorIds;
+}

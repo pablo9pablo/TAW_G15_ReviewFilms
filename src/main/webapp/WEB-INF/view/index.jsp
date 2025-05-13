@@ -12,6 +12,7 @@
 </head>
 <%
     List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
+    List<Movie> superheroeMovieList = (List<Movie>) request.getAttribute("superheroeMovieList");
 %>
 <body>
     <div class="page-container">
@@ -59,22 +60,42 @@
             </form:form>
 
 
-            <!-- Carrusel de películas -->
+            <!-- Carrusel de todas las películas -->
+            <h3>Todas las películas</h3>
             <div class="carousel-container">
-                <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
-                <div class="carousel" id="carousel">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'all-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="all-movies-carousel">
                     <%
                         for (Movie movie : movieList) {
                     %>
                     <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
-                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>">
-                        <p><%= movie.getOriginalTitle() %></p>
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
                     </a>
                     <%
                         }
                     %>
                 </div>
-                <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'all-movies-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Carrusel de todas las películas -->
+            <h3>Películas de superhéroes</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'superheroes-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="superheroes-movies-carousel">
+                    <%
+                        for (Movie movie : superheroeMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'superheroes-movies-carousel')">&#10095;</div>
             </div>
 
             <%
@@ -82,7 +103,7 @@
             %>
 
             <% if (isAdmin) { %>
-            <a href="/editmovie" class="add-movie-btn">+ Añadir nueva película</a>
+                 <a href="${pageContext.request.contextPath}/editmovie" class="add-movie-btn"> + Añadir nueva película</a>
             <% } %>
         </div>
         <jsp:include page="footer.jsp"/>

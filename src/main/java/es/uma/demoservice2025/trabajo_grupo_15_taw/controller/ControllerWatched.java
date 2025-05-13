@@ -5,10 +5,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.SeenRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Vista;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +18,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class ControllerWatched {
@@ -41,9 +36,12 @@ public class ControllerWatched {
     protected UsuarioRepository usuarioRepository;
 
     @GetMapping("/watched")
-    public String doListarWatched(Model model) {
+    public String doListarWatched(Model model,Principal principal) {
 
-        List<Seen> seenMovies = this.seenRepository.findAll();
+        String email = principal.getName();
+        User user = usuarioRepository.findByEmail(email);
+
+        List<Seen>seenMovies = this.seenRepository.findByUserId(user.getId());
         model.addAttribute("seenMovies", seenMovies);
 
         List<Genre> genreList = this.genreRepository.findAll();
@@ -55,70 +53,20 @@ public class ControllerWatched {
 
     }
 
-
-    @GetMapping("/viewmovieSeen")
-    public String verPelicula(@RequestParam("id") Integer id,
-                              Model model) {
-        Movie movie = movieRepository.findById(id).orElse(null);
-
-        if (movie == null) {
-            return "redirect:/";
-        }
-
-        // Listas y conjuntos para las películas recomendadas
-        List<Genre> genres = this.movieRepository.findGenresByMovieId(id);
-        Set<Movie> relatedMoviesGenre = relatedMoviesGenre(genres, id);
-
-        List<ProductionCompany> productionCompanies = this.movieRepository.findProductionCompanyByMovieId(id);
-        Set<Movie> relatedMoviesProductionCompany = relatedMoviesProductionCompany(productionCompanies, id);
-
-        model.addAttribute("movie", movie);
-        model.addAttribute("relatedMoviesGenre", relatedMoviesGenre);
-        model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
-        model.addAttribute("id",id);
-        model.addAttribute("vista",new Vista());
-
-        return "VerPeliculaWatched";
-
-    }
-
-    public Set<Movie> relatedMoviesGenre(List<Genre> genres, Integer id) {
-        Set<Movie> relatedMoviesGenre = new HashSet<>();
-
-        for (Genre genre : genres) {
-            relatedMoviesGenre.addAll(this.movieRepository.findMoviesByGenre(genre.getId(), id));
-        }
-        return relatedMoviesGenre;
-    }
-
-    public Set<Movie> relatedMoviesProductionCompany(List<ProductionCompany> productionCompanies, Integer id) {
-        Set<Movie> relatedMoviesProductionCompany = new HashSet<>();
-
-        for (ProductionCompany productionCompany : productionCompanies) {
-            relatedMoviesProductionCompany.addAll(this.movieRepository.findMoviesByProductionCompany(productionCompany.getId(), id));
-        }
-        return relatedMoviesProductionCompany;
-
-    }
-
-        /*
-         *----------------------------QUITAR COMO VISTA----------------------------------------------------------*
-         */
+    /*
+     *----------------------------QUITAR COMO VISTA----------------------------------------------------------*
+     */
 
     @PostMapping("/quitarComoVista")
-    public String quitarDeVistas(@ModelAttribute("vista") Vista vista, Principal principal) {
+    public String quitarDeVistas(@RequestParam("idMovie") Integer idMovie, Principal principal) {
         String email = principal.getName();
         User user = usuarioRepository.findByEmail(email);
 
-        Seen seen = seenRepository.findByUserIdAndMovieId(user.getId(), vista.getIdMovie());
-
-        if (seen != null) {
-            seenRepository.delete(seen);
-        }
+        Seen seen = seenRepository.findByUserIdAndMovieId(user.getId(), idMovie);
+        seenRepository.delete(seen);
 
         return "redirect:/watched";
     }
-
 
     /*
      *----------------------------------FILTRADO--------------------------------------------------------*
@@ -193,12 +141,12 @@ public class ControllerWatched {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, null);
     }
 
-    @PostMapping("/asc")
+    @PostMapping("/ascSeen")
     public String doFiltrarAsc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "asc");
     }
 
-    @PostMapping("/desc")
+    @PostMapping("/descSeen")
     public String doFiltrarDesc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "desc");
     }

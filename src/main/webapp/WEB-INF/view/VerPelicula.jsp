@@ -17,11 +17,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><%= movie.getTitle() %>
-    </title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/verPelicula.css">
+    <title><%= movie.getTitle() %></title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/VerPeliculaEstilo.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <div class="page-container">
@@ -32,13 +32,22 @@
         <div class="left-panel">
             <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" width="180"/>
             <div class="movie-meta">
-                <p><strong>Release:</strong> <%= movie.getReleaseDate() %>
-                </p>
+                <p><strong>Release:</strong> <%= movie.getReleaseDate() %></p>
                 <p><strong>Runtime:</strong> <%= movie.getRuntime() %> mins</p>
                 <p><strong>Budget:</strong> <%=movie.getBudget()%>€</p>
             </div>
         </div>
         <div class="right-panel">
+
+            <%
+                String error = (String) session.getAttribute("error");
+                if (error != null) {
+            %>
+            <p style="color:red"><%= error %></p>
+            <%
+                    session.removeAttribute("error");
+                }
+            %>
 
             <h1><%= movie.getTitle() %>
                 <span class="rating-box"><%= movie.getReviews() == null || movie.getReviews().isEmpty() ? "Sin calificacion" : movie.getVoteAverage() + "/10" %></span>
@@ -51,8 +60,7 @@
             </div>
 
             <div class="movie-info">
-                <p><%= movie.getOverview() == null ? "No existe resumen de esta película" : movie.getOverview()%>
-                </p>
+                <p><%= movie.getOverview() == null? "No existe resumen de esta película": movie.getOverview()%></p>
             </div>
 
 
@@ -61,7 +69,7 @@
             <div class="movie-info">
                 <h3>Películas similares por género</h3>
                 <div class="carousel-container">
-                    <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(-1, 'genre-carousel')">&#10094;</div>
                     <div class="carousel" id="genre-carousel">
                         <%
                             for (Movie relatedMovie : relatedMoviesGenre) {
@@ -75,7 +83,7 @@
                             }
                         %>
                     </div>
-                    <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(1, 'genre-carousel')">&#10095;</div>
                 </div>
             </div>
             <% } %>
@@ -85,21 +93,20 @@
             <div class="movie-info">
                 <h3>Películas de la misma productora</h3>
                 <div class="carousel-container">
-                    <div class="nav-arrow" onclick="scrollCarousel(-1)">&#10094;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(-1, 'prod-carousel')">&#10094;</div>
                     <div class="carousel" id="prod-carousel">
                         <%
                             for (Movie relatedMovie : relatedMoviesProductionCompany) {
                         %>
                         <a href="/viewmovie?id=<%= relatedMovie.getId() %>" class="movie-card">
                             <img src="<%= relatedMovie.getImageUrl() %>" alt="<%= relatedMovie.getOriginalTitle() %>">
-                            <p><%= relatedMovie.getOriginalTitle() %>
-                            </p>
+                            <p><%= relatedMovie.getOriginalTitle() %></p>
                         </a>
                         <%
                             }
                         %>
                     </div>
-                    <div class="nav-arrow" onclick="scrollCarousel(1)">&#10095;</div>
+                    <div class="nav-arrow" onclick="scrollCarousel(1, 'prod-carousel')">&#10095;</div>
                 </div>
             </div>
             <% } %>
@@ -152,9 +159,9 @@
             <!--EDITAR MOVIE--------------------------------------------------------->
             <%
                 boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
-            %>
 
-            <% if (isAdmin) { %>
+                if (isAdmin) {
+            %>
             <div class="actions">
                 <a href="<%= request.getContextPath() %>/editmovie?id=<%=movie.getId()%>">Modificar Película</a>
                 <a href="<%= request.getContextPath() %>/deletemovie?id=<%= movie.getId() %>"
@@ -162,16 +169,46 @@
                     Borrar
                 </a>
             </div>
-            <% } %>
+            <%
+            }
+            %>
         </div>
 
+        <%
+            String desdeWatched = request.getParameter("desdeWatched");
+            String desdeWaitingToSee = request.getParameter("desdeWaitingToSee");
+            String desdeFavoritas = request.getParameter("desdeFavoritas");
+
+            boolean ocultarBotones = "true".equals(desdeWatched) || "true".equals(desdeWaitingToSee) || "true".equals(desdeFavoritas);
+
+            if (!ocultarBotones) {
+        %>
+        <!-- MARCAR  UNA PELICULA COMO VISTA -->
         <form method="post" action="/marcarComoVista" class="watched-button-form">
-            <input type="hidden" name="id" value="<%= movie.getId() %>">
-            <button type="submit" class="watched-button">
-                &#128065;
+            <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
+            <button type="submit" class="icon-button green-icon" title="Marcar como vista">
+                <i class="fas fa-eye"></i>
             </button>
         </form>
 
+        <!-- MARCAR UNA PELICULA COMO PENDIENTE -->
+        <form method="post" action="/pendiente" class="watched-button-form">
+            <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
+            <button type="submit" class="icon-button brown-icon" title="Marcar como pendiente">
+                <i class="fas fa-hourglass-half"></i>
+            </button>
+        </form>
+
+        <!-- MARCAR UNA PELICULA COMO FAVORITA -->
+        <form method="post" action="/favorita" class="watched-button-form">
+            <input type="hidden" name="idMovie" value="<%= movie.getId() %>">
+            <button type="submit" class="icon-button" title="Marcar como favorita">
+                <i class="fas fa-star yellow-icon"></i>
+            </button>
+        </form>
+        <%
+            }
+        %>
 
     </div>
 

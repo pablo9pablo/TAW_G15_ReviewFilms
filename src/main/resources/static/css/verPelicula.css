@@ -114,11 +114,12 @@ body {
 .carousel-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     max-width: 100%;
     overflow: hidden;
     margin: 20px 0;
     position: relative;
+    padding-left: 20px;
 }
 
 .carousel {
@@ -126,10 +127,11 @@ body {
     gap: 20px;
     overflow-x: auto;
     scroll-behavior: smooth;
-    padding: 20px;
+    padding: 20px 20px 20px 0;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     margin: 0 40px;
+    width: calc(100% - 80px);
 }
 
 .carousel::-webkit-scrollbar {
@@ -189,15 +191,57 @@ body {
 }
 
 .movie-info .carousel-container {
-    margin-left: -20px;
-    margin-right: -20px;
-    width: calc(100% + 40px);
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    padding-left: 0;
+    justify-content: flex-start;
 }
 
 .movie-info h3 {
-    margin-bottom: 15px;
-    padding-left: 20px;
-    color: #2c3e50;
+    padding-left: 0;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4em;
+}
+
+.green-icon {
+    color: #28a745;
+}
+
+.green-icon:hover {
+    color: #1e7e34;
+}
+
+.brown-icon {
+    color: #8B4513;
+    transition: color 0.3s ease;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 18px;
+}
+
+
+.icon-button:hover .brown-icon {
+    color: #5C3310;
+}
+
+.yellow-icon {
+    color: gold;
+    transition: color 0.3s ease;
+}
+
+.icon-button:hover .yellow-icon {
+    color: darkorange;
 }
 
 .error-message {
@@ -225,6 +269,8 @@ body {
 .edit-review-button:hover {
     background-color: #202d3a;
 }
+
+
 
 
 
