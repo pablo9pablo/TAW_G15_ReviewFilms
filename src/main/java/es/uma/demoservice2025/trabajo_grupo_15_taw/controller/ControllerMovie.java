@@ -146,7 +146,6 @@ public class ControllerMovie {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/savemovie")
-    @Transactional
     public String guardarPelicula(@ModelAttribute MovieDTO movieDTO) {
         // Obtener la película a editar o crear una nueva
         Movie movie = movieDTO.getId() != null
@@ -351,6 +350,9 @@ public class ControllerMovie {
             filtro.setGeneroIds(new ArrayList<>());
         }
 
+        List<Movie> superheroeMovieList = this.movieRepository.findAllSuperheroMovies();
+
+
         List<Movie> movies;
         LocalDate startDate = null;
         LocalDate endDate = null;
@@ -374,6 +376,7 @@ public class ControllerMovie {
         }
 
         model.addAttribute("movieList", movies);
+        model.addAttribute("superheroeMovieList", superheroeMovieList);
         model.addAttribute("filtro", filtro);
         model.addAttribute("busqueda", new Busqueda());
 
