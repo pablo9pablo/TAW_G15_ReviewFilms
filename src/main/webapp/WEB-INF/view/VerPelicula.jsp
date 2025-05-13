@@ -18,7 +18,7 @@
 <html>
 <head>
     <title><%= movie.getTitle() %></title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/VerPeliculaEstilo.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/verPelicula.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
