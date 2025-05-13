@@ -27,7 +27,7 @@
                         <form:input path="texto" type="text" id="searchInput" name="busqueda" class="search-input" placeholder="Buscar película..."/>
                         <span class="search-icon">🔍</span>
                     </div>
-                    <form:button class="search-button">Buscar</form:button>
+                    <form:button class="button-generico">Buscar</form:button>
                 </div>
             </form:form>
 
@@ -55,7 +55,7 @@
                         </form:select>
                     </div>
 
-                    <form:button class="filter-button">Filtrar</form:button>
+                    <form:button class="button-generico">Filtrar</form:button>
                 </div>
             </form:form>
 
@@ -103,7 +103,7 @@
             %>
 
             <% if (isAdmin) { %>
-                 <a href="${pageContext.request.contextPath}/editmovie" class="add-movie-btn"> + Añadir nueva película</a>
+                 <a href="${pageContext.request.contextPath}/editmovie" class="button-generico"> + Añadir nueva película</a>
             <% } %>
         </div>
         <jsp:include page="footer.jsp"/>

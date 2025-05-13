@@ -47,7 +47,7 @@
                     </form:select>
                 </div>
 
-                <form:button class="filter-button">Filtrar</form:button>
+                <form:button class="button-generico">Filtrar</form:button>
             </div>
         </form:form>
 

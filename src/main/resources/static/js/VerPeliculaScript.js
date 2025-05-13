@@ -1,43 +1,8 @@
-const stars = document.querySelectorAll('.star-rating .star');
-const ratingInput = document.getElementById('rating');
-let selectedValue = 0;
-
 // Configuración del carrusel
 const CAROUSEL_CONFIG = {
     moviesPerPage: 4,       // Número de películas a mostrar por página
     scrollBehavior: 'smooth' // Comportamiento del scroll
 };
-
-
-// Event listeners para las estrellas (mantenemos tu código original)
-stars.forEach(star => {
-    star.addEventListener('mouseenter', () => {
-        const value = parseInt(star.getAttribute('data-value'));
-        stars.forEach(s => {
-            s.classList.toggle('hovered', parseInt(s.getAttribute('data-value')) <= value);
-        });
-    });
-
-    star.addEventListener('mouseleave', () => {
-        stars.forEach(s => s.classList.remove('hovered'));
-        stars.forEach(s => {
-            s.classList.toggle('selected', parseInt(s.getAttribute('data-value')) <= selectedValue);
-        });
-    });
-
-    star.addEventListener('click', () => {
-        selectedValue = parseInt(star.getAttribute('data-value'));
-        ratingInput.value = selectedValue;
-
-        stars.forEach(s => {
-            s.classList.remove('selected');
-            if (parseInt(s.getAttribute('data-value')) <= selectedValue) {
-                s.classList.add('selected');
-            }
-        });
-    });
-});
-
 
 // Función para inicializar los carruseles
 function initCarousels() {

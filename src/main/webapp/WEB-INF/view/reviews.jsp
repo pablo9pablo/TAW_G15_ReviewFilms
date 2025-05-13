@@ -41,7 +41,7 @@
                             }
                         %>
                     </form:select>
-                <form:button class="filter-button">Filtrar</form:button>
+                <form:button class="button-generico">Filtrar</form:button>
             </form:form>
 
             <h3 class="review-count">Total reviews: <%=(reviews != null) ? reviews.size() : "0" %></h3>

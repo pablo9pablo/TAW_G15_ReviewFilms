@@ -22,6 +22,9 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 </head>
 <body>
 <div class="page-container">
@@ -118,7 +121,7 @@
                     if(hasReview.isPresent()){
                 %>
                         <p class="error-message">Ya has creado una review para esta película.</p>
-                        <a href="/editReview?id=<%=hasReview.get()%>" class="edit-review-button">Editar Review</a>
+                        <a href="/editReview?id=<%=hasReview.get()%>" class="button-generico">Editar Review</a>
                 <%
                     }else{
                 %>
@@ -134,9 +137,11 @@
                                 <p><strong>Rating:</strong></p>
                                 <form:input path="rating" type="number" min="0" max="10" required="true"
                                             cssClass="rating-input"/>
-                                <span class="stars">⭐ (0-10)</span><br/>
+                                <span class="stars">
+                                    <i class="bi bi-star-fill"></i> (0-10)
+                                </span><br/>
                             </div>
-                            <form:button>Añadir review</form:button>
+                            <form:button class="button-generico">Añadir review</form:button>
                         </form:form>
                 <%
                     }
@@ -162,10 +167,10 @@
 
                 if (isAdmin) {
             %>
-            <div class="actions">
-                <a href="<%= request.getContextPath() %>/editmovie?id=<%=movie.getId()%>">Modificar Película</a>
+            <div class="button-container">
+                <a href="<%= request.getContextPath() %>/editmovie?id=<%=movie.getId()%>" class="button-generico">Modificar Película</a>
                 <a href="<%= request.getContextPath() %>/deletemovie?id=<%= movie.getId() %>"
-                   onclick="return confirm('¿Está seguro de que quiere borrar la película <%= movie.getTitle() %>?')">
+                   onclick="return confirm('¿Está seguro de que quiere borrar la película <%= movie.getTitle() %>?')" class="button-generico">
                     Borrar
                 </a>
             </div>
