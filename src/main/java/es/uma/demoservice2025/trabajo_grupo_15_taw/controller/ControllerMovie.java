@@ -342,12 +342,16 @@ public class ControllerMovie {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda.getTexto());
         model.addAttribute("movieList", movieListBusqueda);
+        List<Movie> superheroeMovieList = this.movieRepository.findAllSuperheroMovies();
+
 
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
         model.addAttribute("filtro", new Filtro());
         model.addAttribute("busqueda", new Busqueda());
+        model.addAttribute("superheroeMovieList", superheroeMovieList);
+
 
         return "index";
 

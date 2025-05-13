@@ -122,23 +122,24 @@ public interface SeenRepository extends JpaRepository<Seen,SeenId> {
     @Query("SELECT AVG(m.voteAverage) FROM Seen s JOIN s.movie m WHERE s.user.id = :userId")
     Double obtenerPuntuacionPromedioPeliculas(@Param("userId") Integer userId);
 
-    @Query("SELECT YEAR(m.releaseDate) as year, m.title, COUNT(s) as views " +
-            "FROM Seen s JOIN s.movie m " +
+    @Query("SELECT YEAR(m.releaseDate) as year, COUNT(m) as movie_count " +
+            "FROM Seen s " +
+            "JOIN s.movie m " +
             "WHERE s.user.id = :userId " +
-            "GROUP BY YEAR(m.releaseDate), m.title " +
-            "ORDER BY YEAR(m.releaseDate) DESC, COUNT(s) DESC " +
+            "GROUP BY YEAR(m.releaseDate) " +
+            "ORDER BY movie_count DESC " +
             "LIMIT 3")
     List<Object[]> obtenerTopPeliculasPorAnio(@Param("userId") Integer userId);
 
 
-    @Query("SELECT a.name, m.title, COUNT(s) as views " +
+    @Query("SELECT a.name, COUNT(DISTINCT m.id) as movie_count " +
             "FROM Seen s " +
             "JOIN s.movie m " +
             "JOIN MovieCast mc ON mc.movie = m " +
             "JOIN mc.actor a " +
             "WHERE s.user.id = :userId " +
-            "GROUP BY a.name, m.title " +
-            "ORDER BY views DESC " +
+            "GROUP BY a.name " +
+            "ORDER BY movie_count DESC " +
             "LIMIT 3")
     List<Object[]> obtenerTopPeliculasPorActor(@Param("userId") Integer userId);
 

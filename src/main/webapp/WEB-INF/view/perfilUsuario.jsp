@@ -9,8 +9,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/perfilUsuario.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/logout.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
-
-
 </head>
 <body>
 <div class="page-container">
@@ -47,7 +45,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <!-- Estadísticas básicas -->
+                            <!-- Parte izquierda sin cambios -->
                             <div class="simple-stat">
                                 <span>Películas vistas: </span>
                                 <span class="stat-value"><%= numeroPeliculasVistas != null ? numeroPeliculasVistas : 0 %></span>
@@ -98,14 +96,14 @@
                             </div>
 
                             <div class="stat-section">
-                                <h4 class="stat-section-title">Top Películas por Actor:</h4>
+                                <h4 class="stat-section-title">Top Actores más vistos:</h4>
                                 <%
                                     if (topPeliculasPorActor != null && !topPeliculasPorActor.isEmpty()) {
-                                        for (Object[] pelicula : topPeliculasPorActor) {
-                                            if (pelicula != null && pelicula.length >= 3) {
+                                        for (Object[] actor : topPeliculasPorActor) {
+                                            if (actor != null && actor.length >= 2) {
                                 %>
                                 <div class="list-item">
-                                    <%= pelicula[0] %>: <%= pelicula[1] %> (<%= pelicula[2] %> veces)
+                                    <%= actor[0] %>: <%= actor[1] %> películas
                                 </div>
                                 <%
                                         }
@@ -119,14 +117,14 @@
                             </div>
 
                             <div class="stat-section">
-                                <h4 class="stat-section-title">Películas por Año:</h4>
+                                <h4 class="stat-section-title">Top Años más vistos:</h4>
                                 <%
                                     if (topPeliculasPorAnio != null && !topPeliculasPorAnio.isEmpty()) {
-                                        for (Object[] pelicula : topPeliculasPorAnio) {
-                                            if (pelicula != null && pelicula.length >= 3) {
+                                        for (Object[] anio : topPeliculasPorAnio) {
+                                            if (anio != null && anio.length >= 2) {
                                 %>
                                 <div class="list-item">
-                                    <%= pelicula[0] %>: <%= pelicula[1] %> (<%= pelicula[2] %> veces)
+                                    <%= anio[0] %>: <%= anio[1] %> películas
                                 </div>
                                 <%
                                         }
