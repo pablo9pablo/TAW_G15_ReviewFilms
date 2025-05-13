@@ -2,8 +2,10 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
@@ -108,8 +110,16 @@ public class ControllerMovie {
         List<Genre> genre = genreRepository.findAll();
         List<ProductionCompany> pcompany = productionCompanyRepository.findAll();
         List <Actor> actores = actorRepository.findAll();
+        MovieDTO movieDTO = new MovieDTO();
+
+        if(id!=-1){
+             movieDTO = MovieMapper.toDTO(movie);
+
+        }
+
 
         model.addAttribute("movie", movie);
+        model.addAttribute("MovieDTO", movieDTO);
         model.addAttribute("genre", genre);
         model.addAttribute("pcompany", pcompany);
         model.addAttribute("actores", actores);
@@ -119,85 +129,31 @@ public class ControllerMovie {
 
     @PostMapping("/savemovie")
     @Transactional
-    public String guardarPelicula(@RequestParam("id") Integer id,
-                                  @RequestParam("title") String title,
-                                  @RequestParam("originalTitle") String originalTitle,
-                                  @RequestParam("releaseDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate releaseDate,
-                                  @RequestParam("runtime") Integer runtime,
-                                  @RequestParam("budget") BigDecimal budget,
-                                  @RequestParam("revenue") BigDecimal revenue,
-                                  @RequestParam("originalLanguage") String originalLanguage,
-                                  @RequestParam("overview") String overview,
-                                  @RequestParam("imageUrl") String imageUrl,
-                                  @RequestParam("generos") String[] generos,
-                                  @RequestParam("pcompany") String[] pCompany,
-                                  @RequestParam("actores") String[] actores
-    ) {
+    public String guardarPelicula(@ModelAttribute MovieDTO movieDTO) {
+        // Obtener la película a editar o crear una nueva
+        Movie movie = movieDTO.getId() != null
+                ? movieRepository.findById(movieDTO.getId()).orElse(new Movie())
+                : new Movie();
 
-        Movie movie = (id != null) ? movieRepository.findById(id).orElse(new Movie()) : new Movie();
+        // Actualizar la entidad con los datos del DTO
+        MovieMapper.updateEntity(movie, movieDTO,
+                genreRepository.findAllById(movieDTO.getGenreIds()),
+                productionCompanyRepository.findAllById(movieDTO.getProductionCompanyIds()));
 
-        movie.setTitle(title);
-        movie.setOriginalTitle(originalTitle);
-        movie.setReleaseDate(releaseDate);
-        movie.setRuntime(runtime);
-        movie.setBudget(budget);
-        movie.setRevenue(revenue);
-        movie.setOriginalLanguage(originalLanguage);
-        movie.setOverview(overview);
-        movie.setImageUrl(imageUrl);
-
-        // Asociar géneros
-        Set<Genre> selectedGenres = new HashSet<>();
-        for (String genreId : generos) {
-            selectedGenres.add(genreRepository.findById(Integer.parseInt(genreId)).get());
-        }
-        movie.setGenres(selectedGenres);
-
-        // Asociar compañías de producción
-        Set<ProductionCompany> selectedCompanies = new HashSet<>();
-        for (String pcompanyID : pCompany) {
-            selectedCompanies.add(productionCompanyRepository.findById(Integer.parseInt(pcompanyID)).get());
-        }
-        movie.setProductionCompanies(selectedCompanies);
+        // Guardar película actualizada
+        movie = movieRepository.save(movie);
 
 
-        movie = movieRepository.save(movie);  // Guardar nueva película
 
-
-        // Eliminar actores antiguos solo si la película ya existe
-        if (id != null) {
-            movieCast.deleteByMovieId(id);  // Eliminar actores asociados a la película si ya existe
-        }
-
-        // Crear y guardar las relaciones de actores
-        for (String actorId : actores) {
-            Actor actor = actorRepository.findById(Integer.parseInt(actorId)).orElse(null);
-            if (actor != null) {
-                MovieCastId movieCastId = new MovieCastId();
-                movieCastId.setMovieId(movie.getId());
-                movieCastId.setActorId(Integer.parseInt(actorId));
-
-                MovieCast mc = new MovieCast();
-                mc.setId(movieCastId);  // Establecer la clave compuesta
-                mc.setMovie(movie);  // Establecer la relación con la película
-                mc.setActor(actor);  // Establecer la relación con el actor
-
-                movieCast.save(mc);  // Guardar la relación MovieCast
-            }
-        }
 
         return "redirect:/";
     }
-
 
     @GetMapping("/deletemovie")
     public String eliminarPelicula(@RequestParam("id") Integer movieId) {
-        //FALTA: Comprobacion de q este autenticado y de q tenga rol de editor
         movieRepository.deleteById(movieId);
         return "redirect:/";
     }
-
-
     // Métodos auxiliares para la recomendación de películas
     public Set<Movie> relatedMoviesGenre(List<Genre> genres, Integer id) {
         Set<Movie> relatedMoviesGenre = new HashSet<>();
@@ -402,6 +358,7 @@ public class ControllerMovie {
         model.addAttribute("movieList", movies);
         model.addAttribute("filtro", filtro);
         model.addAttribute("busqueda", new Busqueda());
+
 
         return "index";
     }

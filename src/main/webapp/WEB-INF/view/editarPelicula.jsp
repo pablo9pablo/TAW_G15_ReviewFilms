@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
 <%@ page import="java.util.List" %>
@@ -8,9 +9,6 @@
 <%
     boolean isEditing = true;
     Movie movie = (Movie) request.getAttribute("movie");
-    List <Genre> genreList = (List<Genre>) request.getAttribute("genre");
-    List <ProductionCompany> pcompanyList = (List<ProductionCompany>) request.getAttribute("pcompany");
-    List <Actor> actoresList = (List<Actor>) request.getAttribute("actores");
     if(movie.getId() == null) isEditing = false;
 %>
 
@@ -20,66 +18,54 @@
     <title><%= isEditing ? "Editar Película" : "Crear Película" %></title>
 </head>
 <body>
+
 <jsp:include page="cabecera.jsp"/>
 <jsp:include page="logout.jsp"/>
 
-
 <h2><%= isEditing ? "Editar " + movie.getTitle() : "Crear Película" %></h2>
 
-<form action="/savemovie" method="post">
-    <input type="hidden" name="id" value="<%= (movie.getId()==null? -1: movie.getId()) %>">
+<form:form modelAttribute="MovieDTO" method="post" action="/savemovie">
 
-    Título: <input type="text" name="title" value="<%= movie.getTitle() != null ? movie.getTitle() : "" %>" required><br>
+    <form:hidden path="id"/>
 
-    Título original: <input type="text" name="originalTitle" value="<%= movie.getOriginalTitle() != null ? movie.getOriginalTitle() : "" %>" required><br>
+    Título:
+    <form:input path="title" required="true"/><br>
 
-    Fecha de estreno: <input type="date" name="releaseDate"
-                             value="<%= movie.getReleaseDate() != null ? movie.getReleaseDate() : "" %>"><br>
+    Título original:
+    <form:input path="originalTitle" required="true"/><br>
 
-    Duración (min): <input type="number" name="runtime" value="<%= movie.getRuntime() != null ? movie.getRuntime() : "" %>"><br>
+    Fecha de estreno:
+    <form:input path="releaseDate"/><br>
 
-    Presupuesto: <input type="number" step="0.01" name="budget" value="<%= movie.getBudget() != null ? movie.getBudget() : "" %>"><br>
+    Duración (min):
+    <form:input path="runtime" type="number"/><br>
 
-    Ingresos: <input type="number" step="0.01" name="revenue" value="<%= movie.getRevenue() != null ? movie.getRevenue() : "" %>"><br>
+    Presupuesto:
+    <form:input path="budget" type="number" step="0.01"/><br>
 
-    Idioma original: <input type="text" name="originalLanguage" value="<%= movie.getOriginalLanguage() != null ? movie.getOriginalLanguage() : "" %>"><br>
+    Ingresos:
+    <form:input path="revenue" type="number" step="0.01"/><br>
 
-    Género:<br>
-    <select name="generos" multiple>
-        <% for (Genre g : genreList) {
-            boolean isSelected = movie.getGenres().contains(g);
-        %>
-        <option value="<%= g.getId() %>" <%= isSelected ? "selected" : "" %>><%= g.getName() %></option>
-        <% } %>
-    </select><br>
+    Idioma original:
+    <form:input path="originalLanguage"/><br>
 
-    Production company:<br>
-    <select name="pcompany" multiple>
-        <% for (ProductionCompany p : pcompanyList) {
-            boolean isSelected = movie.getProductionCompanies().contains(p);
-        %>
-        <option value="<%= p.getId() %>" <%= isSelected ? "selected" : "" %>><%= p.getName() %></option>
-        <% } %>
-    </select><br>
+    <br><br>Género:<br>
+    <form:checkboxes path="genreIds" items="${genre}" itemLabel="name"/><br>
 
-    Actores:<br>
-    <select name="actores" multiple>
-        <% for (Actor a : actoresList) {
-            boolean isSelected = movie.getMovieCasts().stream()
-                    .anyMatch(mc -> mc.getActor().equals(a));
+    <br>Production company:<br>
+    <form:checkboxes path="productionCompanyIds" items="${pcompany}" itemLabel="name"/><br>
 
-        %>
-        <option value="<%= a.getId() %>" <%= isSelected ? "selected" : "" %>><%= a.getName() %></option>
-        <% } %>
-    </select><br>
+    <br>Actores:<br>
+    <form:select path="actorIds" items="${actores}" itemValue="id" itemLabel="name" multiple="true"/><br>
 
-    Sinopsis:<br>
-    <textarea name="overview" rows="4" cols="50"><%= movie.getOverview() != null ? movie.getOverview() : "" %></textarea><br>
+    <br>Sinopsis:<br>
+    <form:textarea path="overview" rows="4" cols="50"/><br>
 
-    URL de imagen: <input type="text" name="imageUrl" value="<%= movie.getImageUrl() != null ? movie.getImageUrl() : "" %>"><br><br>
+    URL de imagen:
+    <form:input path="imageUrl"/><br><br>
 
     <input type="submit" value="Guardar Película">
-</form>
+</form:form>
 
 </body>
 </html>
