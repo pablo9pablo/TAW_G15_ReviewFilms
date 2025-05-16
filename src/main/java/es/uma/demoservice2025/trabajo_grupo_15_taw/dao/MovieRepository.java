@@ -58,5 +58,48 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
     @Query("SELECT DISTINCT m FROM Movie m JOIN MovieGenre mg ON m.id = mg.movie.id JOIN Genre g ON mg.genre.id = g.id WHERE g.id = 21 ORDER BY m.releaseDate ASC")
     List<Movie> findAllSuperheroMovies();
 
+    @Query("SELECT m, AVG(r.rating) as avgRating, COUNT(r) as reviewCount " +
+            "FROM Movie m " +
+            "JOIN m.reviews r " +
+            "GROUP BY m " +
+            "HAVING COUNT(r) >= 1 " +
+            "ORDER BY avgRating DESC")
+    List<Object[]> findTopRatedMovies();
 
+    @Query("SELECT m, AVG(r.rating) as avgRating, COUNT(r) as reviewCount " +
+            "FROM Movie m " +
+            "JOIN m.reviews r " +
+            "GROUP BY m " +
+            "HAVING COUNT(r) >= 1 " +
+            "ORDER BY avgRating ASC")
+    List<Object[]> findWorstRatedMovies();
+
+    @Query("SELECT m, COUNT(r) as reviewCount " +
+            "FROM Movie m " +
+            "JOIN m.reviews r " +
+            "GROUP BY m " +
+            "ORDER BY reviewCount DESC")
+    List<Object[]> findMoviesWithMostReviews();
+
+    @Query("SELECT m " +
+            "FROM Movie m " +
+            "WHERE m.revenue > 0 " +
+            "ORDER BY m.revenue DESC")
+    List<Movie> findHighestGrossingMovies();
+
+    @Query("SELECT g.name, COUNT(m) as movieCount " +
+            "FROM Movie m " +
+            "JOIN m.genres g " +
+            "GROUP BY g.name " +
+            "ORDER BY movieCount DESC " +
+            "LIMIT 5")
+    List<Object[]> findMovieCountByGenre();
+
+    @Query("SELECT pc.name, COUNT(m) as movieCount " +
+            "FROM Movie m " +
+            "JOIN m.productionCompanies pc " +
+            "GROUP BY pc.name " +
+            "ORDER BY movieCount DESC " +
+            "LIMIT 5")
+    List<Object[]> findTopProductionCompanies();
 }
