@@ -1,4 +1,3 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
@@ -56,8 +55,12 @@
     <br>Production company:<br>
     <form:checkboxes path="productionCompanyIds" items="${pcompany}" itemLabel="name"/><br>
 
+
+    <% if (movie.getId() != null) { %>
     <br>Actores:<br>
-    <form:select path="actorIds" items="${actores}" itemValue="id" itemLabel="name" multiple="true"/><br>
+    <a href="/cast?id=<%= movie.getId() %>">Editar Cast (Reparto)</a><br><br>
+    <% } %>
+
 
     <br>Sinopsis:<br>
     <form:textarea path="overview" rows="4" cols="50"/><br>

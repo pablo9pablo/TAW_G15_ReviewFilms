@@ -2,12 +2,15 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.mapper;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+@Component
 public class MovieMapper {
 
     // Convierte Movie → MovieDTO
