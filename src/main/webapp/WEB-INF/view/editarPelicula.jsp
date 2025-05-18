@@ -56,10 +56,11 @@
     <form:checkboxes path="productionCompanyIds" items="${pcompany}" itemLabel="name"/><br>
 
 
-    <% if (movie.getId() != null) { %>
     <br>Actores:<br>
-    <a href="/cast?id=<%= movie.getId() %>">Editar Cast (Reparto)</a><br><br>
-    <% } %>
+    <a href="/cast?id=<%= (isEditing) ? movie.getId() : -1 %>"
+       onclick="return confirm('¿Estás seguro de que quieres editar el reparto? ¡Perderás los cambios no guardados en la película!');">
+        Editar Cast (Reparto)
+    </a>
 
 
     <br>Sinopsis:<br>

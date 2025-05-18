@@ -23,4 +23,6 @@ public interface MovieCastRepository extends JpaRepository<MovieCast, Integer> {
     boolean existsById(MovieCastId castId);
 
     void deleteById(MovieCastId castId);
+
+    List<MovieCast> findByMovieId(Integer id);
 }

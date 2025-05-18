@@ -13,25 +13,21 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.ReviewUI;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 
 @Controller
+@SessionAttributes("tempCastList")
 public class ControllerMovie {
 
     @Autowired
@@ -84,6 +80,11 @@ public class ControllerMovie {
         return "index";
     }
 
+    @ModelAttribute("tempCastList")
+    public List<MovieCastDTO> tempCastList() {
+        return new ArrayList<>();
+    }
+
 
     @GetMapping("/viewmovie")
     public String verPelicula(@RequestParam("id") Integer id,
@@ -128,7 +129,6 @@ public class ControllerMovie {
         Movie movie = movieRepository.findById(id).orElse(new Movie());
         List<Genre> genre = genreRepository.findAll();
         List<ProductionCompany> pcompany = productionCompanyRepository.findAll();
-        List <Actor> actores = actorRepository.findAll();
         MovieDTO movieDTO = new MovieDTO();
 
         if(id!=-1){
@@ -136,6 +136,13 @@ public class ControllerMovie {
 
         }
 
+        List<Actor> actores = actorRepository.findAll();
+        model.addAttribute("actores", actores);
+
+        MovieCastDTO movieCastDTO = new MovieCastDTO();
+
+
+        model.addAttribute("movieCastDTO", movieCastDTO);
 
         model.addAttribute("movie", movie);
         model.addAttribute("MovieDTO", movieDTO);
@@ -149,7 +156,10 @@ public class ControllerMovie {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/savemovie")
-    public String guardarPelicula(@ModelAttribute MovieDTO movieDTO) {
+    public String guardarPelicula(
+            @ModelAttribute MovieDTO movieDTO,
+            @ModelAttribute("tempCastList") List<MovieCastDTO> tempCastList) {
+
         // Obtener la película a editar o crear una nueva
         Movie movie = movieDTO.getId() != null
                 ? movieRepository.findById(movieDTO.getId()).orElse(new Movie())
@@ -163,11 +173,31 @@ public class ControllerMovie {
         // Guardar película actualizada
         movie = movieRepository.save(movie);
 
+        // Si hay reparto temporal, lo asociamos ahora que la película existe
+        for (MovieCastDTO castDTO : tempCastList) {
+            MovieCastId castId = new MovieCastId();
+            castId.setMovieId(movie.getId());
+            castId.setActorId(castDTO.getActorId());
+
+            MovieCast movieCast = new MovieCast();
+            movieCast.setId(castId);
+            movieCast.setMovie(movie);
+            movieCast.setActor(actorRepository.findById(castDTO.getActorId()).orElse(null));
+            movieCast.setCharacter(castDTO.getCharacter());
+            movieCast.setCreditId(castDTO.getCreditId());
+            movieCast.setCreditOrder(castDTO.getCreditOrder());
+
+            movieCastRepository.save(movieCast);
+        }
+
+        // Limpiar cast temporal
+        tempCastList.clear();
 
 
-
-        return "redirect:/";
+        return "redirect:/editmovie?id=" + movie.getId();
     }
+
+
 
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -179,49 +209,73 @@ public class ControllerMovie {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/cast")
     public String castPelicula(
-            @RequestParam("id") Integer movieId,
+            @RequestParam(value = "id", required = false) Integer movieId,
+            @ModelAttribute("tempCastList") List<MovieCastDTO> tempCastList,
             Model model) {
 
-        Movie movie = movieRepository.findById(movieId).orElse(null);
+        Movie movie;
+        List<MovieCastDTO> currentCast;
+
+        if (movieId != null && movieId != -1) {
+            movie = movieRepository.findById(movieId).orElse(null);
+            currentCast = movie != null
+                    ? movieCastRepository.findByMovie(movie).stream()
+                    .map(mc -> {
+                        MovieCastDTO dto = new MovieCastMapper().toDto(mc);
+                        // Asegurar que el nombre del actor está cargado
+                        dto.setActorName(mc.getActor() != null ? mc.getActor().getName() : "Desconocido");
+                        return dto;
+                    }).toList()
+                    : new ArrayList<>();
+        } else {
+            movie = new Movie(); // película no guardada aún
+            // Para cada MovieCastDTO temporal, obtener el nombre de actor de la BD
+            currentCast = tempCastList.stream().map(c -> {
+                Actor actor = actorRepository.findById(c.getActorId()).orElse(null);
+                c.setActorName(actor != null ? actor.getName() : "Desconocido");
+                return c;
+            }).toList();
+        }
 
         model.addAttribute("movie", movie);
-
-        List<Actor> actores = actorRepository.findAll();
-        model.addAttribute("actores", actores);
-
-        MovieCastDTO movieCastDTO = new MovieCastDTO();
-        movieCastDTO.setMovieId(movieId);
-
-        model.addAttribute("movieCastDTO", movieCastDTO);
-
-        MovieCastMapper movieCastMapper = new MovieCastMapper();
-
-        List<MovieCast> castList = movieCastRepository.findByMovie(movie);
-        List<MovieCastDTO> currentCast = castList.stream()
-                .map(movieCastMapper::toDto)
-                .toList();
         model.addAttribute("currentCast", currentCast);
+        model.addAttribute("actores", actorRepository.findAll());
+
+        MovieCastDTO dto = new MovieCastDTO();
+        dto.setMovieId(movieId != null ? movieId : -1);
+        model.addAttribute("movieCastDTO", dto);
 
         return "editarCast";
     }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @PostMapping("/saveCast")
-    public String saveCast(@ModelAttribute MovieCastDTO movieCastDTO, Model model) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public String saveCast(
+            @ModelAttribute MovieCastDTO movieCastDTO,
+            @ModelAttribute("tempCastList") List<MovieCastDTO> tempCastList,
+            Model model) {
 
+        if (movieCastDTO.getMovieId() == null || movieCastDTO.getMovieId() == -1) {
+            // Si actor ya está en la lista temporal, actualizarlo
+            tempCastList.removeIf(c -> c.getActorId().equals(movieCastDTO.getActorId()));
+            tempCastList.add(movieCastDTO);
+            return "redirect:/cast?id=-1";
+        }
+
+        // Persistir en BD
         Movie movie = movieRepository.findById(movieCastDTO.getMovieId()).orElse(null);
-
-
         Actor actor = actorRepository.findById(movieCastDTO.getActorId()).orElse(null);
-
 
         MovieCastId castId = new MovieCastId();
         castId.setMovieId(movieCastDTO.getMovieId());
         castId.setActorId(movieCastDTO.getActorId());
 
-        MovieCast movieCast = movieCastRepository.findById(castId);
-        if(movieCast == null){
-            movieCast = new MovieCast();
+        MovieCast movieCast = new MovieCast();
+        if(movieCastRepository.findById(castId)!=null) {
+            movieCast = movieCastRepository.findById(castId);
+
         }
+
 
         movieCast.setId(castId);
         movieCast.setMovie(movie);
@@ -235,17 +289,26 @@ public class ControllerMovie {
         return "redirect:/cast?id=" + movieCastDTO.getMovieId();
     }
 
+
+
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/deleteCast")
     public String deleteCast(
             @RequestParam("movieId") Integer movieId,
-            @RequestParam("actorId") Integer actorId) {
+            @RequestParam("actorId") Integer actorId,
+            @ModelAttribute("tempCastList") List<MovieCastDTO> tempCastList) {
 
+        if (movieId == -1) {
+            // Borrar de la lista temporal
+            tempCastList.removeIf(c -> c.getActorId().equals(actorId));
+            return "redirect:/cast?id=-1";
+        }
+
+        // Borrar de base de datos
         MovieCastId castId = new MovieCastId();
         castId.setMovieId(movieId);
         castId.setActorId(actorId);
-
         if (movieCastRepository.existsById(castId)) {
             movieCastRepository.deleteById(castId);
         }
@@ -258,22 +321,35 @@ public class ControllerMovie {
     public String editCast(
             @RequestParam("movieId") Integer movieId,
             @RequestParam("actorId") Integer actorId,
+            @ModelAttribute("tempCastList") List<MovieCastDTO> tempCastList,
             Model model) {
 
-        MovieCastId castId = new MovieCastId();
-        castId.setMovieId(movieId);
-        castId.setActorId(actorId);
+        MovieCastDTO movieCastDTO;
 
-        MovieCast movieCast = movieCastRepository.findById(castId);
+        if (movieId == -1) {
+            movieCastDTO = tempCastList.stream()
+                    .filter(c -> c.getActorId().equals(actorId))
+                    .findFirst()
+                    .orElse(null);
+        } else {
+            MovieCastId castId = new MovieCastId();
+            castId.setMovieId(movieId);
+            castId.setActorId(actorId);
+            MovieCast movieCast = new MovieCast();
+            if(movieCastRepository.findById(castId)!=null) {
+                movieCast = movieCastRepository.findById(castId);
 
+            }
 
-        MovieCastMapper movieCastMapper = new MovieCastMapper();
-        MovieCastDTO movieCastDTO = movieCastMapper.toDto(movieCast);
+            movieCastDTO = movieCast != null ? new MovieCastMapper().toDto(movieCast) : null;
+        }
 
         model.addAttribute("movieCastDTO", movieCastDTO);
+        model.addAttribute("actores", actorRepository.findAll());
 
         return "editCast";
     }
+
 
 
 

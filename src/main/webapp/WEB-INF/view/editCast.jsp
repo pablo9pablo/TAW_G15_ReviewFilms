@@ -8,6 +8,9 @@
 </head>
 <body>
 
+<jsp:include page="cabecera.jsp"/>
+<jsp:include page="logout.jsp"/>
+
 <h2>Editar Reparto</h2>
 
 <form:form modelAttribute="movieCastDTO" method="post" action="/saveCast">
