@@ -5,7 +5,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.SeenRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FiltroDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +47,7 @@ public class ControllerWatched {
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("filtroSeen", new FiltroDTO());
+        model.addAttribute("filtroSeen", new Filtro());
 
         return "watched";
 
@@ -72,10 +72,10 @@ public class ControllerWatched {
      *----------------------------------FILTRADO--------------------------------------------------------*
      */
 
-    protected String listarPeliculasVistasConFiltrado(FiltroDTO filtroSeen, Model model, String orden) {
+    protected String listarPeliculasVistasConFiltrado(Filtro filtroSeen, Model model, String orden) {
 
         if (filtroSeen == null) {
-            filtroSeen = new FiltroDTO();
+            filtroSeen = new Filtro();
         }
         if (filtroSeen.getGeneroIds() == null) {
             filtroSeen.setGeneroIds(new ArrayList<>());
@@ -137,17 +137,17 @@ public class ControllerWatched {
 
 
     @PostMapping("/filtrarSeen")
-    public String doFiltrar(@ModelAttribute("filtroSeen") FiltroDTO filtroSeen, Model model) {
+    public String doFiltrar(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, null);
     }
 
     @PostMapping("/ascSeen")
-    public String doFiltrarAsc(@ModelAttribute("filtroSeen") FiltroDTO filtroSeen, Model model) {
+    public String doFiltrarAsc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "asc");
     }
 
     @PostMapping("/descSeen")
-    public String doFiltrarDesc(@ModelAttribute("filtroSeen") FiltroDTO filtroSeen, Model model) {
+    public String doFiltrarDesc(@ModelAttribute("filtroSeen") Filtro filtroSeen, Model model) {
         return this.listarPeliculasVistasConFiltrado(filtroSeen, model, "desc");
     }
 

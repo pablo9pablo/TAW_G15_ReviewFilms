@@ -1,4 +1,4 @@
-package es.uma.demoservice2025.trabajo_grupo_15_taw.dto;
+package es.uma.demoservice2025.trabajo_grupo_15_taw.ui;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
         @Data
-        public class FiltroDTO {
+        public class Filtro {
 
             private Integer year;
             private Double vote;

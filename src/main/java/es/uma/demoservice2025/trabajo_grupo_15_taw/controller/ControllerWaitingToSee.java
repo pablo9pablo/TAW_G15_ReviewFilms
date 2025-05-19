@@ -2,7 +2,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FiltroDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +48,7 @@ public class ControllerWaitingToSee {
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("filtroWaitingToSee", new FiltroDTO());
+        model.addAttribute("filtroWaitingToSee", new Filtro());
 
         return "waitingToSee";
     }
@@ -103,10 +103,10 @@ public class ControllerWaitingToSee {
      *----------------------------------FILTRADO--------------------------------------------------------*
      */
 
-    protected String listarPeliculasPendientesConFiltrado(FiltroDTO filtroWaitingToSee, Model model, String orden) {
+    protected String listarPeliculasPendientesConFiltrado(Filtro filtroWaitingToSee, Model model, String orden) {
 
         if (filtroWaitingToSee == null) {
-            filtroWaitingToSee = new FiltroDTO();
+            filtroWaitingToSee = new Filtro();
         }
         if (filtroWaitingToSee.getGeneroIds() == null) {
             filtroWaitingToSee.setGeneroIds(new ArrayList<>());
@@ -168,17 +168,17 @@ public class ControllerWaitingToSee {
 
 
     @PostMapping("/filtrarWaitingToSee")
-    public String doFiltrar(@ModelAttribute("filtroWaitingToSee") FiltroDTO filtroWaitingToSee, Model model) {
+    public String doFiltrar(@ModelAttribute("filtroWaitingToSee") Filtro filtroWaitingToSee, Model model) {
         return this.listarPeliculasPendientesConFiltrado(filtroWaitingToSee, model, null);
     }
 
     @PostMapping("/ascWaiting")
-    public String doFiltrarAsc(@ModelAttribute("filtroWaitingToSee") FiltroDTO filtroWaitingToSee, Model model) {
+    public String doFiltrarAsc(@ModelAttribute("filtroWaitingToSee") Filtro filtroWaitingToSee, Model model) {
         return this.listarPeliculasPendientesConFiltrado(filtroWaitingToSee, model, "asc");
     }
 
     @PostMapping("/descWaiting")
-    public String doFiltrarDesc(@ModelAttribute("filtroWaitingToSee") FiltroDTO filtroWaitingToSee, Model model) {
+    public String doFiltrarDesc(@ModelAttribute("filtroWaitingToSee") Filtro filtroWaitingToSee, Model model) {
         return this.listarPeliculasPendientesConFiltrado(filtroWaitingToSee, model, "desc");
     }
 

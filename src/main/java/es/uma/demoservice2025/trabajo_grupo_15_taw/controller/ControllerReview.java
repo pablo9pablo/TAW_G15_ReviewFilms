@@ -2,7 +2,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ReviewDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.ReviewService;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FiltroReviewDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.FiltroReview;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,11 +18,11 @@ public class ControllerReview {
     @Autowired
     protected ReviewService reviewService;
 
-    private String procesarFiltrado(FiltroReviewDTO filtroReview, Model model, Integer userId) {
+    private String procesarFiltrado(FiltroReview filtroReview, Model model, Integer userId) {
         List<ReviewDTO> userReviews;
 
         if (filtroReview == null) {
-            filtroReview = new FiltroReviewDTO();
+            filtroReview = new FiltroReview();
             userReviews = reviewService.getUserReviews(userId);
         } else {
             userReviews = reviewService.getUserReviews(userId, filtroReview.getFecha(), filtroReview.getVote());
@@ -41,7 +41,7 @@ public class ControllerReview {
 
     @PostMapping("/filtrarReview")
     public String doFiltrar(@AuthenticationPrincipal UserPrincipal userPrincipal,
-                            @ModelAttribute("filtroReview") FiltroReviewDTO filtroReview,
+                            @ModelAttribute("filtroReview") FiltroReview filtroReview,
                             Model model) {
         return procesarFiltrado(filtroReview, model, userPrincipal.getUser().getId());
     }

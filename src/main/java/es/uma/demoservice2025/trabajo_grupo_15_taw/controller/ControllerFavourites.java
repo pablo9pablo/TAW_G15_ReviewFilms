@@ -7,7 +7,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Favorite;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FiltroDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +49,7 @@ public class ControllerFavourites {
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("filtroFavourite", new FiltroDTO());
+        model.addAttribute("filtroFavourite", new Filtro());
 
         return "favoritas";
     }
@@ -73,10 +73,10 @@ public class ControllerFavourites {
      *----------------------------------FILTRADO--------------------------------------------------------*
      */
 
-    protected String listarPeliculasFavoritasConFiltrado(FiltroDTO filtroFavourite, Model model, String orden) {
+    protected String listarPeliculasFavoritasConFiltrado(Filtro filtroFavourite, Model model, String orden) {
 
         if (filtroFavourite == null) {
-            filtroFavourite = new FiltroDTO();
+            filtroFavourite = new Filtro();
         }
         if (filtroFavourite.getGeneroIds() == null) {
             filtroFavourite.setGeneroIds(new ArrayList<>());
@@ -138,17 +138,17 @@ public class ControllerFavourites {
 
 
     @PostMapping("/filtrarFavourite")
-    public String doFiltrar(@ModelAttribute("filtroFavourite") FiltroDTO filtroFavourite, Model model) {
+    public String doFiltrar(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model) {
         return this.listarPeliculasFavoritasConFiltrado(filtroFavourite, model, null);
     }
 
     @PostMapping("/ascFavourite")
-    public String doFiltrarAsc(@ModelAttribute("filtroFavourite") FiltroDTO filtroFavourite, Model model) {
+    public String doFiltrarAsc(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model) {
         return this.listarPeliculasFavoritasConFiltrado(filtroFavourite, model, "asc");
     }
 
     @PostMapping("/descFavourite")
-    public String doFiltrarDesc(@ModelAttribute("filtroFavourite") FiltroDTO filtroFavourite, Model model) {
+    public String doFiltrarDesc(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model) {
         return this.listarPeliculasFavoritasConFiltrado(filtroFavourite, model, "desc");
     }
 
