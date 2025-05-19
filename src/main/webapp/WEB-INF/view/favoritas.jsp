@@ -75,9 +75,9 @@
             </form:form>
         </div>
 
-        <!-- Tabla de películas vistas -->
-        <div class="table-wrapper table-wrapper-scroll-left">
-            <div class="content">
+        <!-- Tabla de películas favoritas -->
+        <div class="table-wrapper">
+            <div class="table-header">
                 <table class="movie-table">
                     <thead>
                     <tr>
@@ -88,29 +88,30 @@
                         <th>Desmarcar Como Favorita</th>
                     </tr>
                     </thead>
+                </table>
+            </div>
+            <div class="table-body-scroll">
+                <table class="movie-table">
                     <tbody>
                     <%
-                        for (Favorite movie:favouriteList) {
+                        for (Favorite movie : favouriteList) {
                     %>
                     <tr>
                         <td>
                             <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeFavoritas=true">
                                 <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
                             </a>
-
                         </td>
                         <td><%= movie.getMovie().getOriginalTitle() %></td>
-                        <td><%= movie.getMovie().getRuntime()%> min</td>
+                        <td><%= movie.getMovie().getRuntime() %> min</td>
                         <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
                         <td>
-                            <!-- QUITAR COMO FAVORITA -->
                             <form method="post" action="/quitarComoFavorita" class="watched-button-form">
                                 <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
                                 <button type="submit" class="icon-button" title="Desmarcar como favorita">
                                     <i class="fas fa-star yellow-icon"></i>
                                 </button>
                             </form>
-                            <!----------------------------------->
                         </td>
                     </tr>
                     <%
@@ -121,7 +122,9 @@
             </div>
         </div>
 
-</div>
+
+
+    </div>
 <jsp:include page="footer.jsp"/>
 </div>
 <script src="/js/indexScript.js"></script>

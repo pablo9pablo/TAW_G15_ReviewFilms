@@ -75,58 +75,63 @@
             </div>
 
 
-            <!-- Tabla de películas vistas -->
-            <div class="table-wrapper table-wrapper-scroll-left">
-                    <div class="content">
-                        <table class="movie-table">
-                            <thead>
-                            <tr>
-                                <th>Portada</th>
-                                <th>Título</th>
-                                <th>Duración</th>
-                                <th>Calificación Media</th>
-                                <th>Eliminar de la lista</th>
-                                <th>Marcar como vista</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <%
-                                for (Watchlist movie : watchlistList) {
-                            %>
-                            <tr>
-                                <td>
-                                    <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeWaitingToSee=true">
-                                        <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
-                                    </a>
-                                </td>
-                                <td><%= movie.getMovie().getOriginalTitle() %></td>
-                                <td><%= movie.getMovie().getRuntime()%> min</td>
-                                <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
-                                <td>
-                                                <!-- ELIMINAR UNA PELICULA  DE LA LISTA DE PENDIENTE -->
-                                    <form method="post" action="/eliminarDePendiente" class="watched-button-form">
-                                        <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
-                                        <button type="submit" class="icon-button trash-button" title="Quitar de pendientes">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                <td>
-                                                <!-- MARCAR  UNA PELICULA COMO VISTA -->
-                                    <form method="post" action="/marcarComoVistaDesdePendiente" class="watched-button-form">
-                                        <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
-                                        <button type="submit" class="icon-button green-icon" title="Marcar como vista">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <%
-                                }
-                            %>
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Tabla de películas pendientes de ver -->
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <table class="movie-table">
+                        <thead>
+                        <tr>
+                            <th>Portada</th>
+                            <th>Título</th>
+                            <th>Duración</th>
+                            <th>Calificación Media</th>
+                            <th>Eliminar de la lista</th>
+                            <th>Marcar como vista</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="table-body-scroll">
+                    <table class="movie-table">
+                        <tbody>
+                        <%
+                            for (Watchlist movie : watchlistList) {
+                        %>
+                        <tr>
+                            <td>
+                                <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeWaitingToSee=true">
+                                    <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
+                                </a>
+                            </td>
+                            <td><%= movie.getMovie().getOriginalTitle() %></td>
+                            <td><%= movie.getMovie().getRuntime()%> min</td>
+                            <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
+                            <td>
+                                <form method="post" action="/eliminarDePendiente" class="watched-button-form">
+                                    <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                    <button type="submit" class="icon-button trash-button" title="Quitar de pendientes">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" action="/marcarComoVistaDesdePendiente" class="watched-button-form">
+                                    <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                    <button type="submit" class="icon-button green-icon" title="Marcar como vista">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <%
+                            }
+                        %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
     <jsp:include page="footer.jsp"/>
 </div>

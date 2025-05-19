@@ -81,7 +81,6 @@
 
                 <!-- Tabla de películas vistas -->
                 <div class="table-wrapper">
-                    <!-- CABECERA FIJA -->
                     <div class="table-header">
                         <table class="movie-table">
                             <thead>
@@ -96,7 +95,6 @@
                         </table>
                     </div>
 
-                    <!-- TABLA CON SCROLL -->
                     <div class="table-body-scroll">
                         <table class="movie-table">
                             <tbody>
