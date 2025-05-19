@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Favorite" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FavoriteMovieDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <%
-    List<Favorite>favouriteList=(List<Favorite>) request.getAttribute("favouriteList");
+    List<FavoriteMovieDTO> favouriteList = (List<FavoriteMovieDTO>) request.getAttribute("favouriteList");
 %>
 <body>
 
@@ -94,20 +95,20 @@
                 <table class="movie-table">
                     <tbody>
                     <%
-                        for (Favorite movie : favouriteList) {
+                        for (FavoriteMovieDTO movie : favouriteList) {
                     %>
                     <tr>
                         <td>
-                            <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeFavoritas=true">
-                                <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
+                            <a href="/viewmovie?id=<%=movie.getMovieId()%>&desdeFavoritas=true">
+                                <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="thumbnail">
                             </a>
                         </td>
-                        <td><%= movie.getMovie().getOriginalTitle() %></td>
-                        <td><%= movie.getMovie().getRuntime() %> min</td>
-                        <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
+                        <td><%= movie.getOriginalTitle() %></td>
+                        <td><%= movie.getRuntime() %> min</td>
+                        <td><%= movie.getVoteAverage() != null ? movie.getVoteAverage() : "No ha sido calificada" %></td>
                         <td>
                             <form method="post" action="/quitarComoFavorita" class="watched-button-form">
-                                <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                <input type="hidden" name="idMovie" value="<%= movie.getMovieId() %>">
                                 <button type="submit" class="icon-button" title="Desmarcar como favorita">
                                     <i class="fas fa-star yellow-icon"></i>
                                 </button>
