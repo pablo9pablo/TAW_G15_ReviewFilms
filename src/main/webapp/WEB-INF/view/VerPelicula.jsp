@@ -121,13 +121,13 @@
                     if(hasReview.isPresent()){
                 %>
                         <p class="error-message">Ya has creado una review para esta película.</p>
-                        <a href="/editReview?id=<%=hasReview.get()%>" class="button-generico">Editar Review</a>
+                        <a href="/editReview?id=<%=hasReview.get()%>&origen=pelicula" class="button-generico">Editar Review</a>
                 <%
                     }else{
                 %>
-                        <form:form modelAttribute="reviewUI" method="post" action="/savereview">
+                        <form:form modelAttribute="review" method="post" action="/savereview">
                             <form:hidden path="id"/>
-                            <form:hidden path="movieId"/>
+                            <form:hidden path="movieDTO.id"/>
 
                             <p><strong>Descripción:</strong></p>
                             <form:textarea path="description" rows="3" cols="80" cssClass="review-textarea"

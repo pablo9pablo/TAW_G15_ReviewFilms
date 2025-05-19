@@ -4,13 +4,13 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieCastDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ReviewDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.ReviewUI;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -108,13 +108,13 @@ public class ControllerMovie {
         List<ProductionCompany> productionCompanies = this.movieRepository.findProductionCompanyByMovieId(id);
         Set<Movie> relatedMoviesProductionCompany = relatedMoviesProductionCompany(productionCompanies, id);
 
-        ReviewUI reviewUI = new ReviewUI();
-        reviewUI.setMovieId(movie.getId());
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setMovieDTO(MovieMapper.toDTO(movie));
 
         model.addAttribute("movie", movie);
         model.addAttribute("relatedMoviesGenre", relatedMoviesGenre);
         model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
-        model.addAttribute("reviewUI", reviewUI);
+        model.addAttribute("review", reviewDTO);
         model.addAttribute("hasReview", hasReview);
 
         return "VerPelicula";

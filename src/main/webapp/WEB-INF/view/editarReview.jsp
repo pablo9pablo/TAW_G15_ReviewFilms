@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <%
-    Movie movie = (Movie) request.getAttribute("movie");
+    MovieDTO movie = (MovieDTO) request.getAttribute("movie");
 %>
 <body>
     <div class="page-container">
@@ -22,9 +23,10 @@
         <div class="page-content">
             <h2 class="page-title">Editar reseña</h2>
             <div class="table-wrapper">
-                <form:form modelAttribute="reviewUI" method="post" action="/savereview">
+                <form:form modelAttribute="review" method="post" action="/savereview">
                     <form:hidden path="id"/>
-                    <form:hidden path="movieId"/>
+                    <form:hidden path="movieDTO.id"/>
+                    <input type="hidden" name="origen" value="${origen}"/>
 
                     <table class="movie-table">
                         <tr>
@@ -55,7 +57,8 @@
                         </tr>
                     </table>
                     <div class="button-container">
-                        <a href="/reviews" class="button button-cancel">Cancelar</a>
+                        <a href="<%= "pelicula".equals(request.getParameter("origen")) ? "/viewmovie?id=" + movie.getId() : "/reviews" %>"
+                           class="button button-cancel">Cancelar</a>
                         <form:button class="button button-save">Guardar</form:button>
                     </div>
                 </form:form>

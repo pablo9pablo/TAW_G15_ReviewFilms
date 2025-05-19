@@ -1,8 +1,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ReviewDTO" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +16,7 @@
 
 </head>
 <%
-    List<Review> reviews = (List<Review>) request.getAttribute("reviews");
+    List<ReviewDTO> reviews = (List<ReviewDTO>) request.getAttribute("reviews");
 %>
 <body>
     <div class="page-container">
@@ -58,8 +58,8 @@
                         </thead>
                         <%
                             if (reviews != null && !reviews.isEmpty()) {
-                                for (Review review : reviews) {
-                                    Movie movie = review.getMovie();
+                                for (ReviewDTO review : reviews) {
+                                    MovieDTO movie = review.getMovieDTO();
                         %>
                         <tr>
                             <td>
@@ -79,7 +79,7 @@
                             <td>
                                 <div class="actions-container">
                                     <!--EDITAR REVIEW-------------------------------------------------->
-                                    <a href="/editReview?id=<%=review.getId()%>" class="edit-button"><i class="bi bi-pencil-fill"></i></a>
+                                    <a href="/editReview?id=<%=review.getId()%>&origen=reviews" class="edit-button"><i class="bi bi-pencil-fill"></i></a>
 
                                     <!--BORRAR REVIEW-------------------------------------------------->
                                     <form action="/deleteReview" method="post" onsubmit="return confirm('¿Estás seguro de que quieres borrar esta reseña?');">
