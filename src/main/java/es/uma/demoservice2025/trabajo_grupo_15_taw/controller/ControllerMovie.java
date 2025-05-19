@@ -9,8 +9,8 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.BusquedaDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FiltroDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -74,8 +74,8 @@ public class ControllerMovie {
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("filtro", new Filtro());
-        model.addAttribute("busqueda", new Busqueda());
+        model.addAttribute("filtro", new FiltroDTO());
+        model.addAttribute("busqueda", new BusquedaDTO());
 
         return "index";
     }
@@ -492,7 +492,7 @@ public class ControllerMovie {
      *---------------------------- BUSQUEDA----------------------------------------------------------*
      */
 
-    protected String listarPeliculasConBusqueda(Busqueda busqueda,Model model) {
+    protected String listarPeliculasConBusqueda(BusquedaDTO busqueda, Model model) {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda.getTexto());
         model.addAttribute("movieList", movieListBusqueda);
@@ -502,8 +502,8 @@ public class ControllerMovie {
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("filtro", new Filtro());
-        model.addAttribute("busqueda", new Busqueda());
+        model.addAttribute("filtro", new FiltroDTO());
+        model.addAttribute("busqueda", new BusquedaDTO());
         model.addAttribute("superheroeMovieList", superheroeMovieList);
 
 
@@ -513,7 +513,7 @@ public class ControllerMovie {
     }
 
     @PostMapping("/buscar")
-    public String doBuscar(@ModelAttribute("busqueda") Busqueda busqueda, Model model) {
+    public String doBuscar(@ModelAttribute("busqueda") BusquedaDTO busqueda, Model model) {
 
         return this.listarPeliculasConBusqueda(busqueda, model);
     }
@@ -522,10 +522,10 @@ public class ControllerMovie {
      *----------------------------------FILTRADO--------------------------------------------------------*
      */
 
-    protected String listarPeliculasConFiltrado(Filtro filtro, Model model) {
+    protected String listarPeliculasConFiltrado(FiltroDTO filtro, Model model) {
 
         if (filtro == null) {
-            filtro = new Filtro();
+            filtro = new FiltroDTO();
         }
         if (filtro.getGeneroIds() == null) {
             filtro.setGeneroIds(new ArrayList<>());
@@ -559,7 +559,7 @@ public class ControllerMovie {
         model.addAttribute("movieList", movies);
         model.addAttribute("superheroeMovieList", superheroeMovieList);
         model.addAttribute("filtro", filtro);
-        model.addAttribute("busqueda", new Busqueda());
+        model.addAttribute("busqueda", new BusquedaDTO());
 
 
         return "index";
@@ -567,7 +567,7 @@ public class ControllerMovie {
 
 
     @PostMapping("/filtrar")
-    public String doFiltrar(@ModelAttribute("filtro") Filtro filtro, Model model) {
+    public String doFiltrar(@ModelAttribute("filtro") FiltroDTO filtro, Model model) {
 
         return this.listarPeliculasConFiltrado(filtro,model);
     }
