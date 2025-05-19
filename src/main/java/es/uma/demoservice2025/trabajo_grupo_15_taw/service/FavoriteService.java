@@ -21,16 +21,16 @@ import java.util.stream.Collectors;
 public class FavoriteService {
 
     @Autowired
-    private FavouritesRepository favouritesRepository;
+    protected FavouritesRepository favouritesRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    protected UsuarioRepository usuarioRepository;
 
     @Autowired
-    private GenreRepository genreRepository;
+    protected GenreRepository genreRepository;
 
     @Autowired
-    private FavoriteMapper favoriteMapper;
+    protected FavoriteMapper favoriteMapper;
 
     public List<FavoriteMovieDTO> getFavoritesByUser(String email) {
         User user = usuarioRepository.findByEmail(email);

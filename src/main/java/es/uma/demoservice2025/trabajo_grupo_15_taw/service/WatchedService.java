@@ -21,16 +21,16 @@ import java.util.stream.Collectors;
 public class WatchedService {
 
     @Autowired
-    private SeenRepository seenRepository;
+    protected SeenRepository seenRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    protected UsuarioRepository usuarioRepository;
 
     @Autowired
-    private GenreRepository genreRepository;
+    protected GenreRepository genreRepository;
 
     @Autowired
-    private SeenMapper seenMapper;
+    protected SeenMapper seenMapper;
 
     public List<Genre> getAllGenres() {
         return genreRepository.findAll();

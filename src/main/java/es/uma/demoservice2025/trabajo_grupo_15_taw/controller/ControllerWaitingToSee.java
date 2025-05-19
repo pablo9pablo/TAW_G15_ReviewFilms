@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -73,4 +74,19 @@ public class ControllerWaitingToSee {
 
         return "waitingToSee";
     }
+
+    @PostMapping("/eliminarDePendiente")
+    public String eliminarDePendiente(@RequestParam("idMovie") Integer movieId, Principal principal) {
+        String email = principal.getName();
+        watchlistService.removeMovieFromWatchlist(email, movieId);
+        return "redirect:/waiting";
+    }
+
+    @PostMapping("/marcarComoVistaDesdePendiente")
+    public String marcarComoVistaDesdePendiente(@RequestParam("idMovie") Integer movieId, Principal principal) {
+        String email = principal.getName();
+        watchlistService.markMovieAsSeen(email, movieId);
+        return "redirect:/waiting";
+    }
+
 }

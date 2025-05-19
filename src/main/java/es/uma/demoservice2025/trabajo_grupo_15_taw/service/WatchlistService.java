@@ -1,7 +1,10 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.SeenRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.WatchlistRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.WatchlistDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.SeenId;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Watchlist;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.WatchlistMapper;
@@ -18,13 +21,16 @@ import java.util.stream.Collectors;
 public class WatchlistService {
 
     @Autowired
-    private WatchlistRepository watchlistRepository;
+    protected SeenRepository seenRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    protected WatchlistRepository watchlistRepository;
 
     @Autowired
-    private WatchlistMapper watchlistMapper;
+    protected UsuarioRepository usuarioRepository;
+
+    @Autowired
+    protected WatchlistMapper watchlistMapper;
 
     public List<WatchlistDTO> filterWatchlistByUserEmailAndFiltro(String email, Filtro filtro, String orden) {
         User user = usuarioRepository.findByEmail(email);
@@ -69,4 +75,35 @@ public class WatchlistService {
                 .map(watchlistMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public void removeMovieFromWatchlist(String email, Integer movieId) {
+        User user = usuarioRepository.findByEmail(email);
+        if (user == null) return;
+
+        Watchlist watchlistEntry = watchlistRepository.findByUserIdAndMovieId(user.getId(), movieId);
+        if (watchlistEntry != null) {
+            watchlistRepository.delete(watchlistEntry);
+        }
+    }
+    public void markMovieAsSeen(String email, Integer movieId) {
+        User user = usuarioRepository.findByEmail(email);
+        if (user == null) return;
+
+        Watchlist watchlistEntry = watchlistRepository.findByUserIdAndMovieId(user.getId(), movieId);
+        if (watchlistEntry != null) {
+            watchlistRepository.delete(watchlistEntry);
+
+            Seen seen = new Seen();
+            seen.setUser(user);
+            seen.setMovie(watchlistEntry.getMovie());
+
+            SeenId seenId = new SeenId();
+            seenId.setUserId(user.getId());
+            seenId.setMovieId(movieId);
+            seen.setId(seenId);
+
+            seenRepository.save(seen);
+        }
+    }
+
 }
