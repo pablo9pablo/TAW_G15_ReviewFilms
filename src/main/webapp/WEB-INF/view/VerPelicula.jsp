@@ -128,6 +128,7 @@
                         <form:form modelAttribute="review" method="post" action="/savereview">
                             <form:hidden path="id"/>
                             <form:hidden path="movieDTO.id"/>
+                            <input type="hidden" name="origen" value="pelicula"/>
 
                             <p><strong>Descripción:</strong></p>
                             <form:textarea path="description" rows="3" cols="80" cssClass="review-textarea"
