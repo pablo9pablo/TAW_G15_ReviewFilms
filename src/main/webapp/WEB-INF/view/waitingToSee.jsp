@@ -3,6 +3,7 @@
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Watchlist" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.WatchlistDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -16,8 +17,9 @@
 
 </head>
 <%
-    List<Watchlist>watchlistList=(List<Watchlist>) request.getAttribute("watchlistList");
+    List<WatchlistDTO> watchlistList = (List<WatchlistDTO>) request.getAttribute("watchlistList");
 %>
+
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
@@ -96,20 +98,20 @@
                     <table class="movie-table">
                         <tbody>
                         <%
-                            for (Watchlist movie : watchlistList) {
+                            for (WatchlistDTO movie : watchlistList) {
                         %>
                         <tr>
                             <td>
-                                <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeWaitingToSee=true">
-                                    <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
+                                <a href="/viewmovie?id=<%=movie.getMovieId()%>&desdeWaitingToSee=true">
+                                    <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="thumbnail">
                                 </a>
                             </td>
-                            <td><%= movie.getMovie().getOriginalTitle() %></td>
-                            <td><%= movie.getMovie().getRuntime()%> min</td>
-                            <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
+                            <td><%= movie.getOriginalTitle()%></td>
+                            <td><%= movie.getRuntime()%> min</td>
+                            <td><%= movie.getVoteAverage() != null ? movie.getVoteAverage() : "No ha sido calificada" %></td>
                             <td>
                                 <form method="post" action="/eliminarDePendiente" class="watched-button-form">
-                                    <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                    <input type="hidden" name="idMovie" value="<%= movie.getMovieId() %>">
                                     <button type="submit" class="icon-button trash-button" title="Quitar de pendientes">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -117,7 +119,7 @@
                             </td>
                             <td>
                                 <form method="post" action="/marcarComoVistaDesdePendiente" class="watched-button-form">
-                                    <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                    <input type="hidden" name="idMovie" value="<%= movie.getMovieId() %>">
                                     <button type="submit" class="icon-button green-icon" title="Marcar como vista">
                                         <i class="fas fa-eye"></i>
                                     </button>
