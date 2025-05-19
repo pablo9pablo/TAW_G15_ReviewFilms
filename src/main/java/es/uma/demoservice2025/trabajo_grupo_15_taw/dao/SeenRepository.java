@@ -8,71 +8,73 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface SeenRepository extends JpaRepository<Seen,SeenId> {
+public interface SeenRepository extends JpaRepository<Seen, SeenId> {
 
-    // Devuelve las películas de la watchlist del usuario
-    List<Seen>findByUserId(Integer userId);
+    List<Seen> findByUserId(Integer userId);
 
-    //Filtrado con genero
+    // Filtrado con género
     @Query("SELECT s FROM Seen s " +
             "JOIN s.movie m " +
             "JOIN MovieGenre mg ON mg.movie = m " +
             "JOIN mg.genre g " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE (:anyo IS NULL OR YEAR(m.releaseDate) = :anyo) " +
+            "AND (:startDate IS NULL OR :endDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds)")
-    public List<Seen> buscarPorFiltrosConGenero(@Param("anyo") Integer anyo,
-                                                @Param("vote") Double vote,
-                                                @Param("generoIds") List<Integer> generoIds,
-                                                @Param("startDate") LocalDate startDate,
-                                                @Param("endDate") LocalDate endDate);
-
+            "AND (:generoIds IS NULL OR g.id IN :generoIds)")
+    List<Seen> buscarPorFiltrosConGenero(@Param("anyo") Integer anyo,
+                                         @Param("vote") Double vote,
+                                         @Param("generoIds") List<Integer> generoIds,
+                                         @Param("startDate") LocalDate startDate,
+                                         @Param("endDate") LocalDate endDate);
 
     // Filtrado sin género
     @Query("SELECT s FROM Seen s " +
             "JOIN s.movie m " +
-            "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE (:anyo IS NULL OR YEAR(m.releaseDate) = :anyo) " +
+            "AND (:startDate IS NULL OR :endDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote)")
-    public List<Seen> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
+    List<Seen> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
                                          @Param("vote") Double vote,
                                          @Param("startDate") LocalDate startDate,
                                          @Param("endDate") LocalDate endDate);
 
-
-    // Filtrado con orden ascendente
+    // Filtrado con género y orden ascendente
     @Query("SELECT s FROM Seen s " +
             "JOIN s.movie m " +
-            "LEFT JOIN MovieGenre mg ON mg.movie = m " +
-            "LEFT JOIN mg.genre g " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "JOIN MovieGenre mg ON mg.movie = m " +
+            "JOIN mg.genre g " +
+            "WHERE (:anyo IS NULL OR YEAR(m.releaseDate) = :anyo) " +
+            "AND (:startDate IS NULL OR :endDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds) " +
+            "AND (:generoIds IS NULL OR g.id IN :generoIds) " +
             "ORDER BY m.title ASC")
     List<Seen> buscarPorFiltrosConGeneroOrdenAsc(@Param("anyo") Integer anyo,
-                                           @Param("vote") Double vote,
-                                           @Param("generoIds") List<Integer> generoIds,
-                                           @Param("startDate") LocalDate startDate,
-                                           @Param("endDate") LocalDate endDate);
+                                                 @Param("vote") Double vote,
+                                                 @Param("generoIds") List<Integer> generoIds,
+                                                 @Param("startDate") LocalDate startDate,
+                                                 @Param("endDate") LocalDate endDate);
 
-    // Filtrado con orden descendente
+    // Filtrado con género y orden descendente
     @Query("SELECT s FROM Seen s " +
             "JOIN s.movie m " +
-            "LEFT JOIN MovieGenre mg ON mg.movie = m " +
-            "LEFT JOIN mg.genre g " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "JOIN MovieGenre mg ON mg.movie = m " +
+            "JOIN mg.genre g " +
+            "WHERE (:anyo IS NULL OR YEAR(m.releaseDate) = :anyo) " +
+            "AND (:startDate IS NULL OR :endDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds)" +
+            "AND (:generoIds IS NULL OR g.id IN :generoIds) " +
             "ORDER BY m.title DESC")
     List<Seen> buscarPorFiltrosConGeneroOrdenDesc(@Param("anyo") Integer anyo,
-                                            @Param("vote") Double vote,
-                                            @Param("generoIds") List<Integer> generoIds,
-                                            @Param("startDate") LocalDate startDate,
-                                            @Param("endDate") LocalDate endDate);
+                                                  @Param("vote") Double vote,
+                                                  @Param("generoIds") List<Integer> generoIds,
+                                                  @Param("startDate") LocalDate startDate,
+                                                  @Param("endDate") LocalDate endDate);
 
-
+    // Filtrado sin género y orden ascendente
     @Query("SELECT s FROM Seen s " +
             "JOIN s.movie m " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE (:anyo IS NULL OR YEAR(m.releaseDate) = :anyo) " +
+            "AND (:startDate IS NULL OR :endDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
             "ORDER BY m.title ASC")
     List<Seen> buscarPorFiltrosSinGeneroOrdenAsc(@Param("anyo") Integer anyo,
@@ -80,9 +82,11 @@ public interface SeenRepository extends JpaRepository<Seen,SeenId> {
                                                  @Param("startDate") LocalDate startDate,
                                                  @Param("endDate") LocalDate endDate);
 
+    // Filtrado sin género y orden descendente
     @Query("SELECT s FROM Seen s " +
             "JOIN s.movie m " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE (:anyo IS NULL OR YEAR(m.releaseDate) = :anyo) " +
+            "AND (:startDate IS NULL OR :endDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
             "ORDER BY m.title DESC")
     List<Seen> buscarPorFiltrosSinGeneroOrdenDesc(@Param("anyo") Integer anyo,
@@ -90,12 +94,10 @@ public interface SeenRepository extends JpaRepository<Seen,SeenId> {
                                                   @Param("startDate") LocalDate startDate,
                                                   @Param("endDate") LocalDate endDate);
 
-
     Seen findByUserIdAndMovieId(Integer userId, Integer movieId);
 
     @Query("SELECT COUNT(s) FROM Seen s WHERE s.user.id = :userId")
     long contarPeliculasVistasPorUsuario(@Param("userId") Integer userId);
-
 
     @Query("SELECT COUNT(m) FROM User u JOIN u.favorites m WHERE u.id = :userId")
     long contarPeliculasFavoritas(@Param("userId") Integer userId);
@@ -103,7 +105,7 @@ public interface SeenRepository extends JpaRepository<Seen,SeenId> {
     @Query("SELECT SUM(m.runtime) FROM Seen s JOIN s.movie m WHERE s.user.id = :userId")
     Long calcularTiempoTotalVisto(@Param("userId") Integer userId);
 
-    @Query(value = "SELECT g.name, COUNT(g) FROM Seen s " +
+    @Query("SELECT g.name, COUNT(g) FROM Seen s " +
             "JOIN s.movie m " +
             "JOIN m.genres g " +
             "WHERE s.user.id = :userId " +
@@ -114,7 +116,6 @@ public interface SeenRepository extends JpaRepository<Seen,SeenId> {
 
     @Query("SELECT COUNT(w) FROM User u JOIN u.watchlist w WHERE u.id = :userId")
     long contarPeliculasPendientes(@Param("userId") Integer userId);
-
 
     @Query("SELECT AVG(m.runtime) FROM Seen s JOIN s.movie m WHERE s.user.id = :userId")
     Double obtenerDuracionPromedioVistas(@Param("userId") Integer userId);
@@ -131,7 +132,6 @@ public interface SeenRepository extends JpaRepository<Seen,SeenId> {
             "LIMIT 3")
     List<Object[]> obtenerTopPeliculasPorAnio(@Param("userId") Integer userId);
 
-
     @Query("SELECT a.name, COUNT(DISTINCT m.id) as movie_count " +
             "FROM Seen s " +
             "JOIN s.movie m " +
@@ -143,4 +143,5 @@ public interface SeenRepository extends JpaRepository<Seen,SeenId> {
             "LIMIT 3")
     List<Object[]> obtenerTopPeliculasPorActor(@Param("userId") Integer userId);
 
-   }
+}
+

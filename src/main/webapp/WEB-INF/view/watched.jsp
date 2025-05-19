@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.SeenMovieDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -19,7 +20,7 @@
     boolean esEditor = true;
     String selectedGenre = (genreId != null) ? genreId.toString() : "";
 
-    List<Seen>seenMovies=(List<Seen>) request.getAttribute("seenMovies");
+    List<SeenMovieDTO> seenMovies = (List<SeenMovieDTO>) request.getAttribute("seenMovies");
 %>
 
 <body>
@@ -99,20 +100,20 @@
                         <table class="movie-table">
                             <tbody>
                             <%
-                                for (Seen movie : seenMovies) {
+                                for (SeenMovieDTO movie : seenMovies) {
                             %>
                             <tr>
                                 <td>
-                                    <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeWatched=true">
-                                        <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
+                                    <a href="/viewmovie?id=<%=movie.getMovieId()%>&desdeWatched=true">
+                                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getTitle() %>" class="thumbnail">
                                     </a>
                                 </td>
-                                <td><%= movie.getMovie().getOriginalTitle() %></td>
-                                <td><%= movie.getMovie().getRuntime() %> min</td>
-                                <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
+                                <td><%= movie.getTitle() %></td>
+                                <td><%= movie.getRuntime() %> min</td>
+                                <td><%= movie.getVoteAverage() != null ? movie.getVoteAverage() : "No ha sido calificada" %></td>
                                 <td>
                                     <form method="post" action="/quitarComoVista" class="watched-button-form">
-                                        <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                        <input type="hidden" name="idMovie" value="<%= movie.getMovieId() %>">
                                         <button type="submit" class="icon-button" title="Desmarcar como vista">
                                             <i class="fas fa-eye-slash"></i>
                                         </button>
