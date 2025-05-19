@@ -87,9 +87,8 @@ public class WatchlistService {
     }
     public void markMovieAsSeen(String email, Integer movieId) {
         User user = usuarioRepository.findByEmail(email);
-        if (user == null) return;
-
         Watchlist watchlistEntry = watchlistRepository.findByUserIdAndMovieId(user.getId(), movieId);
+
         if (watchlistEntry != null) {
             watchlistRepository.delete(watchlistEntry);
 
@@ -105,5 +104,4 @@ public class WatchlistService {
             seenRepository.save(seen);
         }
     }
-
 }
