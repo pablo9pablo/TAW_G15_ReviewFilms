@@ -1,52 +1,52 @@
 .table-wrapper {
-    max-height: 500px;
+    width: 90%;
+    margin: 30px auto;
     border: 1px solid #ccc;
     border-radius: 10px;
-    margin: 30px auto;
-    padding: 10px;
-    width: 90%;
     background-color: #f8f8f8;
-    position: relative;
+    overflow: hidden;
 }
 
-.table-wrapper-scroll-left {
-    height: 400px;
+/* Cabecera fija */
+.table-header {
+    overflow-x: auto;
+}
+
+/* Scroll solo en el cuerpo */
+.table-body-scroll {
+    max-height: 400px;
     overflow-y: auto;
     overflow-x: auto;
-    position: relative;
 }
 
+/* Asegurar que ambas tablas tengan mismo ancho y estilo */
 .movie-table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
-    font-family: Arial, sans-serif;
     table-layout: fixed;
+    font-family: Arial, sans-serif;
+    margin: 0;
 }
 
 .movie-table th, .movie-table td {
     padding: 12px 16px;
     border-bottom: 1px solid #ddd;
+    text-align: left;
     vertical-align: middle;
 }
 
 .movie-table th {
     background-color: #2c3e50;
     color: white;
-    position: sticky;
-    top: 0;
-    left: 0;
-    z-index: 2;
 }
 
 .thumbnail {
     width: 80px;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .movie-table tr:last-child td {
     border-bottom: none;
 }
-

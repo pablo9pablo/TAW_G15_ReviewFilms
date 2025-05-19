@@ -80,51 +80,55 @@
                 </div>
 
                 <!-- Tabla de películas vistas -->
-                <div class="table-wrapper table-wrapper-scroll-left">
-                        <div class="content">
-                            <table class="movie-table">
-                                <thead>
-                                <tr>
-                                    <th>Portada</th>
-                                    <th>Título</th>
-                                    <th>Duración</th>
-                                    <th>Calificación Media</th>
-                                    <th>Desmarcar como Vista</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <%
-                                    for (Seen movie : seenMovies) {
-                                %>
-                                <tr>
-                                    <td>
-                                        <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeWatched=true">
+                <div class="table-wrapper">
+                    <!-- CABECERA FIJA -->
+                    <div class="table-header">
+                        <table class="movie-table">
+                            <thead>
+                            <tr>
+                                <th>Portada</th>
+                                <th>Título</th>
+                                <th>Duración</th>
+                                <th>Calificación Media</th>
+                                <th>Desmarcar como Vista</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <!-- TABLA CON SCROLL -->
+                    <div class="table-body-scroll">
+                        <table class="movie-table">
+                            <tbody>
+                            <%
+                                for (Seen movie : seenMovies) {
+                            %>
+                            <tr>
+                                <td>
+                                    <a href="/viewmovie?id=<%=movie.getMovie().getId()%>&desdeWatched=true">
                                         <img src="<%= movie.getMovie().getImageUrl() %>" alt="<%= movie.getMovie().getOriginalTitle() %>" class="thumbnail">
-                                        </a>
-
-                                    </td>
-                                    <td><%= movie.getMovie().getOriginalTitle() %></td>
-                                    <td><%= movie.getMovie().getRuntime()%> min</td>
-                                    <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
-                                    <td>
-                                        <!--QUITAR COMO VISTA UNA PELICULA-->
-                                        <form method="post" action="/quitarComoVista" class="watched-button-form">
-                                            <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
-                                            <button type="submit" class="icon-button" title="Desmarcar como vista">
-                                                <i class="fas fa-eye-slash"></i>
-                                            </button>
-                                        </form>
-
-                                        <!----------------------------------->
-                                    </td>
-                                </tr>
-                                <%
-                                    }
-                                %>
-                                </tbody>
-                            </table>
-                        </div>
+                                    </a>
+                                </td>
+                                <td><%= movie.getMovie().getOriginalTitle() %></td>
+                                <td><%= movie.getMovie().getRuntime() %> min</td>
+                                <td><%= movie.getMovie().getVoteAverage() != null ? movie.getMovie().getVoteAverage() : "No ha sido calificada" %></td>
+                                <td>
+                                    <form method="post" action="/quitarComoVista" class="watched-button-form">
+                                        <input type="hidden" name="idMovie" value="<%= movie.getMovie().getId() %>">
+                                        <button type="submit" class="icon-button" title="Desmarcar como vista">
+                                            <i class="fas fa-eye-slash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <%
+                               }
+                            %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </div>
         <jsp:include page="footer.jsp"/>
     </div>
