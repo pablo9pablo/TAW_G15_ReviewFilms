@@ -34,6 +34,8 @@
         <div class="user-email">
             <strong>Email:</strong> <%= email %>
         </div>
+        <a href="/editarPerfil" class="button-generico">Editar Perfil</a>
+
         <jsp:include page="logout.jsp" />
 
         <div class="table-wrapper">

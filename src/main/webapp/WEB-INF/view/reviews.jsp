@@ -46,16 +46,19 @@
 
             <h3 class="review-count">Total reviews: <%=(reviews != null) ? reviews.size() : "0" %></h3>
 
-            <div class="table-wrapper table-wrapper-scroll-left">
+            <div class="table-wrapper">
+                <div class="table-header">
                     <table class="movie-table">
-                        <thead>
                         <tr>
                             <th>Portada</th>
                             <th>Reseña</th>
                             <th>Calificación</th>
                             <th></th>
                         </tr>
-                        </thead>
+                    </table>
+                </div>
+                <div class="table-body-scroll">
+                    <table class="movie-table">
                         <%
                             if (reviews != null && !reviews.isEmpty()) {
                                 for (ReviewDTO review : reviews) {
@@ -100,7 +103,9 @@
                             }
                         %>
                     </table>
+                </div>
             </div>
+
         </div>
         <jsp:include page="footer.jsp"/>
     </div>
