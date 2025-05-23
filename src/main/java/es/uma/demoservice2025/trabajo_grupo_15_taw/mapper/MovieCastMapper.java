@@ -9,7 +9,7 @@ public class MovieCastMapper {
         MovieCastDTO dto = new MovieCastDTO();
         dto.setMovieId(movieCast.getMovie().getId());
         dto.setActorId(movieCast.getActor().getId());
-        dto.setActorName(movieCast.getActor().getName());  // asumiendo que quieres mostrar nombre actor
+        dto.setActorName(movieCast.getActor().getName());
         dto.setCharacter(movieCast.getCharacter());
         dto.setCreditOrder(movieCast.getCreditOrder());
         dto.setCreditId(movieCast.getCreditId());

@@ -1,7 +1,8 @@
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+        import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -74,6 +75,9 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MovieCast> movieCasts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "movie")
+    private Set<Crew> crews = new LinkedHashSet<>();
 
     @ManyToMany
     @JoinTable(name = "movie_genre",

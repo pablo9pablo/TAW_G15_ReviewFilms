@@ -57,10 +57,14 @@
             </h1>
 
             <div class="tabs">
-                <button>Cast</button>
-                <button>Trailer</button>
-                <button>Crew</button>
+                <a href="${pageContext.request.contextPath}/movies/cast?id=${movie.id}">
+                    <button>Cast</button>
+                </a>
+                <a href="${pageContext.request.contextPath}/movies/crew?id=${movie.id}">
+                    <button>Crew</button>
+                </a>
             </div>
+
 
             <div class="movie-info">
                 <p><%= movie.getOverview() == null? "No existe resumen de esta película": movie.getOverview()%></p>

@@ -2,11 +2,13 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.CrewDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieCastDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ReviewDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.CrewMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
@@ -25,6 +27,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @SessionAttributes("tempCastList")
@@ -59,6 +62,9 @@ public class ControllerMovie {
 
     @Autowired
     protected FavouritesRepository favouritesRepository;
+
+    @Autowired
+    protected CrewRepository crewRepository;
 
 
 
@@ -196,6 +202,41 @@ public class ControllerMovie {
 
         return "redirect:/editmovie?id=" + movie.getId();
     }
+
+    @GetMapping("/movies/cast")
+    public String verReparto(@RequestParam("id") Integer movieId, Model model) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+
+        MovieCastMapper movieCastMapper = new MovieCastMapper();
+
+        MovieDTO movieDTO = MovieMapper.toDTO(movie);
+        List<MovieCastDTO> repartoDTO = movie.getMovieCasts().stream()
+                .map(movieCastMapper::toDto)
+                .collect(Collectors.toList());
+
+        model.addAttribute("movie", movieDTO);
+        model.addAttribute("cast", repartoDTO);
+        return "cast";
+    }
+
+    @GetMapping("/movies/crew")
+    public String verEquipoTecnico(@RequestParam("id") Integer movieId, Model model) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+
+        CrewMapper crewMapper = new CrewMapper();
+
+
+        MovieDTO movieDTO = MovieMapper.toDTO(movie);
+        List<CrewDTO> equipo = crewRepository.findByMovieId(movieId).stream()
+                .map(crewMapper::toDto)
+                .collect(Collectors.toList());
+
+        model.addAttribute("movie", movieDTO);
+        model.addAttribute("crew", equipo);
+
+        return "crew";
+    }
+
 
 
 
