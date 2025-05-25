@@ -70,10 +70,28 @@ public class ControllerMovie {
     public String index(Model model) {
 
         List<Movie> movieList = this.movieRepository.findAll();
-        List<Movie> superheroeMovieList = this.movieRepository.findAllSuperheroMovies();
+        List<Movie> bestRatingMovieList = this.movieRepository.findTopMovies(7.0);
+        List<Movie> moreCommentedMovieList = this.movieRepository.findMostReviewsMovies(8000);
+        List<Movie> blockbusters = this.movieRepository.findBlockbusters(1081000000.00);
+        List<Movie> releasesTenYearsMovieList = this.movieRepository.findTenYearsReleases(LocalDate.of(2015, 1, 1));
+        List<Movie> superheroeMovieList = this.movieRepository.findAllMoviesByGenre(21);
+        List<Movie> dramaMovieList = this.movieRepository.findAllMoviesByGenre(1);
+        List<Movie> comedyMovieList = this.movieRepository.findAllMoviesByGenre(8);
+        List<Movie> warMovieList = this.movieRepository.findAllMoviesByGenre(17);
+        List<Movie> basedTrueStoryMovieList = this.movieRepository.findMoviesByKeywordIds(List.of(63));
+
 
         model.addAttribute("movieList", movieList);
+        model.addAttribute("bestRatingMovieList", bestRatingMovieList);
+        model.addAttribute("moreCommentedMovieList", moreCommentedMovieList);
+        model.addAttribute("blockbusters", blockbusters);
+        model.addAttribute("releasesTenYearsMovieList", releasesTenYearsMovieList);
         model.addAttribute("superheroeMovieList", superheroeMovieList);
+        model.addAttribute("dramaMovieList", dramaMovieList);
+        model.addAttribute("comedyMovieList", comedyMovieList);
+        model.addAttribute("warMovieList", warMovieList);
+        model.addAttribute("basedTrueStoryMovieList", basedTrueStoryMovieList);
+
 
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
@@ -120,6 +138,7 @@ public class ControllerMovie {
         model.addAttribute("relatedMoviesProductionCompany", relatedMoviesProductionCompany);
         model.addAttribute("review", reviewDTO);
         model.addAttribute("hasReview", hasReview);
+
 
         return "VerPelicula";
 
@@ -536,7 +555,16 @@ public class ControllerMovie {
 
         List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda.getTexto());
         model.addAttribute("movieList", movieListBusqueda);
-        List<Movie> superheroeMovieList = this.movieRepository.findAllSuperheroMovies();
+
+        List<Movie> bestRatingMovieList = this.movieRepository.findTopMovies(7.0);
+        List<Movie> moreCommentedMovieList = this.movieRepository.findMostReviewsMovies(8000);
+        List<Movie> blockbusters = this.movieRepository.findBlockbusters(1081000000.00);
+        List<Movie> releasesTenYearsMovieList = this.movieRepository.findTenYearsReleases(LocalDate.of(2015, 1, 1));
+        List<Movie> superheroeMovieList = this.movieRepository.findAllMoviesByGenre(21);
+        List<Movie> dramaMovieList = this.movieRepository.findAllMoviesByGenre(1);
+        List<Movie> comedyMovieList = this.movieRepository.findAllMoviesByGenre(8);
+        List<Movie> warMovieList = this.movieRepository.findAllMoviesByGenre(17);
+        List<Movie> basedTrueStoryMovieList = this.movieRepository.findMoviesByKeywordIds(List.of(63));
 
 
         List<Genre> genreList = this.genreRepository.findAll();
@@ -544,12 +572,18 @@ public class ControllerMovie {
 
         model.addAttribute("filtro", new Filtro());
         model.addAttribute("busqueda", new Busqueda());
+        model.addAttribute("bestRatingMovieList", bestRatingMovieList);
+        model.addAttribute("moreCommentedMovieList", moreCommentedMovieList);
+        model.addAttribute("blockbusters", blockbusters);
+        model.addAttribute("releasesTenYearsMovieList", releasesTenYearsMovieList);
         model.addAttribute("superheroeMovieList", superheroeMovieList);
+        model.addAttribute("dramaMovieList", dramaMovieList);
+        model.addAttribute("comedyMovieList", comedyMovieList);
+        model.addAttribute("warMovieList", warMovieList);
+        model.addAttribute("basedTrueStoryMovieList", basedTrueStoryMovieList);
 
 
         return "index";
-
-
     }
 
     @PostMapping("/buscar")
@@ -571,8 +605,15 @@ public class ControllerMovie {
             filtro.setGeneroIds(new ArrayList<>());
         }
 
-        List<Movie> superheroeMovieList = this.movieRepository.findAllSuperheroMovies();
-
+        List<Movie> bestRatingMovieList = this.movieRepository.findTopMovies(7.0);
+        List<Movie> moreCommentedMovieList = this.movieRepository.findMostReviewsMovies(8000);
+        List<Movie> blockbusters = this.movieRepository.findBlockbusters(1081000000.00);
+        List<Movie> releasesTenYearsMovieList = this.movieRepository.findTenYearsReleases(LocalDate.of(2015, 1, 1));
+        List<Movie> superheroeMovieList = this.movieRepository.findAllMoviesByGenre(21);
+        List<Movie> dramaMovieList = this.movieRepository.findAllMoviesByGenre(1);
+        List<Movie> comedyMovieList = this.movieRepository.findAllMoviesByGenre(8);
+        List<Movie> warMovieList = this.movieRepository.findAllMoviesByGenre(17);
+        List<Movie> basedTrueStoryMovieList = this.movieRepository.findMoviesByKeywordIds(List.of(63));
 
         List<Movie> movies;
         LocalDate startDate = null;
@@ -596,10 +637,18 @@ public class ControllerMovie {
             );
         }
 
-        model.addAttribute("movieList", movies);
-        model.addAttribute("superheroeMovieList", superheroeMovieList);
         model.addAttribute("filtro", filtro);
         model.addAttribute("busqueda", new Busqueda());
+        model.addAttribute("movieList", movies);
+        model.addAttribute("bestRatingMovieList", bestRatingMovieList);
+        model.addAttribute("moreCommentedMovieList", moreCommentedMovieList);
+        model.addAttribute("blockbusters", blockbusters);
+        model.addAttribute("releasesTenYearsMovieList", releasesTenYearsMovieList);
+        model.addAttribute("superheroeMovieList", superheroeMovieList);
+        model.addAttribute("dramaMovieList", dramaMovieList);
+        model.addAttribute("comedyMovieList", comedyMovieList);
+        model.addAttribute("warMovieList", warMovieList);
+        model.addAttribute("basedTrueStoryMovieList", basedTrueStoryMovieList);
 
 
         return "index";

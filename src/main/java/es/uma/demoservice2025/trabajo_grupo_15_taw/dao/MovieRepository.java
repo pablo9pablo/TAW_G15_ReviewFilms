@@ -3,6 +3,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -55,8 +56,24 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
     @Query("SELECT m FROM Movie m JOIN MovieProductionCompany mpc ON m.id = mpc.movie.id WHERE mpc.productionCompany.id = :productionCompanyId AND mpc.movie.id <> :movieId")
     List<Movie> findMoviesByProductionCompany(@Param("productionCompanyId") Integer productionCompanyId, @Param("movieId") Integer movieId);
 
-    @Query("SELECT DISTINCT m FROM Movie m JOIN MovieGenre mg ON m.id = mg.movie.id JOIN Genre g ON mg.genre.id = g.id WHERE g.id = 21 ORDER BY m.releaseDate ASC")
-    List<Movie> findAllSuperheroMovies();
+    @Query("SELECT DISTINCT m FROM Movie m JOIN MovieGenre mg ON m.id = mg.movie.id JOIN Genre g ON mg.genre.id = g.id WHERE g.id = :genreId ORDER BY m.releaseDate ASC")
+    List<Movie> findAllMoviesByGenre(@Param("genreId") Integer genreId);
+
+    @Query("SELECT DISTINCT m FROM Movie m JOIN m.keywords k WHERE k.id IN :keywordIds")
+    List<Movie> findMoviesByKeywordIds(@Param("keywordIds") List<Integer> keywordIds);
+
+    @Query("SELECT DISTINCT m FROM Movie m WHERE m.voteAverage >= :minRating ORDER BY m.voteAverage DESC")
+    List<Movie> findTopMovies(@Param("minRating") Double minRating);
+
+    @Query("SELECT DISTINCT m FROM Movie m WHERE m.voteCount >= :minNumReviews ORDER BY m.voteCount DESC")
+    List<Movie> findMostReviewsMovies(@Param("minNumReviews") Integer minNumReviews);
+
+    @Query("SELECT DISTINCT m FROM Movie m WHERE m.revenue >= :minRevenue ORDER BY m.revenue DESC")
+    List<Movie> findBlockbusters(@Param("minRevenue") Double minRevenue);
+
+    @Query("SELECT DISTINCT m FROM Movie m WHERE m.releaseDate >= :minDate ORDER BY m.releaseDate DESC")
+    List<Movie> findTenYearsReleases(@Param("minDate") LocalDate minDate);
+
 
     @Query("SELECT m, AVG(r.rating) as avgRating, COUNT(r) as reviewCount " +
             "FROM Movie m " +

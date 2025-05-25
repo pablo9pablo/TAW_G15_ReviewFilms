@@ -12,7 +12,16 @@
 </head>
 <%
     List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
+    List<Movie> bestRatingMovieList = (List<Movie>) request.getAttribute("bestRatingMovieList");
+    List<Movie> moreCommentedMovieList = (List<Movie>) request.getAttribute("moreCommentedMovieList");
+    List<Movie> blockbusters = (List<Movie>) request.getAttribute("blockbusters");
+    List<Movie> releasesTenYearsMovieList = (List<Movie>) request.getAttribute("releasesTenYearsMovieList");
     List<Movie> superheroeMovieList = (List<Movie>) request.getAttribute("superheroeMovieList");
+    List<Movie> dramaMovieList = (List<Movie>) request.getAttribute("dramaMovieList");
+    List<Movie> comedyMovieList = (List<Movie>) request.getAttribute("comedyMovieList");
+    List<Movie> warMovieList = (List<Movie>) request.getAttribute("warMovieList");
+    List<Movie> basedTrueStoryMovieList = (List<Movie>) request.getAttribute("basedTrueStoryMovieList");
+
     boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
 %>
 <body>
@@ -95,7 +104,83 @@
                 <div class="nav-arrow" onclick="scrollCarousel(1, 'all-movies-carousel')">&#10095;</div>
             </div>
 
-            <!-- Carrusel de todas las películas -->
+            <!-- Películas mejor valoradas -->
+            <h3>Películas aclamadas por la crítica</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'bestrating-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="bestrating-movies-carousel">
+                    <%
+                        for (Movie movie : bestRatingMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'bestrating-movies-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Películas más comentadas -->
+            <h3>Películas más comentadas</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'morecommented-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="morecommented-movies-carousel">
+                    <%
+                        for (Movie movie : moreCommentedMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'morecommented-movies-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Películas más taquilleras -->
+            <h3>Películas más taquilleras</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'blockbuster-carousel')">&#10094;</div>
+                <div class="carousel" id="blockbuster-carousel">
+                    <%
+                        for (Movie movie : blockbusters) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'blockbuster-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Películas estrenadas en los últimos 10 años -->
+            <h3>Estrenos en los últimos 10 años</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'releasesTenYears-carousel')">&#10094;</div>
+                <div class="carousel" id="releasesTenYears-carousel">
+                    <%
+                        for (Movie movie : releasesTenYearsMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'releasesTenYears-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Carrusel de superhéroes -->
             <h3>Películas de superhéroes</h3>
             <div class="carousel-container">
                 <div class="nav-arrow" onclick="scrollCarousel(-1, 'superheroes-movies-carousel')">&#10094;</div>
@@ -112,6 +197,82 @@
                     %>
                 </div>
                 <div class="nav-arrow" onclick="scrollCarousel(1, 'superheroes-movies-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Carrusel de dramas -->
+            <h3>Películas dramáticas</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'drama-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="drama-movies-carousel">
+                    <%
+                        for (Movie movie : dramaMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'drama-movies-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Carrusel de comedias -->
+            <h3>Películas de comedia</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'comedy-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="comedy-movies-carousel">
+                    <%
+                        for (Movie movie : comedyMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'comedy-movies-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Carrusel de peliculas de guerra -->
+            <h3>Películas bélicas</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'war-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="war-movies-carousel">
+                    <%
+                        for (Movie movie : warMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'war-movies-carousel')">&#10095;</div>
+            </div>
+
+            <!-- Carrusel de peliculas basadas en hechos reales -->
+            <h3>Películas basadas en hechos reales</h3>
+            <div class="carousel-container">
+                <div class="nav-arrow" onclick="scrollCarousel(-1, 'based-true-history-movies-carousel')">&#10094;</div>
+                <div class="carousel" id="based-true-history-movies-carousel">
+                    <%
+                        for (Movie movie : basedTrueStoryMovieList) {
+                    %>
+                    <a href="/viewmovie?id=<%=movie.getId()%>" class="movie-card">
+                        <img src="<%= movie.getImageUrl() %>" alt="<%= movie.getOriginalTitle() %>" class="movie-poster">
+                        <div class="movie-title"><%= movie.getOriginalTitle() %></div>
+                    </a>
+                    <%
+                        }
+                    %>
+                </div>
+                <div class="nav-arrow" onclick="scrollCarousel(1, 'based-true-history-movies-carousel')">&#10095;</div>
             </div>
 
 
