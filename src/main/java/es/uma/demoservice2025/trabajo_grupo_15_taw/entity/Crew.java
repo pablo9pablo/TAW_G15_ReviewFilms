@@ -23,12 +23,13 @@ public class Crew {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @Size(max = 255)
     @Column(name = "GENDER")
-    private Integer gender;
+    private String gender;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "movie_id")
-    private es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie movie;
+    private Movie movie;
 
 }

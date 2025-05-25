@@ -2,12 +2,10 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.CrewDTO;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieCastDTO;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ReviewDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.ActorMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.CrewMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
@@ -228,7 +226,7 @@ public class ControllerMovie {
 
         MovieDTO movieDTO = MovieMapper.toDTO(movie);
         List<CrewDTO> equipo = crewRepository.findByMovieId(movieId).stream()
-                .map(crewMapper::toDto)
+                .map(CrewMapper::toDto)
                 .collect(Collectors.toList());
 
         model.addAttribute("movie", movieDTO);
@@ -390,6 +388,7 @@ public class ControllerMovie {
 
         return "editCast";
     }
+
 
 
 

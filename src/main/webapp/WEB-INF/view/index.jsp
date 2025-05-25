@@ -13,6 +13,7 @@
 <%
     List<Movie> movieList = (List<Movie>) request.getAttribute("movieList");
     List<Movie> superheroeMovieList = (List<Movie>) request.getAttribute("superheroeMovieList");
+    boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
 %>
 <body>
     <div class="page-container">
@@ -23,6 +24,13 @@
         <div style="display: flex; justify-content: flex-end; padding: 10px;">
             <a href="${pageContext.request.contextPath}/estadisticas" class="button-generico"  style="text-decoration: none;"
             >Estadísticas</a>
+
+            <% if (isAdmin) { %>
+            <%-- Enlace al menú de administración con icono de engranaje --%>
+            <a href="${pageContext.request.contextPath}/admin/menu" title="Administración" style="font-size: 24px; text-decoration: none;">
+                ⚙️
+            </a>
+            <% } %>
         </div>
 
         <div class="page-content">
@@ -106,9 +114,6 @@
                 <div class="nav-arrow" onclick="scrollCarousel(1, 'superheroes-movies-carousel')">&#10095;</div>
             </div>
 
-            <%
-                boolean isAdmin = request.isUserInRole("ROLE_ADMIN");
-            %>
 
             <% if (isAdmin) { %>
                  <a href="${pageContext.request.contextPath}/editmovie" class="button-generico"> + Añadir nueva película</a>
