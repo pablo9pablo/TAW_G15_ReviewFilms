@@ -26,10 +26,4 @@ public class ProductionCompany {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "movie_production_company",
-            joinColumns = @JoinColumn(name = "PRODUCTION_COMPANY_ID"),
-            inverseJoinColumns = @JoinColumn(name = "MOVIE_ID"))
-    private Set<Movie> movies = new LinkedHashSet<>();
-
 }

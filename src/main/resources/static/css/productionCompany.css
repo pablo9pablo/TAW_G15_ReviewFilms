@@ -1,0 +1,48 @@
+.actions-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-button {
+    text-decoration: none;
+}
+
+.edit-button i {
+    color: black;
+    transition: color 0.3s;
+}
+
+.edit-button i:hover {
+    color: blue;
+}
+
+.delete-button i {
+    color: black;
+    transition: color 0.3s;
+}
+
+.delete-button i:hover {
+    color: red;
+}
+
+.button-generico {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+.button-generico:hover {
+    background-color: #1a252f;
+}

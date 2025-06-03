@@ -10,7 +10,7 @@
         <li><a href="${pageContext.request.contextPath}/actor/">Gestión de Actores</a></li>
         <li><a href="${pageContext.request.contextPath}/crew">Gestión de crew</a></li>
         <li><a href="${pageContext.request.contextPath}/genres">Gestión de Géneros</a></li>
-        <li><a href="${pageContext.request.contextPath}/productionCompanies">Gestión de Productores</a></li>
+        <li><a href="${pageContext.request.contextPath}/productionCompanies/">Gestión de Productores</a></li>
     </ul>
 </body>
 </html>

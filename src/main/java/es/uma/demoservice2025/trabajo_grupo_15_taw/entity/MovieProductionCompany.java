@@ -26,6 +26,6 @@ public class MovieProductionCompany {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "PRODUCTION_COMPANY_ID", nullable = false)
-    private es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany productionCompany;
+    private ProductionCompany productionCompany;
 
 }

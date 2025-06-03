@@ -31,7 +31,7 @@
                     <table class="movie-table">
                         <tr>
                             <td class="thumbnail-cell">
-                                <img src="<%=movie.getImageUrl()%>" alt="Poster" class="thumbnail">
+                                <img src="<%=movie.getImageUrl()%>" alt="Poster" class="foto">
                             </td>
                             <td>
                                 <strong><%=movie.getTitle()%></strong>
