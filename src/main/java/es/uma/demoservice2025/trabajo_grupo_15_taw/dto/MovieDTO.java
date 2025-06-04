@@ -1,10 +1,10 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dto;
 
-
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,8 +27,8 @@ public class MovieDTO {
     private Integer voteCount;
     private String imageUrl;
 
-    private List<Integer> genreIds;
-    private List<Integer> productionCompanyIds;
-    private List<Integer> actorIds;
-    private List<Integer> crewIds;
+    private List<Integer> genreIds = new ArrayList<>();
+    private List<Integer> productionCompanyIds = new ArrayList<>();
+    private List<Integer> actorIds = new ArrayList<>();
+    private List<Integer> crewIds = new ArrayList<>();
 }

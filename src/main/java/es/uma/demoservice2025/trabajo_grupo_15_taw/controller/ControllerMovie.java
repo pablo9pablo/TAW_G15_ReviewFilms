@@ -152,11 +152,19 @@ public class ControllerMovie {
         Movie movie = movieRepository.findById(id).orElse(new Movie());
         List<Genre> genre = genreRepository.findAll();
         List<ProductionCompany> pcompany = productionCompanyRepository.findAll();
-        List<Crew> crew = crewRepository.findAll(); // Agregar crew
-        MovieDTO movieDTO = new MovieDTO();
+        List<Crew> crew = crewRepository.findAll();
 
-        if(id!=-1){
+        MovieDTO movieDTO;
+
+        if(id != -1){
             movieDTO = MovieMapper.toDTO(movie);
+        } else {
+            // Inicializar correctamente para película nueva
+            movieDTO = new MovieDTO();
+            movieDTO.setGenreIds(new ArrayList<>());
+            movieDTO.setProductionCompanyIds(new ArrayList<>());
+            movieDTO.setCrewIds(new ArrayList<>());
+            movieDTO.setActorIds(new ArrayList<>());
         }
 
         List<Actor> actores = actorRepository.findAll();
@@ -169,40 +177,44 @@ public class ControllerMovie {
         model.addAttribute("MovieDTO", movieDTO);
         model.addAttribute("genre", genre);
         model.addAttribute("pcompany", pcompany);
-        model.addAttribute("crew", crew); // Agregar crew al modelo
-        model.addAttribute("actores", actores);
+        model.addAttribute("crew", crew);
         return "editarPelicula";
-
     }
-
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/savemovie")
-    public String guardarPelicula(
-            @ModelAttribute MovieDTO movieDTO,
-            @ModelAttribute("tempCastList") List<MovieCastDTO> tempCastList) {
+    public String guardarPelicula(@ModelAttribute MovieDTO movieDTO) {
 
         // Obtener la película a editar o crear una nueva
         Movie movie = movieDTO.getId() != null
                 ? movieRepository.findById(movieDTO.getId()).orElse(new Movie())
                 : new Movie();
 
+        // Validar y obtener las listas relacionadas
+        List<Genre> genres = (movieDTO.getGenreIds() != null && !movieDTO.getGenreIds().isEmpty())
+                ? genreRepository.findAllById(movieDTO.getGenreIds())
+                : new ArrayList<>();
+
+        List<ProductionCompany> companies = (movieDTO.getProductionCompanyIds() != null && !movieDTO.getProductionCompanyIds().isEmpty())
+                ? productionCompanyRepository.findAllById(movieDTO.getProductionCompanyIds())
+                : new ArrayList<>();
+
         // Actualizar la entidad con los datos del DTO
-        MovieMapper.updateEntity(movie, movieDTO,
-                genreRepository.findAllById(movieDTO.getGenreIds()),
-                productionCompanyRepository.findAllById(movieDTO.getProductionCompanyIds()));
+        MovieMapper.updateEntity(movie, movieDTO, genres, companies);
 
         // Guardar película actualizada
         movie = movieRepository.save(movie);
 
-        // Primero, siempre desasociar
-        List<Crew> existingCrew = crewRepository.findByMovieId(movie.getId());
-        for (Crew crew : existingCrew) {
-            crew.setMovie(null);
-            crewRepository.save(crew);
+        // Gestión del crew - Solo para películas existentes
+        if (movieDTO.getId() != null) {
+            List<Crew> existingCrew = crewRepository.findByMovieId(movie.getId());
+            for (Crew crew : existingCrew) {
+                crew.setMovie(null);
+                crewRepository.save(crew);
+            }
         }
 
-        // Luego, solo asociar nuevo crew si hay elementos seleccionados
+        // Asociar nuevo crew si hay elementos seleccionados
         if (movieDTO.getCrewIds() != null && !movieDTO.getCrewIds().isEmpty()) {
             List<Crew> selectedCrew = crewRepository.findAllById(movieDTO.getCrewIds());
             for (Crew crew : selectedCrew) {
@@ -210,32 +222,9 @@ public class ControllerMovie {
                 crewRepository.save(crew);
             }
         }
-        // Si movieDTO.getCrewIds() es null o está vacío, simplemente no se asocia ningún crew
-        // (ya se desasociaron todos arriba)
-
-        // Si hay reparto temporal, lo asociamos ahora que la película existe
-        for (MovieCastDTO castDTO : tempCastList) {
-            MovieCastId castId = new MovieCastId();
-            castId.setMovieId(movie.getId());
-            castId.setActorId(castDTO.getActorId());
-
-            MovieCast movieCast = new MovieCast();
-            movieCast.setId(castId);
-            movieCast.setMovie(movie);
-            movieCast.setActor(actorRepository.findById(castDTO.getActorId()).orElse(null));
-            movieCast.setCharacter(castDTO.getCharacter());
-            movieCast.setCreditId(castDTO.getCreditId());
-            movieCast.setCreditOrder(castDTO.getCreditOrder());
-
-            movieCastRepository.save(movieCast);
-        }
-
-        // Limpiar cast temporal
-        tempCastList.clear();
 
         return "redirect:/editmovie?id=" + movie.getId();
     }
-
     @GetMapping("/movies/cast")
     public String verReparto(@RequestParam("id") Integer movieId, Model model) {
         Movie movie = movieRepository.findById(movieId).orElse(null);

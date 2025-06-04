@@ -36,7 +36,7 @@
     <form:input path="originalTitle" required="true"/><br>
 
     Fecha de estreno:
-    <form:input path="releaseDate"/><br>
+    <form:input path="releaseDate" type="date"/><br>
 
     Duración (min):
     <form:input path="runtime" type="number"/><br>
