@@ -22,8 +22,8 @@ public class GenreController {
     }
 
     @GetMapping("/movieGenres")
-    public String listarGeneros(Model model) {
-        List<GenreDTO> dtoList = genreRepository.findAll()
+    public String listarGeneros(Model model, @RequestParam Integer id) {
+        List<GenreDTO> dtoList = genreRepository.findByMovies_Id(id)
                 .stream()
                 .map(GenreMapper::toDto)
                 .toList();

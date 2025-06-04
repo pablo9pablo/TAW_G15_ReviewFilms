@@ -12,8 +12,7 @@
     <thead>
     <tr>
         <th align="left">Name</th>
-        <th align="left">Department</th>
-        <th align="left">Job</th>
+        <th align="left">Genero</th>
     </tr>
     </thead>
     <tbody>

@@ -63,10 +63,10 @@
                 <a href="${pageContext.request.contextPath}/movies/crew?id=${movie.id}">
                     <button>Crew</button>
                 </a>
-                <a href="${pageContext.request.contextPath}/movieProductionCompanies">
+                <a href="${pageContext.request.contextPath}/productionCompanies/movieProductionCompanies?id=${movie.id}">
                     <button>Productoras</button>
                 </a>
-                <a href="${pageContext.request.contextPath}/movieGenres">
+                <a href="${pageContext.request.contextPath}/movieGenres?id=${movie.id}">
                     <button>Géneros</button>
                 </a>
             </div>

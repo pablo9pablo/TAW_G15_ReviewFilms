@@ -5,6 +5,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Actor" %>
+<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Crew" %>
 
 <%
     boolean isEditing = true;
@@ -55,13 +56,14 @@
     <br>Production company:<br>
     <form:checkboxes path="productionCompanyIds" items="${pcompany}" itemLabel="name"/><br>
 
+    <br>Crew (Equipo técnico):<br>
+    <form:checkboxes path="crewIds" items="${crew}" itemLabel="name"/><br>
 
     <br>Actores:<br>
     <a href="/cast?id=<%= (isEditing) ? movie.getId() : -1 %>"
        onclick="return confirm('¿Estás seguro de que quieres editar el reparto? ¡Perderás los cambios no guardados en la película!');">
         Editar Cast (Reparto)
     </a>
-
 
     <br>Sinopsis:<br>
     <form:textarea path="overview" rows="4" cols="50"/><br>

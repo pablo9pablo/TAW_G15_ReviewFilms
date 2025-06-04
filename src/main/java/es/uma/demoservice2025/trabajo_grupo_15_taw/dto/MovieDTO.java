@@ -30,4 +30,5 @@ public class MovieDTO {
     private List<Integer> genreIds;
     private List<Integer> productionCompanyIds;
     private List<Integer> actorIds;
+    private List<Integer> crewIds;
 }

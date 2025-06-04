@@ -26,4 +26,7 @@ public class ProductionCompany {
     @Column(name = "NAME", nullable = false)
     private String name;
 
+    @ManyToMany(mappedBy = "productionCompanies")
+    private Set<Movie> movies = new LinkedHashSet<>();
+
 }

@@ -152,11 +152,11 @@ public class ControllerMovie {
         Movie movie = movieRepository.findById(id).orElse(new Movie());
         List<Genre> genre = genreRepository.findAll();
         List<ProductionCompany> pcompany = productionCompanyRepository.findAll();
+        List<Crew> crew = crewRepository.findAll(); // Agregar crew
         MovieDTO movieDTO = new MovieDTO();
 
         if(id!=-1){
-             movieDTO = MovieMapper.toDTO(movie);
-
+            movieDTO = MovieMapper.toDTO(movie);
         }
 
         List<Actor> actores = actorRepository.findAll();
@@ -164,13 +164,12 @@ public class ControllerMovie {
 
         MovieCastDTO movieCastDTO = new MovieCastDTO();
 
-
         model.addAttribute("movieCastDTO", movieCastDTO);
-
         model.addAttribute("movie", movie);
         model.addAttribute("MovieDTO", movieDTO);
         model.addAttribute("genre", genre);
         model.addAttribute("pcompany", pcompany);
+        model.addAttribute("crew", crew); // Agregar crew al modelo
         model.addAttribute("actores", actores);
         return "editarPelicula";
 
@@ -196,6 +195,24 @@ public class ControllerMovie {
         // Guardar película actualizada
         movie = movieRepository.save(movie);
 
+        // Primero, siempre desasociar
+        List<Crew> existingCrew = crewRepository.findByMovieId(movie.getId());
+        for (Crew crew : existingCrew) {
+            crew.setMovie(null);
+            crewRepository.save(crew);
+        }
+
+        // Luego, solo asociar nuevo crew si hay elementos seleccionados
+        if (movieDTO.getCrewIds() != null && !movieDTO.getCrewIds().isEmpty()) {
+            List<Crew> selectedCrew = crewRepository.findAllById(movieDTO.getCrewIds());
+            for (Crew crew : selectedCrew) {
+                crew.setMovie(movie);
+                crewRepository.save(crew);
+            }
+        }
+        // Si movieDTO.getCrewIds() es null o está vacío, simplemente no se asocia ningún crew
+        // (ya se desasociaron todos arriba)
+
         // Si hay reparto temporal, lo asociamos ahora que la película existe
         for (MovieCastDTO castDTO : tempCastList) {
             MovieCastId castId = new MovieCastId();
@@ -215,7 +232,6 @@ public class ControllerMovie {
 
         // Limpiar cast temporal
         tempCastList.clear();
-
 
         return "redirect:/editmovie?id=" + movie.getId();
     }

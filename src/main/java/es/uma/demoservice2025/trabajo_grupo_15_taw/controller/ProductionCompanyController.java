@@ -8,6 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.ProductionCompanyMapper;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.ProductionCompanyRepository;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +20,28 @@ import java.util.List;
 @RequestMapping("/productionCompanies")
 public class ProductionCompanyController {
 
+    private final ProductionCompanyRepository productionCompanyRepository;
+
+    @Autowired
+    private ProductionCompanyMapper productionCompanyMapper;
+
+    public ProductionCompanyController(ProductionCompanyRepository productionCompanyRepository) {
+        this.productionCompanyRepository = productionCompanyRepository;
+    }
+
     @Autowired
     protected ProductionCompanyService service;
 
+    @GetMapping("/movieProductionCompanies")
+    public String listarProductoras(Model model, @RequestParam Integer id) {
+
+        List<ProductionCompanyDTO> dtoList = productionCompanyRepository.findByMovies_Id(id)
+                .stream()
+                .map(productionCompanyMapper::toDTO)
+                .toList();
+        model.addAttribute("companies", dtoList);
+        return "movieProductionCompany";
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")

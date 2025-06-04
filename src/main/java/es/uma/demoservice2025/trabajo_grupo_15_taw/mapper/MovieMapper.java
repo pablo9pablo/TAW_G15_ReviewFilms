@@ -44,6 +44,12 @@ public class MovieMapper {
             );
         }
 
+        if (movie.getCrews() != null) {
+            dto.setCrewIds(movie.getCrews().stream()
+                    .map(Crew::getId)
+                    .collect(Collectors.toList()));
+        }
+
         // Relación con productoras
         if (movie.getProductionCompanies() != null) {
             dto.setProductionCompanyIds(
