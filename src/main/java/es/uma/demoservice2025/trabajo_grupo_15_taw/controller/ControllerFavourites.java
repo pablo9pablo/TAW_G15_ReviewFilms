@@ -93,9 +93,8 @@ public class ControllerFavourites {
         model.addAttribute("genreList", genreRepository.findAll());
         model.addAttribute("filtroFavourite", filtroFavourite);
 
-        return "redirect:/favourites";
+        return "favoritas";
     }
-
 
 
     // Métodos auxiliares para fechas si se necesitan (puedes moverlos a Service si quieres)
