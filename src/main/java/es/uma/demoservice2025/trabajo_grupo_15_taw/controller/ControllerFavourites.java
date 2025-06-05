@@ -70,6 +70,11 @@ public class ControllerFavourites {
         return "favoritas";
     }
 
+    @PostMapping("/filtrarFavourite")
+    public String doFiltrar(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model, Principal principal) {
+        return listarPeliculasFavoritasConFiltrado(filtroFavourite, model, null, principal);
+    }
+
     @PostMapping("/ascFavourite")
     public String doFiltrarAsc(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model, Principal principal) {
         String email = principal.getName();
