@@ -52,6 +52,7 @@ public class WatchedService {
 
     public List<SeenMovieDTO> filterSeenMovies(String email, Filtro filtro, String orden) {
         User user = usuarioRepository.findByEmail(email);
+        Integer userId = user.getId();
 
         LocalDate startDate = filtro.getYear() != null ? LocalDate.of(filtro.getYear(), Month.JANUARY, 1) : null;
         LocalDate endDate = filtro.getYear() != null ? LocalDate.of(filtro.getYear(), Month.DECEMBER, 31) : null;
@@ -60,7 +61,7 @@ public class WatchedService {
         if (generos != null && generos.isEmpty()) generos = null;
 
         if (orden == null) {
-            orden = "";  // o "default" u otro valor válido
+            orden = "";
         }
 
         List<Seen> result;
@@ -68,24 +69,26 @@ public class WatchedService {
         if (generos == null) {
             switch (orden) {
                 case "asc":
-                    result = seenRepository.buscarPorFiltrosSinGeneroOrdenAsc(filtro.getYear(), filtro.getVote(), startDate, endDate);
+                    result = seenRepository.buscarPorFiltrosSinGeneroOrdenAsc(userId, filtro.getYear(), filtro.getVote(), startDate, endDate);
                     break;
                 case "desc":
-                    result = seenRepository.buscarPorFiltrosSinGeneroOrdenDesc(filtro.getYear(), filtro.getVote(), startDate, endDate);
+                    result = seenRepository.buscarPorFiltrosSinGeneroOrdenDesc(userId, filtro.getYear(), filtro.getVote(), startDate, endDate);
                     break;
                 default:
-                    result = seenRepository.buscarPorFiltrosSinGenero(filtro.getYear(), filtro.getVote(), startDate, endDate);
+                    result = seenRepository.buscarPorFiltrosSinGenero(userId, filtro.getYear(), filtro.getVote(), startDate, endDate);
+                    break;
             }
         } else {
             switch (orden) {
                 case "asc":
-                    result = seenRepository.buscarPorFiltrosConGeneroOrdenAsc(filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
+                    result = seenRepository.buscarPorFiltrosConGeneroOrdenAsc(userId, filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
                     break;
                 case "desc":
-                    result = seenRepository.buscarPorFiltrosConGeneroOrdenDesc(filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
+                    result = seenRepository.buscarPorFiltrosConGeneroOrdenDesc(userId, filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
                     break;
                 default:
-                    result = seenRepository.buscarPorFiltrosConGenero(filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
+                    result = seenRepository.buscarPorFiltrosConGenero(userId, filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
+                    break;
             }
         }
 
@@ -93,6 +96,7 @@ public class WatchedService {
     }
 
 }
+
 
 
 

@@ -29,6 +29,9 @@ public class ControllerFavourites {
     @Autowired
     private FavoriteService favoriteService;
 
+    @Autowired
+    private GenreRepository genreRepository;
+
     @GetMapping("/favourites")
     public String doListarFavourites(Model model, Principal principal) {
         String email = principal.getName();
@@ -67,20 +70,33 @@ public class ControllerFavourites {
         return "favoritas";
     }
 
-    @PostMapping("/filtrarFavourite")
-    public String doFiltrar(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model, Principal principal) {
-        return listarPeliculasFavoritasConFiltrado(filtroFavourite, model, null, principal);
-    }
-
     @PostMapping("/ascFavourite")
     public String doFiltrarAsc(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model, Principal principal) {
-        return listarPeliculasFavoritasConFiltrado(filtroFavourite, model, "asc", principal);
+        String email = principal.getName();
+
+        List<FavoriteMovieDTO> favouriteList = favoriteService.filterFavorites(email, filtroFavourite, "asc");
+        model.addAttribute("favouriteList", favouriteList);
+
+        model.addAttribute("genreList", genreRepository.findAll());
+        model.addAttribute("filtroFavourite", filtroFavourite);
+
+        return "favoritas";
     }
 
     @PostMapping("/descFavourite")
     public String doFiltrarDesc(@ModelAttribute("filtroFavourite") Filtro filtroFavourite, Model model, Principal principal) {
-        return listarPeliculasFavoritasConFiltrado(filtroFavourite, model, "desc", principal);
+        String email = principal.getName();
+
+        List<FavoriteMovieDTO> favouriteList = favoriteService.filterFavorites(email, filtroFavourite, "desc");
+        model.addAttribute("favouriteList", favouriteList);
+
+        model.addAttribute("genreList", genreRepository.findAll());
+        model.addAttribute("filtroFavourite", filtroFavourite);
+
+        return "redirect:/favourites";
     }
+
+
 
     // Métodos auxiliares para fechas si se necesitan (puedes moverlos a Service si quieres)
     public LocalDate getStartDateOfYear(int year) {

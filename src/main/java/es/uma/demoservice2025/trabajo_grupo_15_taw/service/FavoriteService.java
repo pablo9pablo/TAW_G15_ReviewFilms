@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class FavoriteService {
 
@@ -52,6 +51,7 @@ public class FavoriteService {
 
     public List<FavoriteMovieDTO> filterFavorites(String email, Filtro filtro, String orden) {
         User user = usuarioRepository.findByEmail(email);
+        Integer userId = user.getId();
 
         LocalDate startDate = null;
         LocalDate endDate = null;
@@ -64,35 +64,32 @@ public class FavoriteService {
         if (generos != null && generos.isEmpty()) generos = null;
 
         List<Favorite> result;
-
-        // Evitar NullPointerException en switch con orden null
         String ordenSeguro = orden != null ? orden : "";
 
         if (generos == null) {
             switch (ordenSeguro) {
                 case "asc":
-                    result = favouritesRepository.buscarPorFiltrosSinGeneroOrdenAsc(filtro.getYear(), filtro.getVote(), startDate, endDate);
+                    result = favouritesRepository.buscarPorFiltrosSinGeneroOrdenAscParaUsuario(filtro.getYear(), filtro.getVote(), startDate, endDate, userId);
                     break;
                 case "desc":
-                    result = favouritesRepository.buscarPorFiltrosSinGeneroOrdenDesc(filtro.getYear(), filtro.getVote(), startDate, endDate);
+                    result = favouritesRepository.buscarPorFiltrosSinGeneroOrdenDescParaUsuario(filtro.getYear(), filtro.getVote(), startDate, endDate, userId);
                     break;
                 default:
-                    result = favouritesRepository.buscarPorFiltrosSinGenero(filtro.getYear(), filtro.getVote(), startDate, endDate);
+                    result = favouritesRepository.buscarPorFiltrosSinGeneroParaUsuario(filtro.getYear(), filtro.getVote(), startDate, endDate, userId);
             }
         } else {
             switch (ordenSeguro) {
                 case "asc":
-                    result = favouritesRepository.buscarPorFiltrosConGeneroOrdenAsc(filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
+                    result = favouritesRepository.buscarPorFiltrosConGeneroOrdenAscParaUsuario(filtro.getYear(), filtro.getVote(), generos, startDate, endDate, userId);
                     break;
                 case "desc":
-                    result = favouritesRepository.buscarPorFiltrosConGeneroOrdenDesc(filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
+                    result = favouritesRepository.buscarPorFiltrosConGeneroOrdenDescParaUsuario(filtro.getYear(), filtro.getVote(), generos, startDate, endDate, userId);
                     break;
                 default:
-                    result = favouritesRepository.buscarPorFiltrosConGenero(filtro.getYear(), filtro.getVote(), generos, startDate, endDate);
+                    result = favouritesRepository.buscarPorFiltrosConGeneroParaUsuario(filtro.getYear(), filtro.getVote(), generos, startDate, endDate, userId);
             }
         }
 
         return result.stream().map(favoriteMapper::toDTO).collect(Collectors.toList());
     }
-
 }

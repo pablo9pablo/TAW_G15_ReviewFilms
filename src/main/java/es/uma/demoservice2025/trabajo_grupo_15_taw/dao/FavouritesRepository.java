@@ -10,90 +10,96 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-
 @Repository
 public interface FavouritesRepository extends JpaRepository<Favorite, FavoriteId> {
 
     List<Favorite> findByUserId(Integer userId);
 
-    // Para eliminar una película de la lista de favoritos del usuario
     Favorite findByUserIdAndMovieId(Integer userId, Integer movieId);
 
-    // Filtrado con género
+    // ===== FILTRADO CON GÉNERO - FILTRANDO POR USUARIO =====
+
     @Query("SELECT f FROM Favorite f " +
             "JOIN f.movie m " +
             "JOIN MovieGenre mg ON mg.movie = m " +
             "JOIN mg.genre g " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE f.user.id = :userId " +
+            "AND (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
             "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds)")
-    List<Favorite> buscarPorFiltrosConGenero(@Param("anyo") Integer anyo,
-                                             @Param("vote") Double vote,
-                                             @Param("generoIds") List<Integer> generoIds,
-                                             @Param("startDate") LocalDate startDate,
-                                             @Param("endDate") LocalDate endDate);
+    List<Favorite> buscarPorFiltrosConGeneroParaUsuario(@Param("anyo") Integer anyo,
+                                                        @Param("vote") Double vote,
+                                                        @Param("generoIds") List<Integer> generoIds,
+                                                        @Param("startDate") LocalDate startDate,
+                                                        @Param("endDate") LocalDate endDate,
+                                                        @Param("userId") Integer userId);
 
-    // Filtrado sin género
     @Query("SELECT f FROM Favorite f " +
             "JOIN f.movie m " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "LEFT JOIN MovieGenre mg ON mg.movie = m " +
+            "LEFT JOIN mg.genre g " +
+            "WHERE f.user.id = :userId " +
+            "AND (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
+            "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds) " +
+            "ORDER BY m.title ASC")
+    List<Favorite> buscarPorFiltrosConGeneroOrdenAscParaUsuario(@Param("anyo") Integer anyo,
+                                                                @Param("vote") Double vote,
+                                                                @Param("generoIds") List<Integer> generoIds,
+                                                                @Param("startDate") LocalDate startDate,
+                                                                @Param("endDate") LocalDate endDate,
+                                                                @Param("userId") Integer userId);
+
+    @Query("SELECT f FROM Favorite f " +
+            "JOIN f.movie m " +
+            "LEFT JOIN MovieGenre mg ON mg.movie = m " +
+            "LEFT JOIN mg.genre g " +
+            "WHERE f.user.id = :userId " +
+            "AND (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
+            "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds) " +
+            "ORDER BY m.title DESC")
+    List<Favorite> buscarPorFiltrosConGeneroOrdenDescParaUsuario(@Param("anyo") Integer anyo,
+                                                                 @Param("vote") Double vote,
+                                                                 @Param("generoIds") List<Integer> generoIds,
+                                                                 @Param("startDate") LocalDate startDate,
+                                                                 @Param("endDate") LocalDate endDate,
+                                                                 @Param("userId") Integer userId);
+
+    // ===== FILTRADO SIN GÉNERO - FILTRANDO POR USUARIO =====
+
+    @Query("SELECT f FROM Favorite f " +
+            "JOIN f.movie m " +
+            "WHERE f.user.id = :userId " +
+            "AND (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote)")
-    List<Favorite> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
-                                             @Param("vote") Double vote,
-                                             @Param("startDate") LocalDate startDate,
-                                             @Param("endDate") LocalDate endDate);
+    List<Favorite> buscarPorFiltrosSinGeneroParaUsuario(@Param("anyo") Integer anyo,
+                                                        @Param("vote") Double vote,
+                                                        @Param("startDate") LocalDate startDate,
+                                                        @Param("endDate") LocalDate endDate,
+                                                        @Param("userId") Integer userId);
 
-    // Orden ascendente con género
     @Query("SELECT f FROM Favorite f " +
             "JOIN f.movie m " +
-            "LEFT JOIN MovieGenre mg ON mg.movie = m " +
-            "LEFT JOIN mg.genre g " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
-            "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds) " +
-            "ORDER BY m.title ASC")
-    List<Favorite> buscarPorFiltrosConGeneroOrdenAsc(@Param("anyo") Integer anyo,
-                                                     @Param("vote") Double vote,
-                                                     @Param("generoIds") List<Integer> generoIds,
-                                                     @Param("startDate") LocalDate startDate,
-                                                     @Param("endDate") LocalDate endDate);
-
-    // Orden descendente con género
-    @Query("SELECT f FROM Favorite f " +
-            "JOIN f.movie m " +
-            "LEFT JOIN MovieGenre mg ON mg.movie = m " +
-            "LEFT JOIN mg.genre g " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
-            "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (COALESCE(:generoIds, NULL) IS NULL OR g.id IN :generoIds) " +
-            "ORDER BY m.title DESC")
-    List<Favorite> buscarPorFiltrosConGeneroOrdenDesc(@Param("anyo") Integer anyo,
-                                                      @Param("vote") Double vote,
-                                                      @Param("generoIds") List<Integer> generoIds,
-                                                      @Param("startDate") LocalDate startDate,
-                                                      @Param("endDate") LocalDate endDate);
-
-    // Orden ascendente sin género
-    @Query("SELECT f FROM Favorite f " +
-            "JOIN f.movie m " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE f.user.id = :userId " +
+            "AND (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
             "ORDER BY m.title ASC")
-    List<Favorite> buscarPorFiltrosSinGeneroOrdenAsc(@Param("anyo") Integer anyo,
-                                                     @Param("vote") Double vote,
-                                                     @Param("startDate") LocalDate startDate,
-                                                     @Param("endDate") LocalDate endDate);
+    List<Favorite> buscarPorFiltrosSinGeneroOrdenAscParaUsuario(@Param("anyo") Integer anyo,
+                                                                @Param("vote") Double vote,
+                                                                @Param("startDate") LocalDate startDate,
+                                                                @Param("endDate") LocalDate endDate,
+                                                                @Param("userId") Integer userId);
 
-    // Orden descendente sin género
     @Query("SELECT f FROM Favorite f " +
             "JOIN f.movie m " +
-            "WHERE (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
+            "WHERE f.user.id = :userId " +
+            "AND (:startDate IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
             "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
             "ORDER BY m.title DESC")
-    List<Favorite> buscarPorFiltrosSinGeneroOrdenDesc(@Param("anyo") Integer anyo,
-                                                      @Param("vote") Double vote,
-                                                      @Param("startDate") LocalDate startDate,
-                                                      @Param("endDate") LocalDate endDate);
-
-
+    List<Favorite> buscarPorFiltrosSinGeneroOrdenDescParaUsuario(@Param("anyo") Integer anyo,
+                                                                 @Param("vote") Double vote,
+                                                                 @Param("startDate") LocalDate startDate,
+                                                                 @Param("endDate") LocalDate endDate,
+                                                                 @Param("userId") Integer userId);
 }
