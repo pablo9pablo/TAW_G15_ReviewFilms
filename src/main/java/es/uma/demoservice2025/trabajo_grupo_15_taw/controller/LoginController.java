@@ -21,12 +21,5 @@ public class LoginController {
         return "login";
     }
 
-    /**
-     * Método de prueba que devuelve texto plano
-     */
-    @GetMapping("/test")
-    @ResponseBody
-    public String test() {
-        return "Esta es una prueba";
-    }
+
 }

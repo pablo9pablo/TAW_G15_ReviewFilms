@@ -1,11 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre" %>
 <%@ page import="java.util.List" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Actor" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Crew" %>
 
 <%
     boolean isEditing = true;
@@ -59,19 +55,16 @@
     <br>Crew (Equipo técnico):<br>
     <form:checkboxes path="crewIds" items="${crew}" itemLabel="name"/><br>
 
-    <br>Actores:<br>
-    <a href="/cast?id=<%= (isEditing) ? movie.getId() : -1 %>"
-       onclick="return confirm('¿Estás seguro de que quieres editar el reparto? ¡Perderás los cambios no guardados en la película!');">
-        Editar Cast (Reparto)
-    </a>
-
     <br>Sinopsis:<br>
     <form:textarea path="overview" rows="4" cols="50"/><br>
 
     URL de imagen:
     <form:input path="imageUrl"/><br><br>
 
-    <input type="submit" value="Guardar Película">
+    <!-- Botones -->
+    <button type="submit" name="action" value="save">💾 Guardar</button>
+    <button type="submit" name="action" value="save_and_cast">🎭 Guardar y ver reparto</button>
+
 </form:form>
 
 </body>

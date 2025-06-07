@@ -19,12 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 
-public class ControllerUser {
+public class UserController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;

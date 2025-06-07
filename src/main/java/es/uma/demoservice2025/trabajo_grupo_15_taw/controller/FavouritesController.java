@@ -1,12 +1,7 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.FavouritesRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FavoriteMovieDTO;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Favorite;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.FavoriteService;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class ControllerFavourites {
+public class FavouritesController {
 
     @Autowired
     private FavoriteService favoriteService;

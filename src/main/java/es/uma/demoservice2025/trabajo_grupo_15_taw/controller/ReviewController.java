@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class ControllerReview {
+public class ReviewController {
 
     @Autowired
     protected ReviewService reviewService;

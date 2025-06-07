@@ -1,7 +1,6 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.SeenMovieDTO;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.WatchlistDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.WatchedService;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class ControllerWatched {
+public class WatchedController {
 
     @Autowired
     private WatchedService watchedService;

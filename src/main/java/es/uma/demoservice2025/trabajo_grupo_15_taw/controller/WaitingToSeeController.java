@@ -15,7 +15,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class ControllerWaitingToSee {
+public class WaitingToSeeController {
 
     @Autowired
     private WatchlistService watchlistService;

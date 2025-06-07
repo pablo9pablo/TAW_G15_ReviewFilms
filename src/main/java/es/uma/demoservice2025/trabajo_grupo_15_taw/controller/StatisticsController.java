@@ -1,22 +1,17 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.StatisticsDTO;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/estadisticas")
 @RequiredArgsConstructor
-public class ControllerStatistics {
+public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @GetMapping("")
