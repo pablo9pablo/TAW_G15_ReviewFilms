@@ -1,3 +1,6 @@
+// PABLO MARTINEZ PALOP : 50%
+
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.SeenRepository;
@@ -24,13 +27,6 @@ import java.security.Principal;
 @RequiredArgsConstructor
 
 public class UserController {
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private SeenRepository seenRepository;
-
     @Autowired
     private UserService userService;
 

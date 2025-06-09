@@ -1,3 +1,5 @@
+// PABLO MARTINEZ: 100%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.StatisticsDTO;

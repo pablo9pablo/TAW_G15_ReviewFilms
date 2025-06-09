@@ -1,3 +1,6 @@
+<!-- PABLO MARTINEZ PALOP : 10% -->
+
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <style>
 html, body {
@@ -48,7 +51,7 @@ background-color: #7790ad;
                 <td><a href="/reviews">Reviews</a></td>
                 <td><a href="/waiting">Waiting to See</a></td>
                 <td><a href="/favourites">Favourites</a></td>
-                <td><a href="/perfil">Mi Perfil</a></td> <%-- NUEVO ENLACE --%>
+                <td><a href="/perfil">Mi Perfil</a></td>
 
             </tr>
         </table>

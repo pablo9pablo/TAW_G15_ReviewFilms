@@ -1,4 +1,4 @@
-// StatisticsDTO.java
+//PABLO MARTINEZ PALOP : 10%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dto;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
