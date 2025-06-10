@@ -1,7 +1,8 @@
+// LUCIA ROSALES SANTIAGO: 100%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

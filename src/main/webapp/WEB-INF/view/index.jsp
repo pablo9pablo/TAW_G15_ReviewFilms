@@ -1,3 +1,5 @@
+<!--LUCIA ROSALES SANTIAGO: 5% -->
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
@@ -27,15 +29,12 @@
 <body>
     <div class="page-container">
         <jsp:include page="cabecera.jsp"/>
-
             <jsp:include page="logout.jsp"/>
-        <!-- Añadir esto justo después del div class="page-container" -->
         <div style="display: flex; justify-content: flex-end; padding: 10px;">
             <a href="${pageContext.request.contextPath}/estadisticas" class="button-generico"  style="text-decoration: none;"
             >Estadísticas</a>
 
             <% if (isAdmin) { %>
-            <%-- Enlace al menú de administración con icono de engranaje --%>
             <a href="${pageContext.request.contextPath}/admin/menu" title="Administración" style="font-size: 24px; text-decoration: none;">
                 ⚙️
             </a>

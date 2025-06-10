@@ -1,10 +1,8 @@
 // PABLO MARTINEZ PALOP : 50%
-
+// LUCIA ROSALES SANTIAGO: 50%
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.SeenRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.UserDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.UserProfileDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;

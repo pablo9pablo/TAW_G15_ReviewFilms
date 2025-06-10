@@ -1,4 +1,5 @@
 <!-- PABLO MARTINEZ PALOP : 10% -->
+<!--LUCIA ROSALES SANTIAGO: 90% -->
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -52,7 +53,6 @@ background-color: #7790ad;
                 <td><a href="/waiting">Waiting to See</a></td>
                 <td><a href="/favourites">Favourites</a></td>
                 <td><a href="/perfil">Mi Perfil</a></td>
-
             </tr>
         </table>
     </nav>

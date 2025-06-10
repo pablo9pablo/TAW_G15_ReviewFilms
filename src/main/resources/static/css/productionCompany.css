@@ -46,3 +46,8 @@
 .button-generico:hover {
     background-color: #1a252f;
 }
+
+.page-title {
+    text-align: center;
+    margin-bottom: 20px;
+}

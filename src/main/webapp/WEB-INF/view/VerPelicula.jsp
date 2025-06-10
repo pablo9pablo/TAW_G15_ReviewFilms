@@ -1,3 +1,5 @@
+<!--LUCIA ROSALES SANTIAGO: 40% -->
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Review" %>

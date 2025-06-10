@@ -29,7 +29,10 @@ label {
 }
 
 .button {
-    width: 150px;
+    width: 190px;
+    height: 38px;
+    font-family: "Times New Roman", serif;
+    font-size: 16px;
     text-align: center;
     font-weight: bold;
     color: white;
@@ -40,7 +43,11 @@ label {
     text-decoration: none;
     transition: background-color 0.3s;
     white-space: nowrap;
+    box-sizing: border-box;
+    display: inline-block;
+    line-height: normal;
 }
+
 
 .button-save {
     background-color: #28a745;

@@ -1,3 +1,5 @@
+// LUCIA ROSALES SANTIAGO: 100%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
@@ -27,8 +29,19 @@ public class ProductionCompanyService {
     @Autowired
     protected MovieRepository movieRepository;
 
-    public List<ProductionCompanyDTO> findAll() {
-        return productionCompanyRepository.findAll().stream()
+    public List<ProductionCompanyDTO> findProductionCompanies() {
+        return this.findProductionCompanies(null);
+    }
+
+    public List<ProductionCompanyDTO> findProductionCompanies(String nombre) {
+        List<ProductionCompany> productionCompanies;
+
+        if(nombre == null){
+            productionCompanies = this.productionCompanyRepository.findAll();
+        }else{
+            productionCompanies = this.productionCompanyRepository.buscarProductoras(nombre);
+        }
+        return productionCompanies.stream()
                 .map(productionCompanyMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -65,7 +78,6 @@ public class ProductionCompanyService {
     public void deleteById(Integer id) {
         productionCompanyRepository.deleteById(id);
     }
-
 
 
     public List<MovieDTO> findMoviesByProductionCompanyId(Integer id) {
@@ -109,6 +121,7 @@ public class ProductionCompanyService {
             movieRepository.save(movie);
         }
     }
+
 
 
 }

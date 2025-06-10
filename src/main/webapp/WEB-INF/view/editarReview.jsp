@@ -1,6 +1,7 @@
+<!--LUCIA ROSALES SANTIAGO: 100% -->
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO" %>
 <!DOCTYPE html>
 <html>

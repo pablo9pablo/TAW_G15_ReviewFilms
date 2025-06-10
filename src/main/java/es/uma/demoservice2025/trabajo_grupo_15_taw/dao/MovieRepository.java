@@ -1,4 +1,5 @@
 // PABLO MARTINEZ PALOP : 28%
+// LUCIA ROSALES SANTIAGO: 5%
 
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
@@ -58,11 +59,18 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
     @Query("SELECT m FROM Movie m JOIN MovieProductionCompany mpc ON m.id = mpc.movie.id WHERE mpc.productionCompany.id = :productionCompanyId AND mpc.movie.id <> :movieId")
     List<Movie> findMoviesByProductionCompany(@Param("productionCompanyId") Integer productionCompanyId, @Param("movieId") Integer movieId);
 
-    @Query("SELECT m FROM Movie m JOIN m.productionCompanies pc WHERE pc.id = :productionCompanyId")
+    @Query("SELECT m " +
+            "FROM Movie m " +
+            "JOIN m.productionCompanies pc " +
+            "WHERE pc.id = :productionCompanyId")
     List<Movie> findMoviesByProductionCompany(@Param("productionCompanyId") Integer productionCompanyId);
 
-    @Query("SELECT m FROM Movie m WHERE :productionCompanyId NOT IN (SELECT pc.id FROM m.productionCompanies pc)")
+    @Query("SELECT m " +
+            "FROM Movie m " +
+            "WHERE :productionCompanyId " +
+            "NOT IN (SELECT pc.id FROM m.productionCompanies pc)")
     List<Movie> findMoviesNotRelatedToProductionCompany(@Param("productionCompanyId") Integer productionCompanyId);
+
     @Query("SELECT DISTINCT m FROM Movie m JOIN MovieGenre mg ON m.id = mg.movie.id JOIN Genre g ON mg.genre.id = g.id WHERE g.id = :genreId ORDER BY m.releaseDate ASC")
     List<Movie> findAllMoviesByGenre(@Param("genreId") Integer genreId);
 

@@ -1,3 +1,5 @@
+<!--LUCIA ROSALES SANTIAGO: 100% -->
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ProductionCompanyDTO" %>
@@ -11,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/productionCompany.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/logout.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/filtros.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <%
@@ -20,6 +23,15 @@
 <div class="page-container">
     <jsp:include page="cabecera.jsp" />
     <div class="page-content">
+
+        <h1 class="page-title">Gestión de productoras</h1>
+
+        <form:form action="${pageContext.request.contextPath}/productionCompanies/filtrar" method="post" modelAttribute="filtro" cssClass="filter-form">
+            <label>Búsqueda por nombre:</label>
+            <form:input path="nombre" placeholder="Buscar productora..."/>
+            <form:button class="button-generico">Buscar</form:button>
+        </form:form>
+
         <div class="table-wrapper">
             <div class="table-header">
                 <table class="movie-table">

@@ -1,8 +1,11 @@
+// LUCIA ROSALES SANTIAGO: 95%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ProductionCompanyDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.ProductionCompanyService;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.FiltroProductora;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -43,13 +46,33 @@ public class ProductionCompanyController {
         return "movieProductionCompany";
     }
 
+    private String listarConFiltro(FiltroProductora filtro, Model model) {
+        List<ProductionCompanyDTO> productionCompanies;
+
+        if (filtro == null) {
+            filtro = new FiltroProductora();
+            productionCompanies = service.findProductionCompanies();
+        }else{
+            productionCompanies = service.findProductionCompanies(filtro.getNombre());
+        }
+
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("productionCompanies", productionCompanies);
+
+        return "productionCompany";
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")
     public String doListarProductoras(Model model) {
-        List<ProductionCompanyDTO> productionCompanies = service.findAll();
-        model.addAttribute("productionCompanies", productionCompanies);
-        return "productionCompany";
+        return this.listarConFiltro(null, model);
     }
+
+    @PostMapping("/filtrar")
+    public String doFiltrar(@ModelAttribute("filtro") FiltroProductora filtro, Model model) {
+        return this.listarConFiltro(filtro, model);
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editProduction")

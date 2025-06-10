@@ -1,3 +1,5 @@
+// LUCIA ROSALES SANTIAGO: 3%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
@@ -8,6 +10,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.CrewMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.service.MovieService;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +32,9 @@ import java.util.stream.Collectors;
 @Controller
 @SessionAttributes("tempCastList")
 public class MovieController {
+
+    @Autowired
+    private MovieService movieService;
 
     @Autowired
     protected MovieRepository movieRepository;
@@ -262,16 +268,13 @@ public class MovieController {
         return "crew";
     }
 
-
-
-
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/deletemovie")
     public String eliminarPelicula(@RequestParam("id") Integer movieId) {
-        movieRepository.deleteById(movieId);
+        movieService.deleteMovieById(movieId);
         return "redirect:/";
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/cast")
     public String castPelicula(

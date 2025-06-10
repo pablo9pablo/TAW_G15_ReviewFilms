@@ -1,3 +1,5 @@
+// LUCIA ROSALES SANTIAGO: 8%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.mapper;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
@@ -89,8 +91,14 @@ public class MovieMapper {
         movie.setRuntime(dto.getRuntime());
         movie.setStatus(dto.getStatus());
         movie.setTagline(dto.getTagline());
-        movie.setVoteAverage(dto.getVoteAverage());
-        movie.setVoteCount(dto.getVoteCount());
+
+        if (dto.getVoteAverage() != null) {
+            movie.setVoteAverage(dto.getVoteAverage());
+        }
+        if (dto.getVoteCount() != null) {
+            movie.setVoteCount(dto.getVoteCount());
+        }
+
         movie.setImageUrl(dto.getImageUrl());
 
         // Cambiar de Set.copyOf() a HashSet
