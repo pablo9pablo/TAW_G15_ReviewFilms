@@ -1,3 +1,4 @@
+// MIGUEL LABELLA RAMÍREZ: 100%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.SeenRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;

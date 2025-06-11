@@ -1,3 +1,5 @@
+// MIGUEL LABELLA RAMÍREZ: 100%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Favorite;

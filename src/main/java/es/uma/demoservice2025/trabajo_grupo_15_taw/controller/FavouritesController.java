@@ -1,3 +1,4 @@
+// MIGUEL LABELLA RAMÍREZ: 100%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FavoriteMovieDTO;

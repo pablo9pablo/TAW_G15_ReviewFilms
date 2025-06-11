@@ -1,3 +1,5 @@
+// MIGUEL LABELLA RAMÍREZ: 40%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Seen;

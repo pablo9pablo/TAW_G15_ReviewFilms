@@ -1,4 +1,5 @@
 <!--LUCIA ROSALES SANTIAGO: 40% -->
+<!--MIGUEL LABELLA RAMÍREZ: 30% -->
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.Set" %>
