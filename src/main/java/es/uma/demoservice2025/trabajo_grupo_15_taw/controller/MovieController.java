@@ -213,9 +213,9 @@ public class MovieController {
 
         // Gestión del crew - Solo para películas existentes
         if (movieDTO.getId() != null) {
-            List<Crew> existingCrew = crewRepository.findByMovieId(movie.getId());
+            List<Crew> existingCrew = crewRepository.findByMoviesId(movie.getId());
             for (Crew crew : existingCrew) {
-                crew.setMovie(null);
+                crew.getMovies().add(null);
                 crewRepository.save(crew);
             }
         }
@@ -224,7 +224,7 @@ public class MovieController {
         if (movieDTO.getCrewIds() != null && !movieDTO.getCrewIds().isEmpty()) {
             List<Crew> selectedCrew = crewRepository.findAllById(movieDTO.getCrewIds());
             for (Crew crew : selectedCrew) {
-                crew.setMovie(movie);
+                crew.getMovies().add(movie);
                 crewRepository.save(crew);
             }
         }
@@ -255,18 +255,16 @@ public class MovieController {
     public String verEquipoTecnico(@RequestParam("id") Integer movieId, Model model) {
         Movie movie = movieRepository.findById(movieId).orElse(null);
 
-        CrewMapper crewMapper = new CrewMapper();
-
 
         MovieDTO movieDTO = MovieMapper.toDTO(movie);
-        List<CrewDTO> equipo = crewRepository.findByMovieId(movieId).stream()
+        List<CrewDTO> equipo = crewRepository.findByMoviesId(movieId).stream()
                 .map(CrewMapper::toDto)
                 .collect(Collectors.toList());
 
         model.addAttribute("movie", movieDTO);
         model.addAttribute("crew", equipo);
 
-        return "crew";
+        return "listarCrew";
     }
 
     @PreAuthorize("hasRole('ADMIN')")

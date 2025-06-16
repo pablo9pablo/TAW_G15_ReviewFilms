@@ -7,14 +7,14 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
-import org.springframework.cglib.core.Local;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -134,4 +134,32 @@ public interface MovieRepository extends JpaRepository<Movie,Integer> {
             "ORDER BY movieCount DESC " +
             "LIMIT 5")
     List<Object[]> findTopProductionCompanies();
+
+    /// actor
+    @Query("SELECT m FROM Movie m JOIN m.movieCasts mc WHERE mc.actor.id = :actorId")
+    List<Movie> findMoviesByActorId(Integer actorId);
+
+    @Query("SELECT m FROM Movie m WHERE m NOT IN " +
+            "(SELECT m2 FROM Movie m2 JOIN m2.movieCasts mc WHERE mc.actor.id = :actorId)")
+    List<Movie> findMoviesNotRelatedToActor(Integer actorId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO movie_cast (actor_id, movie_id) VALUES (:actorId, :movieId)", nativeQuery = true)
+    void associateActorToMovie(Integer actorId, Integer movieId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM MovieCast mc WHERE mc.actor.id = :actorId AND mc.movie.id = :movieId")
+    void removeActorFromMovie(Integer actorId, Integer movieId);
+
+    /// crew
+    @Query("SELECT m FROM Movie m JOIN m.crews c WHERE c.id = :crewId")
+    List<Movie> findMoviesByCrewId(Integer crewId);
+
+    @Query("SELECT m FROM Movie m WHERE m NOT IN " +
+            "(SELECT m2 FROM Movie m2 JOIN m2.crews c WHERE c.id = :crewId)")
+    List<Movie> findMoviesNotRelatedToCrew(Integer crewId);
+
+
 }

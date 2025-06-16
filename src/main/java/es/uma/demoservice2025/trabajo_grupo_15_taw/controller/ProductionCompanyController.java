@@ -2,8 +2,10 @@
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.ProductionCompanyRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ProductionCompanyDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.ProductionCompanyMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.ProductionCompanyService;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.FiltroProductora;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.ProductionCompanyMapper;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.ProductionCompanyRepository;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,7 @@ public class ProductionCompanyController {
                 .map(productionCompanyMapper::toDTO)
                 .toList();
         model.addAttribute("companies", dtoList);
-        return "movieProductionCompany";
+        return "listarProductoras";
     }
 
     private String listarConFiltro(FiltroProductora filtro, Model model) {

@@ -8,5 +8,10 @@ import java.util.List;
 
 @Repository
 public interface CrewRepository extends JpaRepository<Crew, Integer> {
-    List<Crew> findByMovieId(Integer movieId);
+    List<Crew> findByMoviesId(Integer movieId);
+
+    List<Crew> findByNameContainingIgnoreCase(String name);
+    Crew findByNameIgnoreCase(String name);
+
+
 }
