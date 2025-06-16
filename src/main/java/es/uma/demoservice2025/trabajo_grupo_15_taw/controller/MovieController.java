@@ -9,6 +9,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.CrewMapper;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.GenreMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.MovieService;
@@ -265,6 +266,15 @@ public class MovieController {
         model.addAttribute("crew", equipo);
 
         return "listarCrew";
+    }
+    @GetMapping("/movieGenres")
+    public String listarGeneros(Model model, @RequestParam Integer id) {
+        List<GenreDTO> dtoList = genreRepository.findByMovies_Id(id)
+                .stream()
+                .map(GenreMapper::toDto)
+                .toList();
+        model.addAttribute("genres", dtoList);
+        return "movieGenre";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
