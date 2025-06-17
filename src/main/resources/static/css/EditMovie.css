@@ -1,0 +1,99 @@
+/* ===== Estructura general ===== */
+body.pagina-formulario {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fdfefe;
+    padding: 20px;
+    color: #2c3e50;
+}
+
+/* ===== Título del formulario ===== */
+.titulo-formulario {
+    background-color: #ecf0f1; /* Gris muy claro */
+    color: #2c3e50;
+    padding: 10px 15px;
+    border-left: 5px solid #2c3e50;
+    border-radius: 5px;
+    font-size: 18px;
+    margin-bottom: 25px;
+    max-width: 1000px; /* Más ancho */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== Formulario ===== */
+.formulario-pelicula {
+    background-color: #ffffff;
+    padding: 20px 25px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    max-width: 1000px; /* Más ancho */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== Etiquetas ===== */
+.etiqueta {
+    font-weight: 600;
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+/* ===== Campos de texto ===== */
+.campo-texto,
+.campo-area {
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    background-color: #f9f9f9;
+}
+
+.campo-area {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ===== Checkboxes ===== */
+.grupo-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 18px; /* Más separación entre ítems */
+    margin-bottom: 16px;
+    padding-left: 4px;
+}
+
+.check-grupo {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* Checkboxes visibles y modernos */
+input[type="checkbox"] {
+    accent-color: #2c3e50;
+    transform: scale(1.1);
+}
+
+/* ===== Botones ===== */
+.boton-principal {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-right: 10px;
+    transition: background-color 0.2s;
+}
+
+.boton-principal:hover {
+    background-color: #1a252f;
+}

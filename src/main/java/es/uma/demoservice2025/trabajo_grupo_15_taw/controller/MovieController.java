@@ -4,10 +4,8 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
-
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.*;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.*;
-
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.CrewMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.GenreMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -109,6 +106,7 @@ public class MovieController {
         return "index";
     }
 
+
     @ModelAttribute("tempCastList")
     public List<MovieCastDTO> tempCastList() {
         return new ArrayList<>();
@@ -190,7 +188,8 @@ public class MovieController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/savemovie")
-    public String guardarPelicula(@ModelAttribute MovieDTO movieDTO, @RequestParam(value = "action", required = false) String action) {
+    public String guardarPelicula(@ModelAttribute MovieDTO movieDTO,
+                                  @RequestParam(value = "action", required = false) String action) {
 
         // Obtener la película a editar o crear una nueva
         Movie movie = movieDTO.getId() != null
@@ -212,22 +211,31 @@ public class MovieController {
         // Guardar película actualizada
         movie = movieRepository.save(movie);
 
-        // Gestión del crew - Solo para películas existentes
-        if (movieDTO.getId() != null) {
-            List<Crew> existingCrew = crewRepository.findByMoviesId(movie.getId());
-            for (Crew crew : existingCrew) {
-                crew.getMovies().add(null);
-                crewRepository.save(crew);
-            }
-        }
-
-        // Asociar nuevo crew si hay elementos seleccionados
+        // Gestión del crew
         if (movieDTO.getCrewIds() != null && !movieDTO.getCrewIds().isEmpty()) {
             List<Crew> selectedCrew = crewRepository.findAllById(movieDTO.getCrewIds());
+
+            // Para películas existentes: limpiar relaciones anteriores
+            if (movie.getId() != null) {
+                List<Crew> existingCrew = crewRepository.findByMoviesId(movie.getId());
+                for (Crew crew : existingCrew) {
+                    crew.getMovies().remove(movie);
+                }
+                crewRepository.saveAll(existingCrew);
+            }
+
+            // Establecer nuevas relaciones
             for (Crew crew : selectedCrew) {
                 crew.getMovies().add(movie);
-                crewRepository.save(crew);
             }
+            crewRepository.saveAll(selectedCrew);
+        } else if (movie.getId() != null) {
+            // Si no se seleccionó crew pero la película existía: limpiar relaciones
+            List<Crew> existingCrew = crewRepository.findByMoviesId(movie.getId());
+            for (Crew crew : existingCrew) {
+                crew.getMovies().remove(movie);
+            }
+            crewRepository.saveAll(existingCrew);
         }
 
         if ("save_and_cast".equals(action)) {

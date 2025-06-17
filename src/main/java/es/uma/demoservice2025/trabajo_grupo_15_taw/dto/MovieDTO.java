@@ -1,6 +1,7 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ public class MovieDTO {
     private String originalTitle;
     private String overview;
     private BigDecimal popularity;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
     private BigDecimal revenue;
     private Integer runtime;

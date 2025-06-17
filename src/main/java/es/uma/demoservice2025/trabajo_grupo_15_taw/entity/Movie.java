@@ -4,6 +4,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -41,6 +42,7 @@ public class Movie {
     @Column(name = "POPULARITY", precision = 5, scale = 2)
     private BigDecimal popularity;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "RELEASE_DATE")
     private LocalDate releaseDate;
 
