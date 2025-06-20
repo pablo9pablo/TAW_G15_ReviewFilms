@@ -37,4 +37,5 @@ public class DashboardData {
         this.warMovieList = warMovieList;
         this.basedTrueStoryMovieList = basedTrueStoryMovieList;
         this.genreList = genreList;
-    }  }
+    }
+}

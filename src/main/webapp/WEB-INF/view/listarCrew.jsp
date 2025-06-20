@@ -7,20 +7,37 @@
     List<CrewDTO> crewList = (List<CrewDTO>) request.getAttribute("crew");
 %>
 
-<table border="1" cellspacing="0" cellpadding="5" width="80%" align="center">
-    <caption><h2>Crew of "<%= (movie != null && movie.getTitle() != null) ? movie.getTitle() : "-" %>"</h2></caption>
-    <thead>
-    <tr>
-        <th align="left">Name</th>
-        <th align="left">Genero</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% for (CrewDTO crew : crewList) { %>
-    <tr>
-        <td><%= (crew.getName() != null) ? crew.getName() : "-" %></td>
-        <td><%= (crew.getGender() != null) ? crew.getGender() : "-" %></td>
-    </tr>
-    <% } %>
-    </tbody>
-</table>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/logout.css">
+    </head>
+    <body>
+        <jsp:include page="cabecera.jsp"/>
+        <jsp:include page="logout.jsp"/>
+        <main>
+            <table border="1" cellspacing="0" cellpadding="5" width="80%" align="center">
+                <caption><h2>Crew of "<%= (movie != null && movie.getTitle() != null) ? movie.getTitle() : "-" %>"</h2></caption>
+                <thead>
+                <tr>
+                    <th align="left">Name</th>
+                    <th align="left">Genero</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (CrewDTO crew : crewList) { %>
+                <tr>
+                    <td><%= (crew.getName() != null) ? crew.getName() : "-" %></td>
+                    <td><%= (crew.getGender() != null) ? crew.getGender() : "-" %></td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </main>
+        <footer>
+            <jsp:include page="footer.jsp"/>
+            <script src="/js/VerPeliculaScript.js"></script>
+        </footer>
+    </body>
+</html>
