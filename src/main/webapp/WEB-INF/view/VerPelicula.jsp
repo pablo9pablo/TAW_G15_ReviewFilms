@@ -59,6 +59,10 @@
             </h1>
 
             <div class="tabs">
+                <a href="${pageContext.request.contextPath}/viewmovie?id=${movie.id}">
+                    <button class="active-tab">Main</button>
+                </a>
+
                 <a href="${pageContext.request.contextPath}/movies/cast?id=${movie.id}">
                     <button>Cast</button>
                 </a>

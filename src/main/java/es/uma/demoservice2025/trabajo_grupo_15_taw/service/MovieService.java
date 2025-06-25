@@ -154,10 +154,14 @@ public class MovieService {
     }
 
     public void cargarGeneros(Integer movieId, Model model) {
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+        MovieDTO movieDTO = MovieMapper.toDTO(movie);
         List<GenreDTO> dtoList = genreRepository.findByMovies_Id(movieId)
                 .stream()
                 .map(GenreMapper::toDto)
                 .toList();
+
+        model.addAttribute("movie", movieDTO);
         model.addAttribute("genres", dtoList);
     }
 

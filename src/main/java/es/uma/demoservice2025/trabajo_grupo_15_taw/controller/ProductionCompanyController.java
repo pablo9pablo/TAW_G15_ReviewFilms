@@ -2,9 +2,12 @@
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
+import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.ProductionCompanyRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ProductionCompanyDTO;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.ProductionCompanyMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.ProductionCompanyService;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.FiltroProductora;
@@ -26,6 +29,9 @@ public class ProductionCompanyController {
     @Autowired
     private ProductionCompanyMapper productionCompanyMapper;
 
+    @Autowired
+    private MovieRepository movieRepository;
+
     public ProductionCompanyController(ProductionCompanyRepository productionCompanyRepository) {
         this.productionCompanyRepository = productionCompanyRepository;
     }
@@ -36,11 +42,16 @@ public class ProductionCompanyController {
     @GetMapping("/movieProductionCompanies")
     public String listarProductoras(Model model, @RequestParam Integer id) {
 
+        Movie movie = movieRepository.findById(id).orElse(null);
+        MovieDTO movieDTO = MovieMapper.toDTO(movie);
+
         List<ProductionCompanyDTO> dtoList = productionCompanyRepository.findByMovies_Id(id)
                 .stream()
                 .map(productionCompanyMapper::toDTO)
                 .toList();
         model.addAttribute("companies", dtoList);
+        model.addAttribute("movie", movieDTO);
+
         return "listarProductoras";
     }
 

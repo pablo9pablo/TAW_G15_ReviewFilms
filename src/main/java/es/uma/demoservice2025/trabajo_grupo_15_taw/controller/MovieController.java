@@ -56,6 +56,8 @@ public class MovieController {
         model.addAttribute("filtro", new Filtro());
         model.addAttribute("busqueda", new Busqueda());
 
+        model.addAttribute("tituloCarrusel", "Todas las películas");
+
         return "index";
     }
 
@@ -232,11 +234,15 @@ public class MovieController {
 
     @PostMapping("/buscar")
     public String doBuscar(@ModelAttribute("busqueda") Busqueda busqueda, Model model) {
+        model.addAttribute("tituloCarrusel", "Películas filtradas");
+
         return movieService.listarPeliculasConBusqueda(busqueda, model);
     }
 
     @PostMapping("/filtrar")
     public String doFiltrar(@ModelAttribute("filtro") Filtro filtro, Model model) {
+        model.addAttribute("tituloCarrusel", "Películas filtradas");
+
         return movieService.listarPeliculasConFiltrado(filtro, model);
     }
 }
