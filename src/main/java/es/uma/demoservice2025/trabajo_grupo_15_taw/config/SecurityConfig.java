@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+//OUAIL BOUAZZA MANSOURI : 100%
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
@@ -39,7 +40,7 @@ public class SecurityConfig {
                         .clearAuthentication(true) // Limpiar la autenticación
                         .deleteCookies("JSESSIONID") // Eliminar cookies
                 )
-                .csrf(AbstractHttpConfigurer::disable); // ⚠️ Solo para pruebas
+                .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
