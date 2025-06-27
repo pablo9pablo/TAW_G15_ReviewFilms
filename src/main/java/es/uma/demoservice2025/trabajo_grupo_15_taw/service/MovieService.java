@@ -263,6 +263,8 @@ public class MovieService {
         model.addAttribute("movieList", movieListBusqueda);
 
         setupDashboardModel(model);
+
+        model.addAttribute("busqueda", busqueda);
         return "index";
     }
 
@@ -294,12 +296,12 @@ public class MovieService {
             );
         }
 
-        model.addAttribute("filtro", filtro);
-        model.addAttribute("movieList", movies);
-
         DashboardData dashboardData = getDashboardData();
         addDashboardToModel(model, dashboardData);
         addSearchAndFilterAttributes(model);
+
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("movieList", movies);
 
         return "index";
     }

@@ -1,5 +1,5 @@
-// PABLO MARTINEZ PALOP : 100%
-
+// PABLO MARTINEZ PALOP : 40%
+// OUAIL BOUAZZA MANSOURI : 60%
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 

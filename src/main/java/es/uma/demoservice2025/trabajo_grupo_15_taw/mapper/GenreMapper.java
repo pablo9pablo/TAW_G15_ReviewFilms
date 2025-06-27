@@ -3,6 +3,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.mapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.GenreDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
 
+// OUAIL BOUAZZA MANSOURI : 100%
 public class GenreMapper {
 
     public static GenreDTO toDto(Genre entity) {

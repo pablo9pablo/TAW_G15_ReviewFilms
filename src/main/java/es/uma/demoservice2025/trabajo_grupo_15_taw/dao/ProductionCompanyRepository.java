@@ -1,5 +1,5 @@
 // LUCIA ROSALES SANTIAGO: 70%
-
+// OUAIL BOUAZZA MANSOURI : 100%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.ProductionCompany;

@@ -1,5 +1,6 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
+//OUAIL BOUAZZA MANSOURI : 100%
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ActorDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.ActorService;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/actor")

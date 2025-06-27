@@ -1,3 +1,6 @@
+<!--OUAIL BOUAZZA MANSOURI : 100%-->
+
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ActorDTO" %>
