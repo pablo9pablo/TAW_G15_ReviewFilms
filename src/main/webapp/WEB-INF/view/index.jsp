@@ -45,8 +45,8 @@
     </div>
 
     <div class="page-content">
-        <!-- Formulario de búsqueda -->
-        <form:form method="post" action="/buscar" modelAttribute="busqueda" class="search-form">
+        <!-- Formulario combinado de búsqueda y filtrado -->
+        <form:form method="post" action="/buscar-filtrar" modelAttribute="busquedaFiltro" class="search-form">
             <div class="search-input-wrapper">
                 <div class="search-field">
                     <form:input path="texto" type="text" id="searchInput" name="busqueda" class="search-input" placeholder="Buscar película..."/>
@@ -54,11 +54,8 @@
                 </div>
                 <form:button class="button-generico">Buscar</form:button>
             </div>
-        </form:form>
 
-
-        <!-- Formulario de filtrado -->
-        <form:form method="post" action="/filtrar" modelAttribute="filtro" class="filter-form">
+            <!-- Formulario de filtrado -->
             <div class="filters-wrapper">
                 <span class="filter-label">Filtrar por:</span>
 
@@ -80,10 +77,8 @@
                     </form:select>
                 </div>
 
-                <form:button class="button-generico">Filtrar</form:button>
             </div>
         </form:form>
-
 
         <!-- Carrusel de todas las películas -->
         <h3><%=tituloCarrusel%></h3>

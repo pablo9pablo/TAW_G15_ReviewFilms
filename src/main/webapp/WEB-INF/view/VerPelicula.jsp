@@ -55,7 +55,7 @@
             %>
 
             <h1><%= movie.getTitle() %>
-                <span class="rating-box"><%= movie.getReviews() == null || movie.getReviews().isEmpty() ? "Sin calificacion" : movie.getVoteAverage() + "/10" %></span>
+                <span class="rating-box"><%= movie.getVoteAverage() == null ? "Sin calificacion" : movie.getVoteAverage() + "/10" %></span>
             </h1>
 
             <div class="tabs">

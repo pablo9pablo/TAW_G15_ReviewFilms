@@ -11,6 +11,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.GenreMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieCastMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.BusquedaFiltro;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -254,53 +255,42 @@ public class MovieService {
         );
     }
 
-    // ============================================================================
-    // BÚSQUEDA DE PELÍCULAS
-    // ============================================================================
+// ============================================================================
+// BÚSQUEDA Y FILTRADO COMBINADO DE PELÍCULAS
+// ============================================================================
 
-    public String listarPeliculasConBusqueda(Busqueda busqueda, Model model) {
-        List<Movie> movieListBusqueda = this.movieRepository.buscarPorTitulo(busqueda.getTexto());
-        model.addAttribute("movieList", movieListBusqueda);
-
-        setupDashboardModel(model);
-
-        model.addAttribute("busqueda", busqueda);
-        return "index";
-    }
-
-    // ============================================================================
-    // FILTRADO DE PELÍCULAS
-    // ============================================================================
-
-    public String listarPeliculasConFiltrado(Filtro filtro, Model model) {
-        if (filtro == null) {
-            filtro = new Filtro();
+    public String listarPeliculasConBusquedaYFiltrado(BusquedaFiltro busquedaFiltro, Model model) {
+        if (busquedaFiltro == null) {
+            busquedaFiltro = new BusquedaFiltro();
         }
-        if (filtro.getGeneroIds() == null) {
-            filtro.setGeneroIds(new ArrayList<>());
+
+        if (busquedaFiltro.getGeneroIds() == null || busquedaFiltro.getGeneroIds().isEmpty()) {
+            // Para que el filtro de género no afecte si no se seleccionó ninguno
+            busquedaFiltro.setGeneroIds(null);
         }
 
         List<Movie> movies;
-        LocalDate[] dateRange = getYearDateRange(filtro.getYear());
+        LocalDate[] dateRange = getYearDateRange(busquedaFiltro.getYear());
 
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        if (filtro.getGeneroIds().isEmpty()) {
-            movies = this.movieRepository.buscarPorFiltrosSinGenero(
-                    filtro.getYear(), filtro.getVote(), dateRange[0], dateRange[1]
-            );
-        } else {
-            movies = this.movieRepository.buscarPorFiltrosConGenero(
-                    filtro.getYear(), filtro.getVote(), filtro.getGeneroIds(), dateRange[0], dateRange[1]
-            );
-        }
+        // Determinar qué consulta usar basándose en los parámetros disponibles
+        // unificamos todos los casos con una única consulta en el repositorio
+        movies = this.movieRepository.buscarPeliculasConFiltros(
+                busquedaFiltro.getTexto(),
+                busquedaFiltro.getYear(),
+                busquedaFiltro.getVote(),
+                busquedaFiltro.getGeneroIds(),
+                dateRange[0],
+                dateRange[1]
+        );
 
         Recomendaciones recomendaciones = getRecomendaciones();
         addRecomendacionesToModel(model, recomendaciones);
         addSearchAndFilterAttributes(model);
 
-        model.addAttribute("filtro", filtro);
+        model.addAttribute("busquedaFiltro", busquedaFiltro);
         model.addAttribute("movieList", movies);
 
         return "index";

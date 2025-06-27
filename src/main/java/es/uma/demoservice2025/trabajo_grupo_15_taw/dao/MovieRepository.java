@@ -19,32 +19,24 @@ import java.util.List;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie,Integer> {
-    //Busqueda
-    @Query("select m from Movie m where m.title like concat('%', :texto, '%')")
-    public List<Movie> buscarPorTitulo(@Param("texto") String texto);
-
-    //Filtrado Sin genero
-    @Query("SELECT m FROM Movie m " +
-            "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
-            "AND (:vote IS NULL OR m.voteAverage >= :vote) ")
-    public List<Movie> buscarPorFiltrosSinGenero(@Param("anyo") Integer anyo,
-                                                 @Param("vote") Double vote,
-                                                 @Param("startDate") LocalDate startDate,
-                                                 @Param("endDate") LocalDate endDate);
-
-    //Filtrado con genero
-    @Query("SELECT m FROM Movie m " +
-            "JOIN MovieGenre mg ON mg.movie = m " +
-            "JOIN mg.genre g " +
-            "WHERE (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate) " +
-            "AND (:vote IS NULL OR m.voteAverage >= :vote) " +
-            "AND (:generoIds IS NULL OR g.id in :generoIds)")
-    public List<Movie> buscarPorFiltrosConGenero(@Param("anyo") Integer anyo,
-                                                @Param("vote") Double vote,
-                                                @Param("generoIds") List<Integer>genreList,
-                                                @Param("startDate") LocalDate startDate,
-                                                @Param("endDate") LocalDate endDate);
-    
+    // busqueda
+    @Query("""
+    SELECT DISTINCT m FROM Movie m
+    LEFT JOIN MovieGenre mg ON mg.movie = m
+    LEFT JOIN mg.genre g
+    WHERE (:texto IS NULL OR m.title LIKE CONCAT('%', :texto, '%') OR m.originalTitle LIKE CONCAT('%', :texto, '%'))
+    AND (:anyo IS NULL OR m.releaseDate BETWEEN :startDate AND :endDate)
+    AND (:vote IS NULL OR m.voteAverage >= :vote)
+    AND (:generoIds IS NULL OR g.id IN :generoIds)
+""")
+    List<Movie> buscarPeliculasConFiltros(
+            @Param("texto") String texto,
+            @Param("anyo") Integer anyo,
+            @Param("vote") Double vote,
+            @Param("generoIds") List<Integer> generoIds,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 
     // Consultas para la recomendación de películas
     @Query("SELECT g FROM Genre g JOIN MovieGenre mg ON g.id = mg.genre.id WHERE mg.movie.id = :movieId")

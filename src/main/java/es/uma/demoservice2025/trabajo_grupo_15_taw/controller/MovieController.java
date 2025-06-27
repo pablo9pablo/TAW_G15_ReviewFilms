@@ -10,18 +10,22 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ReviewDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.UserPrincipal;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.service.Recomendaciones;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.MovieDetailsResult;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.MovieService;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.service.Recomendaciones;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.UserMovieInteractionService;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Busqueda;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.BusquedaFiltro;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.ui.Filtro;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -41,6 +45,7 @@ public class MovieController {
     public String index(Model model) {
         Recomendaciones recomendaciones = movieService.getRecomendaciones();
 
+        model.addAttribute("busquedaFiltro", new BusquedaFiltro());
         model.addAttribute("movieList", recomendaciones.movieList);
         model.addAttribute("bestRatingMovieList", recomendaciones.bestRatingMovieList);
         model.addAttribute("moreCommentedMovieList", recomendaciones.moreCommentedMovieList);
@@ -232,17 +237,9 @@ public class MovieController {
     // BÚSQUEDA Y FILTRADO
     // ============================================================================
 
-    @PostMapping("/buscar")
-    public String doBuscar(@ModelAttribute("busqueda") Busqueda busqueda, Model model) {
+    @PostMapping("/buscar-filtrar")
+    public String doBuscarYFiltrar(@ModelAttribute("busquedaFiltro") BusquedaFiltro busquedaFiltro, Model model) {
         model.addAttribute("tituloCarrusel", "Películas filtradas");
-
-        return movieService.listarPeliculasConBusqueda(busqueda, model);
-    }
-
-    @PostMapping("/filtrar")
-    public String doFiltrar(@ModelAttribute("filtro") Filtro filtro, Model model) {
-        model.addAttribute("tituloCarrusel", "Películas filtradas");
-
-        return movieService.listarPeliculasConFiltrado(filtro, model);
+        return movieService.listarPeliculasConBusquedaYFiltrado(busquedaFiltro, model);
     }
 }
