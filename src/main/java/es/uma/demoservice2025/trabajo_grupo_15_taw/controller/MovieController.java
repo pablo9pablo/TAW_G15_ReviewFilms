@@ -238,8 +238,24 @@ public class MovieController {
     // ============================================================================
 
     @PostMapping("/buscar-filtrar")
-    public String doBuscarYFiltrar(@ModelAttribute("busquedaFiltro") BusquedaFiltro busquedaFiltro, Model model) {
-        model.addAttribute("tituloCarrusel", "Películas filtradas");
-        return movieService.listarPeliculasConBusquedaYFiltrado(busquedaFiltro, model);
+    public String doBuscarYFiltrar(@ModelAttribute("busquedaFiltro") BusquedaFiltro busquedaFiltro,
+                                   HttpSession session) {
+        session.setAttribute("ultimoFiltro", busquedaFiltro);
+        return "redirect:/buscar-filtrar";
     }
+    @GetMapping("/buscar-filtrar")
+    public String getBuscarFiltrar(Model model, HttpSession session) {
+        BusquedaFiltro filtroGuardado = (BusquedaFiltro) session.getAttribute("ultimoFiltro");
+
+        if (filtroGuardado != null) {
+            model.addAttribute("busquedaFiltro", filtroGuardado);
+        } else {
+            model.addAttribute("busquedaFiltro", new BusquedaFiltro());
+        }
+
+        model.addAttribute("tituloCarrusel", "Películas filtradas");
+        return movieService.listarPeliculasConBusquedaYFiltrado(filtroGuardado, model);
+    }
+
+
 }

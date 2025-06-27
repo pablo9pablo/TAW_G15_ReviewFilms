@@ -350,10 +350,7 @@ public class MovieService {
         return actor != null ? actor.getName() : "Desconocido";
     }
 
-    private String getActorNameById(Integer actorId) {
-        Actor actor = actorRepository.findById(actorId).orElse(null);
-        return getActorNameById(actor);
-    }
+
 
     private MovieCast buildMovieCast(MovieCastDTO dto, Movie movie, Actor actor, MovieCastId castId) {
         MovieCast movieCast = movieCastRepository.findById(castId).orElse(new MovieCast());
