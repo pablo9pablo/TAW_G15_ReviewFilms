@@ -112,7 +112,7 @@ public class MovieController {
         if ("save_and_cast".equals(action)) {
             return "redirect:/cast?id=" + movieId;
         } else {
-            return "redirect:/editmovie?id=" + movieId;
+            return "redirect:/viewmovie?id=" + movieId;
         }
     }
 
