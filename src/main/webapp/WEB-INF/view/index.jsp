@@ -46,7 +46,6 @@
 
     <div class="page-content">
         <!-- Formulario de búsqueda -->
-        <%--@elvariable id="busqueda" type=""--%>
         <form:form method="post" action="/buscar" modelAttribute="busqueda" class="search-form">
             <div class="search-input-wrapper">
                 <div class="search-field">
@@ -59,7 +58,6 @@
 
 
         <!-- Formulario de filtrado -->
-        <%--@elvariable id="filtro" type=""--%>
         <form:form method="post" action="/filtrar" modelAttribute="filtro" class="filter-form">
             <div class="filters-wrapper">
                 <span class="filter-label">Filtrar por:</span>
