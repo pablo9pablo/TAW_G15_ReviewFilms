@@ -21,7 +21,6 @@
 <body class="pagina-formulario">
 
 <jsp:include page="cabecera.jsp"/>
-<jsp:include page="logout.jsp"/>
 
 <h2 class="titulo-formulario"><%= isEditing ? "Editar " + movie.getTitle() : "Crear Película" %></h2>
 

@@ -7,7 +7,6 @@
 <head>
     <title>Configuración de perfil</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/logout.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/editarPerfil.css">
 

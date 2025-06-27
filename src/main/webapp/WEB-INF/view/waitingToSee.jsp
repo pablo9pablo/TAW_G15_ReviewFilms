@@ -25,7 +25,6 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
-    <jsp:include page="logout.jsp"/>
         <div class="page-content">
             <!-- Formulario de filtrado -->
             <form:form method="post" action="/filtrarWaitingToSee" modelAttribute="filtroWaitingToSee" class="filter-form">

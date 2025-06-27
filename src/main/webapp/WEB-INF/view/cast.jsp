@@ -18,7 +18,6 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
-    <jsp:include page="logout.jsp"/>
 
     <div class="movie-container">
         <div class="left-panel">

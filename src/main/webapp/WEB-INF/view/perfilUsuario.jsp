@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/tablasComunes.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/perfilUsuario.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/logout.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
 </head>
 <body>
@@ -38,8 +37,6 @@
             <strong>Email:</strong> <%= email %>
         </div>
         <a href="/editarPerfil" class="button-generico">Editar Perfil</a>
-
-        <jsp:include page="logout.jsp" />
 
         <div class="table-wrapper">
             <div class="table-wrapper-scroll-left">

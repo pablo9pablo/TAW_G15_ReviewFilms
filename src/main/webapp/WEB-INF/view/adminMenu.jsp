@@ -6,7 +6,6 @@
 </head>
 <body>
 <jsp:include page="cabecera.jsp"/>
-<jsp:include page="logout.jsp"/>
 <h2 class="page-title">Menú de Administración - CRUDs</h2>
 <ul class="actions-container">
     <li><a class="button-generico" href="${pageContext.request.contextPath}/actor/">Gestión de Actores</a></li>

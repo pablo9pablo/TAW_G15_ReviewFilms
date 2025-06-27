@@ -32,7 +32,6 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
-    <jsp:include page="logout.jsp"/>
     <div style="display: flex; justify-content: flex-end; padding: 10px;">
         <a href="${pageContext.request.contextPath}/estadisticas" class="button-generico"  style="text-decoration: none;"
         >Estadísticas</a>

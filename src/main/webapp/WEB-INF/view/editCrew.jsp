@@ -9,7 +9,6 @@
     <title><%= ((CrewDTO)request.getAttribute("crewForm")).getId() == null ? "Crear nuevo Miembro" : "Editar Miembro" %></title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilosComunes.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/tablasComunes.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/logout.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/editProductionCompany.css">
 </head>

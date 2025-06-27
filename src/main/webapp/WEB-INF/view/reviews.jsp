@@ -23,7 +23,6 @@
 <body>
     <div class="page-container">
         <jsp:include page="cabecera.jsp"/>
-        <jsp:include page="logout.jsp"/>
 
         <div class="page-content">
             <h1 class="page-title">Tus reseñas cinematográficas</h1>

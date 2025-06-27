@@ -15,7 +15,6 @@
 <body>
 <div class="page-container">
     <jsp:include page="cabecera.jsp"/>
-    <jsp:include page="logout.jsp"/>
 
     <div class="main-stats-container">
         <div class="movies-stats">
