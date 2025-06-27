@@ -234,7 +234,7 @@ public class MovieService {
     // RECOMENDACIONES
     // ============================================================================
 
-    public DashboardData getDashboardData() {
+    public Recomendaciones getRecomendaciones() {
         List<Movie> movieList = movieRepository.findAll();
         List<Movie> bestRatingMovieList = movieRepository.findTopMovies(7.0);
         List<Movie> moreCommentedMovieList = movieRepository.findMostReviewsMovies(8000);
@@ -247,7 +247,7 @@ public class MovieService {
         List<Movie> basedTrueStoryMovieList = movieRepository.findMoviesByKeywordIds(List.of(63));
         List<Genre> genreList = genreRepository.findAll();
 
-        return new DashboardData(
+        return new Recomendaciones(
                 movieList, bestRatingMovieList, moreCommentedMovieList, blockbusters,
                 releasesTenYearsMovieList, superheroeMovieList, dramaMovieList,
                 comedyMovieList, warMovieList, basedTrueStoryMovieList, genreList
@@ -296,8 +296,8 @@ public class MovieService {
             );
         }
 
-        DashboardData dashboardData = getDashboardData();
-        addDashboardToModel(model, dashboardData);
+        Recomendaciones recomendaciones = getRecomendaciones();
+        addRecomendacionesToModel(model, recomendaciones);
         addSearchAndFilterAttributes(model);
 
         model.addAttribute("filtro", filtro);
@@ -387,8 +387,8 @@ public class MovieService {
     }
 
     private void setupDashboardModel(Model model) {
-        DashboardData dashboardData = getDashboardData();
-        addDashboardToModel(model, dashboardData);
+        Recomendaciones recomendaciones = getRecomendaciones();
+        addRecomendacionesToModel(model, recomendaciones);
         addSearchAndFilterAttributes(model);
     }
 
@@ -397,7 +397,7 @@ public class MovieService {
         model.addAttribute("busqueda", new Busqueda());
     }
 
-    private void addDashboardToModel(Model model, DashboardData data) {
+    private void addRecomendacionesToModel(Model model, Recomendaciones data) {
         model.addAttribute("bestRatingMovieList", data.bestRatingMovieList);
         model.addAttribute("moreCommentedMovieList", data.moreCommentedMovieList);
         model.addAttribute("blockbusters", data.blockbusters);

@@ -10,7 +10,7 @@ import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ReviewDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.UserPrincipal;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.mapper.MovieMapper;
-import es.uma.demoservice2025.trabajo_grupo_15_taw.service.DashboardData;
+import es.uma.demoservice2025.trabajo_grupo_15_taw.service.Recomendaciones;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.MovieDetailsResult;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.MovieService;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.service.UserMovieInteractionService;
@@ -39,19 +39,19 @@ public class MovieController {
 
     @GetMapping("/")
     public String index(Model model) {
-        DashboardData dashboardData = movieService.getDashboardData();
+        Recomendaciones recomendaciones = movieService.getRecomendaciones();
 
-        model.addAttribute("movieList", dashboardData.movieList);
-        model.addAttribute("bestRatingMovieList", dashboardData.bestRatingMovieList);
-        model.addAttribute("moreCommentedMovieList", dashboardData.moreCommentedMovieList);
-        model.addAttribute("blockbusters", dashboardData.blockbusters);
-        model.addAttribute("releasesTenYearsMovieList", dashboardData.releasesTenYearsMovieList);
-        model.addAttribute("superheroeMovieList", dashboardData.superheroeMovieList);
-        model.addAttribute("dramaMovieList", dashboardData.dramaMovieList);
-        model.addAttribute("comedyMovieList", dashboardData.comedyMovieList);
-        model.addAttribute("warMovieList", dashboardData.warMovieList);
-        model.addAttribute("basedTrueStoryMovieList", dashboardData.basedTrueStoryMovieList);
-        model.addAttribute("genreList", dashboardData.genreList);
+        model.addAttribute("movieList", recomendaciones.movieList);
+        model.addAttribute("bestRatingMovieList", recomendaciones.bestRatingMovieList);
+        model.addAttribute("moreCommentedMovieList", recomendaciones.moreCommentedMovieList);
+        model.addAttribute("blockbusters", recomendaciones.blockbusters);
+        model.addAttribute("releasesTenYearsMovieList", recomendaciones.releasesTenYearsMovieList);
+        model.addAttribute("superheroeMovieList", recomendaciones.superheroeMovieList);
+        model.addAttribute("dramaMovieList", recomendaciones.dramaMovieList);
+        model.addAttribute("comedyMovieList", recomendaciones.comedyMovieList);
+        model.addAttribute("warMovieList", recomendaciones.warMovieList);
+        model.addAttribute("basedTrueStoryMovieList", recomendaciones.basedTrueStoryMovieList);
+        model.addAttribute("genreList", recomendaciones.genreList);
 
         model.addAttribute("filtro", new Filtro());
         model.addAttribute("busqueda", new Busqueda());

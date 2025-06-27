@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class DashboardData {
+public class Recomendaciones {
     public final List<Movie> movieList;
     public final List<Movie> bestRatingMovieList;
     public final List<Movie> moreCommentedMovieList;
@@ -20,12 +20,12 @@ public class DashboardData {
     public final List<Movie> basedTrueStoryMovieList;
     public final List<Genre> genreList;
 
-    public DashboardData(List<Movie> movieList, List<Movie> bestRatingMovieList,
-                         List<Movie> moreCommentedMovieList, List<Movie> blockbusters,
-                         List<Movie> releasesTenYearsMovieList, List<Movie> superheroeMovieList,
-                         List<Movie> dramaMovieList, List<Movie> comedyMovieList,
-                         List<Movie> warMovieList, List<Movie> basedTrueStoryMovieList,
-                         List<Genre> genreList) {
+    public Recomendaciones(List<Movie> movieList, List<Movie> bestRatingMovieList,
+                           List<Movie> moreCommentedMovieList, List<Movie> blockbusters,
+                           List<Movie> releasesTenYearsMovieList, List<Movie> superheroeMovieList,
+                           List<Movie> dramaMovieList, List<Movie> comedyMovieList,
+                           List<Movie> warMovieList, List<Movie> basedTrueStoryMovieList,
+                           List<Genre> genreList) {
         this.movieList = movieList;
         this.bestRatingMovieList = bestRatingMovieList;
         this.moreCommentedMovieList = moreCommentedMovieList;
