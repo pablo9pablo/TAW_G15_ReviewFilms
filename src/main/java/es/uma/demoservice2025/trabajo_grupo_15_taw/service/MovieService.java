@@ -34,6 +34,7 @@ public class MovieService {
     private final ReviewRepository reviewRepository;
     private final MovieCastRepository movieCastRepository;
 
+
     public MovieService(MovieRepository movieRepository,
                         GenreRepository genreRepository,
                         ProductionCompanyRepository productionCompanyRepository,
@@ -125,7 +126,18 @@ public class MovieService {
     }
 
     public void deleteMovieById(Integer movieId) {
-        movieRepository.deleteById(movieId);
+        Movie movie = movieRepository.findById(movieId).orElse(null);
+
+
+        // Desvincular la película de todos los crew
+        assert movie != null;
+        for (Crew crew : movie.getCrews()) {
+            crew.getMovies().remove(movie);
+        }
+
+        movie.getCrews().clear();
+
+        movieRepository.delete(movie);
     }
 
     // ============================================================================
