@@ -11,6 +11,6 @@ public class ActorDTO {
     private Integer id;
     private String name;
     private String gender;
-    private List<Integer> selectedMovieIds; // Para asociar películas
+    private List<Integer> selectedMovieIds;
 
 }

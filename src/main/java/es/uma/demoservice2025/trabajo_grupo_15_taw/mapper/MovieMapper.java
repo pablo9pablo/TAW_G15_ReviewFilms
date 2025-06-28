@@ -1,5 +1,6 @@
 // LUCIA ROSALES SANTIAGO: 8%
-
+// MANUEL GALÁN ALFARO: 46%
+// OUAIL BOUAZZA MANSOURI: 46%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.mapper;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO;

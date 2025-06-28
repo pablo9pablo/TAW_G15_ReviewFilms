@@ -1,6 +1,6 @@
 <!-- PABLO MARTINEZ PALOP : 10% -->
-<!--LUCIA ROSALES SANTIAGO: 90% -->
-
+<!--LUCIA ROSALES SANTIAGO: 70% -->
+<!-- MANUEL GALÁN ALFARO: 20% -->
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>

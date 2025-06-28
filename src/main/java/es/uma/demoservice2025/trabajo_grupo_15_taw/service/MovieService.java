@@ -1,3 +1,5 @@
+// OUAIL BOUAZZA MANSOURI: 60%
+// MANUEL GALÁN ALFARO: 40%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;
@@ -277,7 +279,6 @@ public class MovieService {
         }
 
         if (busquedaFiltro.getGeneroIds() == null || busquedaFiltro.getGeneroIds().isEmpty()) {
-            // Para que el filtro de género no afecte si no se seleccionó ninguno
             busquedaFiltro.setGeneroIds(null);
         }
 
@@ -287,8 +288,7 @@ public class MovieService {
         List<Genre> genreList = this.genreRepository.findAll();
         model.addAttribute("genreList", genreList);
 
-        // Determinar qué consulta usar basándose en los parámetros disponibles
-        // unificamos todos los casos con una única consulta en el repositorio
+
         movies = this.movieRepository.buscarPeliculasConFiltros(
                 busquedaFiltro.getTexto(),
                 busquedaFiltro.getYear(),

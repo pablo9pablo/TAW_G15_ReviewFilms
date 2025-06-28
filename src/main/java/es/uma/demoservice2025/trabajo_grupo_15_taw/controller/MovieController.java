@@ -1,6 +1,6 @@
 // LUCIA ROSALES SANTIAGO: 3%
 // MIGUEL LABELLA RAMÍREZ: 25%
-
+// MANUEL GALÁN ALFARO: 10%
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 

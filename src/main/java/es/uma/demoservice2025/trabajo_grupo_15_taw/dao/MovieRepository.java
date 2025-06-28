@@ -1,5 +1,6 @@
 // PABLO MARTINEZ PALOP : 28%
 // LUCIA ROSALES SANTIAGO: 5%
+// MANUEL GALÁN ALFARO: 35%
 
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;

@@ -1,3 +1,4 @@
+//MANUEL GALÁN ALFARO: 100%
 function scrollCarousel(direction, carouselId) {
     const carousel = document.getElementById(carouselId);
     if (!carousel) return;

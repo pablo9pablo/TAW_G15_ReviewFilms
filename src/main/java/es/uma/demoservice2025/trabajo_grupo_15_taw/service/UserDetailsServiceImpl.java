@@ -1,6 +1,5 @@
-package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 // OUAIL BOUAZZA MANSOURI : 100%
-
+package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.UsuarioRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.User;

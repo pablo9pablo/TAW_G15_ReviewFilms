@@ -1,3 +1,5 @@
+// OUAIL BOUAZZA MANSOURI: 50%
+// MANUEL GALÁN ALFARO: 50%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Movie;
