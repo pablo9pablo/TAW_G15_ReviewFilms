@@ -53,11 +53,7 @@ public class ActorController {
     }
 
     @PostMapping("/save")
-    public String doGuardar(@ModelAttribute("actorForm") ActorDTO dto, Model model) {
-        if (actorService.isNameAlreadyTaken(dto.getName(), dto.getId())) {
-            model.addAttribute("error", "Ya existe un actor con ese nombre");
-            return "editActor";
-        }
+    public String doGuardar(@ModelAttribute("actorForm") ActorDTO dto) {
 
         actorService.saveActor(dto);
         return "redirect:/actor/";

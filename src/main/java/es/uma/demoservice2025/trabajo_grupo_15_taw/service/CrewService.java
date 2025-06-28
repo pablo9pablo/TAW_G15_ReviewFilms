@@ -1,6 +1,7 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 
 // OUAIL BOUAZZA MANSOURI : 100%
+
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.CrewRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.MovieRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.CrewDTO;
@@ -75,7 +76,26 @@ public class CrewService {
     }
 
     public CrewDTO save(CrewDTO dto) {
-        Crew crew = CrewMapper.toEntity(dto, movieRepository);
+        Crew crew;
+
+        if (dto.getId() != null) {
+            Optional<Crew> existingCrewOpt = crewRepository.findById(dto.getId());
+            if (existingCrewOpt.isPresent()) {
+                crew = existingCrewOpt.get();
+                crew.setName(dto.getName());
+                crew.setGender(dto.getGender());
+            }
+            else {
+                crew = new Crew();
+                crew.setName(dto.getName());
+                crew.setGender(dto.getGender());
+            }
+        } else {
+            crew = new Crew();
+            crew.setName(dto.getName());
+            crew.setGender(dto.getGender());
+        }
+
         Crew savedCrew = crewRepository.save(crew);
         return CrewMapper.toDto(savedCrew);
     }

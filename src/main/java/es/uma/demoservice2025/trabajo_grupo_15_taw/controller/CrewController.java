@@ -55,11 +55,6 @@ public class CrewController {
 
     @PostMapping("/save")
     public String doGuardar(@ModelAttribute("crewForm") CrewDTO dto, Model model) {
-        if (crewService.existsByNameIgnoreCase(dto.getName(), dto.getId())) {
-            model.addAttribute("error", "Ya existe un miembro del crew con ese nombre");
-            model.addAttribute("crewForm", dto);
-            return doEditar(dto.getId(), model);
-        }
 
         crewService.save(dto);
         return "redirect:/crew/";

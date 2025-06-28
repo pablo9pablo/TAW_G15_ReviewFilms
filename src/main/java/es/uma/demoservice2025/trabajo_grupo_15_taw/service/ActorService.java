@@ -70,11 +70,6 @@ public class ActorService {
                 .collect(Collectors.toList());
     }
 
-    public boolean isNameAlreadyTaken(String name, Integer actorId) {
-        Actor existing = actorRepository.findByNameIgnoreCase(name);
-        return existing != null && (actorId == null || !existing.getId().equals(actorId));
-    }
-
     public ActorDTO saveActor(ActorDTO dto) {
         Actor actor = ActorMapper.toEntity(dto);
         Actor savedActor = actorRepository.save(actor);
