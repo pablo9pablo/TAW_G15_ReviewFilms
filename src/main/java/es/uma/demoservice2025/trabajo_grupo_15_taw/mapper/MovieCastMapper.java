@@ -3,6 +3,7 @@ package es.uma.demoservice2025.trabajo_grupo_15_taw.mapper;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieCastDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.MovieCast;
 
+// OUAIL BOUAZZA MANSOURI : 100%
 public class MovieCastMapper {
 
     public MovieCastDTO toDto(MovieCast movieCast) {

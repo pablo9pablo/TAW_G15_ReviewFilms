@@ -1,7 +1,7 @@
 // LUCIA ROSALES SANTIAGO: 3%
 // MIGUEL LABELLA RAMÍREZ: 25%
 // MANUEL GALÁN ALFARO: 10%
-
+// OUAIL BOUAZZA MANSOURI 62%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieCastDTO;
@@ -185,7 +185,7 @@ public class MovieController {
                            Model model) {
         try {
             movieService.prepararEdicionCast(movieId, actorId, model);
-            return "editCast";
+            return "editUnActorEnpeli";
         } catch (RuntimeException e) {
             return "redirect:/cast?id=" + movieId;
         }

@@ -1,3 +1,6 @@
+// MIGUEL LABELLA : 60%
+// OUAIL BOUAZZA MANSOURI : 40%
+
 package es.uma.demoservice2025.trabajo_grupo_15_taw.service;
 
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.*;

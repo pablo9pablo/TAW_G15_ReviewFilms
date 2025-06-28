@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Component
 public class MovieMapper {
 
-    // Convierte Movie → MovieDTO
     public static MovieDTO toDTO(Movie movie) {
         if (movie == null) return null;
 
@@ -102,11 +101,10 @@ public class MovieMapper {
 
         movie.setImageUrl(dto.getImageUrl());
 
-        // Cambiar de Set.copyOf() a HashSet
-        movie.setGenres(new HashSet<>(genres));  // Aquí cambiamos
-        movie.setProductionCompanies(new HashSet<>(companies));  // Y aquí también
+        movie.setGenres(new HashSet<>(genres));
+        movie.setProductionCompanies(new HashSet<>(companies));
 
-        // Relación MovieCast se maneja por separado
+
     }
 
 }

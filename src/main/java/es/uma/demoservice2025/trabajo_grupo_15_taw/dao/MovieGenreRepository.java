@@ -14,6 +14,5 @@ public interface MovieGenreRepository extends JpaRepository<MovieGenre, MovieGen
     @Query("SELECT mg FROM MovieGenre mg WHERE mg.genre.id = :genreId")
     List<MovieGenre> findByGenreId(@Param("genreId") Integer genreId);
 
-    @Query("SELECT mg FROM MovieGenre mg WHERE mg.movie.id = :movieId")
-    List<MovieGenre> findByMovieId(@Param("movieId") Integer movieId);
+
 }

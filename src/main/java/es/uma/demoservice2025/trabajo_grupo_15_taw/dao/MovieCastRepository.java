@@ -22,5 +22,4 @@ public interface MovieCastRepository extends JpaRepository<MovieCast, MovieCastI
 
     void deleteById(MovieCastId castId);
 
-    List<MovieCast> findByMovieId(Integer id);
 }

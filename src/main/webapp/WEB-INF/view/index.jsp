@@ -1,5 +1,6 @@
 <!--LUCIA ROSALES SANTIAGO: 5% -->
 <!-- MANUEL GALÁN ALFARO: 70% -->
+<!--OUAIL BOUAZZA MANSOURI : 25%-->
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>

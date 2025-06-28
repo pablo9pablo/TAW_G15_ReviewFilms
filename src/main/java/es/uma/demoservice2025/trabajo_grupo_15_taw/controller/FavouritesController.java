@@ -1,5 +1,6 @@
 // MIGUEL LABELLA RAMÍREZ: 100%
 package es.uma.demoservice2025.trabajo_grupo_15_taw.controller;
+
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dao.GenreRepository;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.FavoriteMovieDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Genre;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,13 +97,6 @@ public class FavouritesController {
     }
 
 
-    // Métodos auxiliares para fechas si se necesitan (puedes moverlos a Service si quieres)
-    public LocalDate getStartDateOfYear(int year) {
-        return LocalDate.of(year, Month.JANUARY, 1);
-    }
 
-    public LocalDate getEndDateOfYear(int year) {
-        return LocalDate.of(year, Month.DECEMBER, 31);
-    }
 
 }

@@ -1,5 +1,3 @@
-
-
 <!--OUAIL BOUAZZA MANSOURI : 100%-->
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>

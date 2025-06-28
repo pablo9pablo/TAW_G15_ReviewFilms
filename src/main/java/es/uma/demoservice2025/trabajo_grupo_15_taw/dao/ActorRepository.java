@@ -1,5 +1,5 @@
-// PABLO MARTINEZ PALOP : 40%
-// OUAIL BOUAZZA MANSOURI : 60%
+// PABLO MARTINEZ PALOP : 60%
+// OUAIL BOUAZZA MANSOURI : 40%
 
 package es.uma.demoservice2025.trabajo_grupo_15_taw.dao;
 
@@ -14,10 +14,7 @@ import java.util.List;
 @Repository
 public interface ActorRepository extends JpaRepository<Actor, Integer> {
     List<Actor> findByNameContainingIgnoreCase(String name);
-    Actor findByNameIgnoreCase(String name);
 
-    @Query("SELECT a FROM Actor a JOIN a.movieCasts mc WHERE mc.movie.id = :movieId")
-    List<Actor> findByMovieId(Integer movieId);
 
     @Query("SELECT a.name, COUNT(mc) as movieCount " +
                 "FROM Actor a " +

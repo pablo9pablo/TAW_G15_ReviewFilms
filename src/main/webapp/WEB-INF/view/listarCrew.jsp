@@ -1,4 +1,6 @@
 <!-- MANUEL GALÁN ALFARO: 50% -->
+<!--OUAIL BOUAZZA MANSOURI : 50%-->
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.List" %>
 <%@ page import="es.uma.demoservice2025.trabajo_grupo_15_taw.dto.MovieDTO" %>

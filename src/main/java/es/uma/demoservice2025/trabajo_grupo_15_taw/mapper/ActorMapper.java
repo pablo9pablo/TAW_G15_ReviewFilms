@@ -1,6 +1,6 @@
 package es.uma.demoservice2025.trabajo_grupo_15_taw.mapper;
 
-// OUAIL BOUAZZA MANSOURI
+// OUAIL BOUAZZA MANSOURI : 100%
 import es.uma.demoservice2025.trabajo_grupo_15_taw.dto.ActorDTO;
 import es.uma.demoservice2025.trabajo_grupo_15_taw.entity.Actor;
 

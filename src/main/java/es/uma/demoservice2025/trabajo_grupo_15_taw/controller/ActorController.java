@@ -80,7 +80,6 @@ public class ActorController {
         return "redirect:/actor/edit?id=" + actorId;
     }
 
-    // Métodos privados para mejorar la legibilidad
     private List<ActorDTO> getFilteredActors(FiltroActor filtro) {
         if (isValidFilter(filtro)) {
             return actorService.findActorsByName(filtro.getNombre());

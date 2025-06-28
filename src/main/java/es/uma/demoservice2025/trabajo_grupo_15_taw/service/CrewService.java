@@ -70,11 +70,6 @@ public class CrewService {
                 .collect(Collectors.toList());
     }
 
-    public boolean existsByNameIgnoreCase(String name, Integer excludeId) {
-        Crew existing = crewRepository.findByNameIgnoreCase(name);
-        return existing != null && (excludeId == null || !existing.getId().equals(excludeId));
-    }
-
     public CrewDTO save(CrewDTO dto) {
         Crew crew;
 
